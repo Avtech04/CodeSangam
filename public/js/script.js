@@ -4,12 +4,14 @@ const userName=document.getElementById('randomPlay');
 const copyBtn = document.querySelector('#copy');
 user=JSON.parse(user);
 
+
+//adding player 
 function putPlayer(player) {
     const div = document.createElement('div');
     const img = document.createElement('img');
     const p = document.createElement('p');
     const text = document.createTextNode(player.name);
-    div.id = `skribblr-${player.userId}`;
+    div.id = `${player.userId}`;
     p.appendChild(text);
     p.classList.add('text-center');
     
@@ -24,6 +26,8 @@ function putPlayer(player) {
     
 }
 console.log(roomId);
+
+
 if (roomId) {
     // player
     document.querySelector('#rounds').setAttribute('disabled', true);
@@ -43,12 +47,23 @@ if (roomId) {
     document.querySelector('#landing').remove();
     document.querySelector('#private-room').classList.remove('d-none');
     socket.emit('create-private-room',user);
-    socket.on('newPrivateRoom', (data) => {
-        document.querySelector('#gameLink').value = `${window.location.protocol}//${window.location.host}/game/?id=${data.gameID}`;
-        putPlayer(data.user);
-    });
 });
 }
+
+document.querySelector('#startGame').addEventListener('click', async () => {
+    showCanvas();
+    socket.emit('startGame');
+    //socket.emit('getPlayers');
+});
+
+function showCanvas() {
+        // const canvas = document.createElement('script');
+        // canvas.src='js/canvas.js'
+        document.querySelector('#private-room').remove();
+        document.querySelector('#gameZone').classList.remove('d-none');
+}
+
+
 copyBtn.addEventListener('click', (e) => {
         let textToCopy = document.getElementById('gameLink').value;
         console.log(textToCopy);
@@ -59,8 +74,18 @@ copyBtn.addEventListener('click', (e) => {
         }
 });
 
+
+
+//Sockets
+socket.on('startGame',showCanvas);
+socket.on('newPrivateRoom', (data) => {
+    document.querySelector('#gameLink').value = `${window.location.protocol}//${window.location.host}/game/?id=${data.gameID}`;
+    putPlayer(data.user);
+});
+
 socket.on("joinRoom",(data)=>{
     console.log("yes");
     putPlayer(data);
-})
+});
+
 socket.on('otherPlayers', (data) => data.players.forEach((player) => putPlayer(player)));

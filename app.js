@@ -6,6 +6,8 @@ const mongoose=require("mongoose");
 const bodyParser=require("body-parser");
 const routes=require('./routes/authroutes');
 const Room=require('./controllers/Room');
+const Game=require('./controllers/Game');
+const Canvas=require('./controllers/Canvas');
 
 //database connection
 const connecttomongo=()=>{
@@ -26,6 +28,12 @@ io.on('connection', (socket) => {
     console.log(`connected user ${socket.id}`);
     socket.on('create-private-room',async (player) => new Room(io, socket).createPrivateRoom(player))
     socket.on('joinRoom',async (data) => new Room(io, socket).joinRoom(data));
+    socket.on('drawing',  (data) =>  new Canvas(io, socket).broadcastDrawing(data));
+    socket.on('stopdrawing',  (data) =>  new Canvas(io, socket).stopDrawing());
+    socket.on('clearCanvas',()=> new Canvas(io,socket).clearCanvas());
+    socket.on('undodo',  () =>  new Canvas(io, socket).undoDo());
+    socket.on('redoDo',  () =>  new Canvas(io, socket).redoDo());
+    socket.on('startGame', async () => { await new Game(io, socket).startGame(); });
     socket.on('disconnect',()=>{
         console.log(`disconnected ${socket.id}`);
     })

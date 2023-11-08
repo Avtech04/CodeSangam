@@ -20,6 +20,7 @@ class Room {
         room.players.push(user);
         room= await room.save();
         var roo=String(room._id);
+        socket.roomId=roo;
         socket.join(roo);
         socket.to(roo).emit('joinRoom', user);
         socket.emit('newPrivateRoom', { gameID: roo ,user});
@@ -38,24 +39,13 @@ class Room {
         let room=await Rooms.findById(roomID);
         room.players.push(user);
         room=await room.save();
-
+        socket.roomId=roomID;
         socket.join(roomID);
         socket.to(roomID).emit('joinRoom', user);
         const players=room.players;
-        socket.emit('otherPlayers',{players})
+        socket.emit('otherPlayers',{players});
     }
-
-    updateSettings(data) {
-        const { socket } = this;
-        const { customWords, ...rest } = data;
-        games[socket.roomID].time = Number(data.time) * 1000;
-        games[socket.roomID].rounds = Number(data.rounds);
-        games[socket.roomID].probability = Number(data.probability);
-        games[socket.roomID].customWords = customWords;
-        games[socket.roomID].language = data.language;
-        socket.to(socket.roomID).emit('settingsUpdate', rest);
-        console.log(games[socket.roomID]);
-    }
+    
 }
 
 module.exports = Room;
