@@ -21,6 +21,16 @@ app.set('view engine', 'ejs');
 //routes
 app.use('/',routes)
 
+// sockets connection
+io.on('connection', (socket) => {
+    console.log(`connected user ${socket.id}`);
+    socket.on('create-private-room',async (player) => new Room(io, socket).createPrivateRoom(player))
+    socket.on('joinRoom',async (data) => new Room(io, socket).joinRoom(data));
+    socket.on('disconnect',()=>{
+        console.log(`disconnected ${socket.id}`);
+    })
+});
+
 
 
 //starting server

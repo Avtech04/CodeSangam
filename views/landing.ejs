@@ -1,0 +1,9 @@
+<section id="landing">
+    <input type="text" placeholder="<%=user.username %>">
+    <button id="randomPlay">Play with random players</button>
+    <% if(!roomID) { %>
+        <button class="btn btn-primary mt-3" id="privateRoom">Create Private Room</button>
+    <% } else { %>
+        <button class="btn btn-primary mt-3" id="playGame">Join Room</button>
+    <% } %>
+</section>
