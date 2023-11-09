@@ -5,7 +5,7 @@
     <div id="toolbox">
 
         <div id="toolproperties">
-            <h5 style="font-size: 18px;">Tool Properties</h5>
+            <h5 style="font-size: 18px; font-family: 'Times New Roman', Times, serif;">Tool Properties</h5>
             <div id="properties" style="width:85%">Stroke Size<input id="strokewidth" value="5" type="range" min="0.5"
                     max="50" placeholder="Example: 1"></input></div>
             <div id="properties" style="width:85%">Pen Color<input id="strokecolor" value="#000000" type="color"></div>
@@ -15,12 +15,12 @@
         <div id="actions">
             <h5 style="font-size: 18px;">Actions</h5>
             <button class="action" id="action1" onclick="clear_page(cntx)"><span class="tooltiptext"
-                    style="bottom:115%;left: 0%;">Clear Page</span><img id="icon" src="board icons/Clear.svg"></button>
+                    style="bottom:115%;left: 0%;">Clear Page</span><img id="icon" src="Clear.svg"></button>
     
             <button class="action" id="action8" onclick="undo()"><span class="tooltiptext"
-                    style="bottom:355%;left:0%;">Undo</span><img id="icon" src="board icons/Undo.svg"></button>
+                    style="bottom:355%;left:0%;">Undo</span><img id="icon" src="Undo.svg"></button>
             <button class="action" id="action9" onclick="redo()"><span class="tooltiptext"
-                    style="bottom:335%;left:-100%;">Redo</span><img id="icon" src="board icons/Redo.svg"></button>
+                    style="bottom:335%;left:-100%;">Redo</span><img id="icon" src="Redo.svg"></button>
         </div>
 
 
@@ -28,14 +28,16 @@
     </div>
 
     <div id="pagecontainer">
-        <canvas id="canvas1">
+        <canvas id="canvas1" height="800" width="900">
             <p>Your Browser is not supported by this web app. We regret the inconveniance caused.</p>
             <p>Please try one of these supported browsers:</p>
             <p><a href="www.mozilla.org">Mozilla Firefox</a></p>
             <p><a href="www.google.com/chrome">Google Chrome</a></p>
             <p><a href="#"></a></p>
         </canvas>
-        <canvas id="canvas2" height="0" width="0"></canvas>
+        <canvas id="canvas2" height="0" width="0">
+          aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        </canvas>
 
       <canvas id="canvas3" height="0" width="0">
         <p>Your Browser is not supported by this web app. We regret the inconveniance caused.</p>
@@ -52,7 +54,12 @@
         <img id="preview" width="300" height="200">
         <button class="action" style="width:100%" onclick="imgavailable()">Add Image to Board</button>
       </div>
-
+<div class="chat">
+  Chat Section
+</div>
+<div class="scoreboard">
+  Scoreboard Section
+</div>
       <div class="notifier" id="notifier1"></div>
 
     </div>
