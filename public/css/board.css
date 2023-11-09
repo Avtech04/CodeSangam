@@ -354,3 +354,28 @@
     color: white;
     font-size: 40px;
   }
+
+
+
+  #landing{
+    background-color: aquamarine;
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    position: absolute;
+    top: 25vh;
+    left: 30vw;
+    height: 40vh;
+    padding: 20px;
+  }
+
+  .input{
+    padding: 12px;
+    margin: 12px;
+  }
+
+  #randomPlay{
+    background-color: blue;
+    color: white;
+    padding: 12px;
+  }
