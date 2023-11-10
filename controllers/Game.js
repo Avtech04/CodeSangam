@@ -1,7 +1,8 @@
 const Rooms=require('../models/room')
 
 class Game {
-    constructor(io, socket) {
+    constructor(io, socket) 
+    {
         this.io = io;
         this.socket = socket;
     }

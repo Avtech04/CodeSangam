@@ -1,4 +1,4 @@
-const Rooms=require('../models/room')
+const Rooms=require('../models/room');
 class Room {
     constructor(io, socket) {
         this.io = io;
