@@ -56,3 +56,13 @@ exports.game=(req,res)=>{
     roomID=req.query.id;
     res.redirect('/login');
 }
+
+exports.publicGame=(req,res)=>{
+    let user={
+        username:req.body.username,
+        _id:undefined
+    }
+    console.log(user);
+    let roomID=undefined;
+    res.render('index',{user,roomID});
+}

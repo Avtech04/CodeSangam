@@ -4,7 +4,7 @@ const roomSchema= new mongoose.Schema({
     Type:{
         type:String,
         required:true,
-        default:'public'
+        default:'Public'
     },
     rounds:{
         type:Number,
@@ -23,7 +23,10 @@ const roomSchema= new mongoose.Schema({
         type:String
     },
     probableWords:{},
-    players:[]
+    players:[],
+    capacity:{
+        type:Number
+    }
 },
 {timestamps:true});
 

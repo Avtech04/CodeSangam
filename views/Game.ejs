@@ -1,90 +1,92 @@
 <section class="container-md d-none" id="gameZone">
   <div class="alert alert-info py-2 rounded-0" role="alert">
     <div class="row align-items-center">
-        <div class="col-2">
-            <p class="lead fw-bold mb-0" id="clock">0</p>
-        </div>
-        <div class="col-10 col-md-8 text-center" id="wordDiv"></div>
-    </div>
-</div>
-    <!-- <div id="sidepanelin" onclick="toggle_sidepanel()"><img src="board icons/Double Chevron Right.svg" width="100%"
-            height="100%" style="max-height: 100%;"></div>
-
-    <div id="toolbox">
-
-        <div id="toolproperties">
-            <h5 style="font-size: 18px; font-family: 'Times New Roman', Times, serif;">Tool Properties</h5>
-            <div id="properties" style="width:85%">Stroke Size<input id="strokewidth" value="5" type="range" min="0.5"
-                    max="50" placeholder="Example: 1"></input></div>
-            <div id="properties" style="width:85%">Pen Color<input id="strokecolor" value="#000000" type="color"></div>
-            <div id="properties2" style="width:0%">Board Color<input id="boardcolor" value="#ffffff" type="color"></div>
-        </div>
-
-        <div id="actions">
-            <h5 style="font-size: 18px;">Actions</h5>
-            <button class="action" id="action1" onclick="clear_page(cntx)"><span class="tooltiptext"
-                    style="bottom:115%;left: 0%;">Clear Page</span><img id="icon" src="Clear.svg"></button>
-    
-            <button class="action" id="action8" onclick="undo()"><span class="tooltiptext"
-                    style="bottom:355%;left:0%;">Undo</span><img id="icon" src="Undo.svg"></button>
-            <button class="action" id="action9" onclick="redo()"><span class="tooltiptext"
-                    style="bottom:335%;left:-100%;">Redo</span><img id="icon" src="Redo.svg"></button>
-        </div>
-
-
-        </br>
-    </div>
-
-    <div id="pagecontainer">
-        <canvas id="canvas1" >
-            <p>Your Browser is not supported by this web app. We regret the inconveniance caused.</p>
-            <p>Please try one of these supported browsers:</p>
-            <p><a href="www.mozilla.org">Mozilla Firefox</a></p>
-            <p><a href="www.google.com/chrome">Google Chrome</a></p>
-            <p><a href="#"></a></p>
-        </canvas>
-        <canvas id="canvas2" height="0" width="0">
-          aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-        </canvas> 
-
-      <canvas id="canvas3" height="0" width="0">
-        <p>Your Browser is not supported by this web app. We regret the inconveniance caused.</p>
-        <p>Please try one of these supported browsers:</p>
-        <p><a href="www.mozilla.org">Mozilla Firefox</a></p>
-        <p><a href="www.google.com/chrome">Google Chrome</a></p>
-        <p><a href="#"></a></p>
-      </canvas> -->
-      
-      <div id="image_input_menu">
-        <label style="width:48%;float:left">Width:<input type="number" class="input_image_dimensions" id="input_image_width" name="input_image_width" value="300"></label>
-        <label style="width:48%;float:left">Height:<input type="number" class="input_image_dimensions" id="input_image_height" name="input_image_height" value="200"></label>
-        <h5>Preview:</h5>
-        <img id="preview" width="300" height="200">
-        <button class="action" style="width:100%" onclick="imgavailable()">Add Image to Board</button> 
+      <div class="col-2">
+        <p class="lead fw-bold mb-0" id="clock">0</p>
       </div>
-      <div class="row justify-content-center mx-0">
-        <div class="col-3 col-lg-2 h-100 players"></div>
-        <div class="col-9 col-lg-7 h-100 d-flex flex-column pe-0 px-lg-3">
-        </div>
-        <div class="col-lg-3 h-100 bg-white p-0 mt-3 mt-lg-0">
-            <div class="messages"></div>
-            <form id="sendMessage" class="m-2">
-                <input class="form-control" type="text" placeholder="Type your guess here...">
-                <div class="position-relative">
-                    <ul class="list-group mt-1" id="suggestions"></ul>
-                </div>
-            </form>
-        </div>
+      <div class="col-10 col-md-8 text-center" id="wordDiv"></div>
     </div>
-<!-- <div class="chat">
-  Chat Section
-</div>
-<div class="scoreboard">
-  Scoreboard Section
-</div> -->
-      <div class="notifier" id="notifier1"></div>
+  </div>
+  <div id="sidepanelin" onclick="toggle_sidepanel()"><img src="board icons/Double Chevron Right.svg" width="100%"
+      height="100%" style="max-height: 100%;"></div>
 
+  <div id="toolbox">
+
+    <div id="toolproperties">
+      <h5 style="font-size: 18px; font-family: 'Times New Roman', Times, serif;">Tool Properties</h5>
+      <div id="properties" style="width:85%">Stroke Size<input id="strokewidth" value="5" type="range" min="0.5"
+          max="50" placeholder="Example: 1"></input></div>
+      <div id="properties" style="width:85%">Pen Color<input id="strokecolor" value="#000000" type="color"></div>
+      <div id="properties2" style="width:0%">Board Color<input id="boardcolor" value="#ffffff" type="color"></div>
     </div>
+
+    <div id="actions">
+      <h5 style="font-size: 18px;">Actions</h5>
+      <button class="action" id="action1" onclick="clear_page(cntx)"><span class="tooltiptext"
+          style="bottom:115%;left: 0%;">Clear Page</span><img id="icon" src="Clear.svg"></button>
+
+      <button class="action" id="action8" onclick="undo()"><span class="tooltiptext"
+          style="bottom:355%;left:0%;">Undo</span><img id="icon" src="Undo.svg"></button>
+      <button class="action" id="action9" onclick="redo()"><span class="tooltiptext"
+          style="bottom:335%;left:-100%;">Redo</span><img id="icon" src="Redo.svg"></button>
+    </div>
+
+
+    </br>
+  </div>
+
+  <div id="pagecontainer">
+    <canvas id="canvas1">
+      <p>Your Browser is not supported by this web app. We regret the inconveniance caused.</p>
+      <p>Please try one of these supported browsers:</p>
+      <p><a href="www.mozilla.org">Mozilla Firefox</a></p>
+      <p><a href="www.google.com/chrome">Google Chrome</a></p>
+      <p><a href="#"></a></p>
+    </canvas>
+    <canvas id="canvas2" height="0" width="0">
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    </canvas>
+
+    <canvas id="canvas3" height="0" width="0">
+      <p>Your Browser is not supported by this web app. We regret the inconveniance caused.</p>
+      <p>Please try one of these supported browsers:</p>
+      <p><a href="www.mozilla.org">Mozilla Firefox</a></p>
+      <p><a href="www.google.com/chrome">Google Chrome</a></p>
+      <p><a href="#"></a></p>
+    </canvas>
+
+    <div id="image_input_menu">
+      <label style="width:48%;float:left">Width:<input type="number" class="input_image_dimensions"
+          id="input_image_width" name="input_image_width" value="300"></label>
+      <label style="width:48%;float:left">Height:<input type="number" class="input_image_dimensions"
+          id="input_image_height" name="input_image_height" value="200"></label>
+      <h5>Preview:</h5>
+      <img id="preview" width="300" height="200">
+      <button class="action" style="width:100%" onclick="imgavailable()">Add Image to Board</button>
+    </div>
+    <div class="row justify-content-center mx-0">
+      <div class="col-3 col-lg-2 h-100 players"></div>
+      <div class="col-9 col-lg-7 h-100 d-flex flex-column pe-0 px-lg-3">
+      </div>
+      <div class="col-lg-3 h-100 bg-white p-0 mt-3 mt-lg-0">
+        <div class="messages"></div>
+        <form id="sendMessage" class="m-2">
+          <input class="form-control" type="text" placeholder="Type your guess here...">
+          <div class="position-relative">
+            <ul class="list-group mt-1" id="suggestions"></ul>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- <div class="chat">
+      Chat Section
+    </div>
+    <div class="scoreboard">
+      Scoreboard Section
+    </div> -->
+    <div class="notifier" id="notifier1"></div>
+
+  </div>
 
 
 

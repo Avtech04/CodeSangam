@@ -45,6 +45,44 @@ class Room {
         const players=room.players;
         socket.emit('otherPlayers',{players});
     }
+
+    async joinPublic(player){
+        const { io, socket } = this; 
+        let room =await Rooms.find({Type:'Public',capacity:{$lt:4}});
+        console.log(player);
+        console.log(room);
+        var room_id;
+        let user={
+            name:player.username,
+            score:0,
+            socketId:socket.id,
+            userId:player._id
+        }
+        if(room.length==0){
+            room= new Rooms();
+            room.Type='Public';
+            room.players.push(user);
+            room.capacity=1;
+            room= await room.save();
+            
+        }else{
+            console.log("yes");
+            room=room[0];
+            
+            room.players.push(user);
+            room.capacity+=1;
+            room= await room.save();
+        }
+        room_id=String(room._id);
+        socket.join(room_id);
+        socket.roomId=room_id;
+        if(room.capacity==4){
+            console.log("yes");
+            socket.to(room_id).emit('startGame');
+            socket.emit('startGame');
+        }
+
+    }
     
 }
 

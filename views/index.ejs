@@ -12,9 +12,14 @@
 </head>
 
 <body>
+    
+    <% if(user._id){ %>
     <%- include('./landing',{user}) %>
+    <% } %>
+    <%- include('./waiting',{user}) %>
     <%- include('./privateRoom',{user}) %>
     <%- include('./Game',{user}) %>
+
     <script>
        var user='<%- JSON.stringify(user)%>';
        var roomId='<%- (roomID)%>';

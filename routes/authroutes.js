@@ -19,5 +19,7 @@ router
 router
     .route('/game')
     .get(authController.game);
-
+router
+    .route('/public')
+    .post(authController.publicGame);
 module.exports=router;
