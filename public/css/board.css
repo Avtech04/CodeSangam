@@ -51,17 +51,18 @@
   }
   
   #toolbox{
-    top: 10px;
+    position: absolute;
+    left: 18%;
     bottom: 0px;
-    height:400px;
-    max-width: 200px;
+    height:60vh;
+    /* max-width: 200px;
     min-width: 150px;
-    max-height: 100%;
+    max-height: 100%; */
     width:9%;
     float: left;
     visibility: hidden;
     margin-left: 10px;
-    z-index: 20;
+    /* z-index: 20; */
     overflow-x: hidden;
     overflow-y: scroll;
     position: fixed;
@@ -198,12 +199,14 @@
   
    #canvas1{
     cursor: crosshair;
-    height: 700px;
-    width: 700px;
+    height: 80vh;
+    width: 45vw;
+    position: absolute;
+    left: 30%;
     border-radius: 10px;
-    margin-top:10px;
+    /* margin-top:10px;
     margin-left: 10px;
-    margin-right:500px;
+    margin-right:500px; */
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
    
   }
@@ -415,3 +418,12 @@
     padding: 12px;
   }
   
+
+
+  .row1{
+    position: absolute;
+    right: 0%;
+    top: 10%;
+    width: 20vw;
+    background-color: black;
+  }
