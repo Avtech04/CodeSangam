@@ -1,7 +1,7 @@
 const Rooms=require('../models/room')
 var Filter = require('bad-words'),
  filter = new Filter();
-
+const leven = require('leven');
 class Game {
     constructor(io, socket) 
     {
@@ -31,7 +31,9 @@ class Game {
         const name=socket.name;
 
         var message=`${name}: data`;
-        console.log(typeof(data));
+      //  console.log(typeof(data));
+      const currentWord = "codesangam" ;
+
         const guess = data.message.toLowerCase().trim();
         if (guess === '')
         return;
@@ -49,7 +51,29 @@ class Game {
         }
         if(pres)
         return ;
-        io.in(roomId).emit('message',{...data,name});
+        const distance = leven(guess, currentWord);
+        console.log(distance);
+        if (distance == 0 ) 
+        {
+            console.log('GUESSED');
+            // socket.emit('message', { ...data, name: socket.player.name });
+            socket.emit('correctGuess', 
+            { message: 'You guessed it right', id: socket.id });
+            socket.broadcast.emit('correctGuess', { message: `${name} has guessed the correct answer`, id: socket.id });
+        }
+         else
+         if (distance < 3 && currentWord !== '') 
+         {
+            // io.in(socket.roomID).emit('message', { ...data, name: socket.player.name });
+           // if (games[socket.roomID].drawer !== socket.id && !socket.hasGuessed) 
+           io.in(roomId).emit('message',{...data,name});
+            socket.emit('closeGuess', { message: 'That was very close!' });
+        }
+         else 
+        {
+            io.in(roomId).emit('message',{...data,name});
+        }
+       //io.in(roomId).emit('message',{...data,name});
     }
 }
 

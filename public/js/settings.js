@@ -1,18 +1,10 @@
-/* eslint-disable func-names */
-/* global io, my, Howl */
+
 const socket = io();
 const params = window.location.toString().substring(window.location.toString().indexOf('?'));
 const searchParams = new URLSearchParams(params);
 const copyBtn = document.querySelector('#copy');
 let language = 'English';
 
-const pop = new Howl({
-    src: ['audio/pop.mp3'],
-});
-
-const exit = new Howl({
-    src: ['audio/exit.mp3'],
-});
 
 function animateCSS(element, animation, selector = true) {
     return new Promise((resolve) => {
@@ -151,16 +143,4 @@ document.querySelector('#startGame').addEventListener('click', async () => {
     socket.emit('getPlayers');
 });
 
-// eslint-disable-next-line no-unused-vars
-document.querySelector('#language').addEventListener('input', function () {
-    // eslint-disable-next-line no-unused-vars
-    language = this.value;
-    if (language === 'English') 
-    return;
-    if (document.querySelector('#transliterate'))
-     return;
-    const script = document.createElement('script');
-    script.id = 'transliterate';
-    script.src = 'js/transliterate.js';
-    document.body.append(script);
-});
+

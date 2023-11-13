@@ -125,7 +125,7 @@ function appendMessage(
   else 
   if (correctGuess) 
   {
-    document.getElementById(`skribblr-${id}`).classList.add("correct");
+  //  document.getElementById(`skribblr-${id}`).classList.add("correct");
     p.classList.add("correct");
   }
 
@@ -154,19 +154,6 @@ function appendMessage(
 
 socket.on("getPlayers", (players) => createScoreCard(players));
 
-socket.on("settingsUpdate", (data) => {
-  document.querySelector("#rounds").value = data.rounds;
-  document.querySelector("#time").value = data.time;
-  document.querySelector("#language").value = data.language;
-  // eslint-disable-next-line no-global-assign
-  language = data.language;
-  if (language === "English") return;
-  if (document.querySelector("#transliterate")) return;
-  const script = document.createElement("script");
-  script.id = "transliterate";
-  script.src = "js/transliterate.js";
-  document.body.append(script);
-});
 
 
 
@@ -181,9 +168,6 @@ socket.on("closeGuess", (data) => appendMessage(data, { closeGuess: true }));
 socket.on("profanity", (data) => appendMessage(data, { profanity: true }));
 socket.on("correctGuess", (data) =>
   appendMessage(data, { correctGuess: true })
-);
-socket.on("lastWord", ({ word }) =>
-  appendMessage({ message: `The word was ${word}` }, { lastWord: true })
 );
 
 
