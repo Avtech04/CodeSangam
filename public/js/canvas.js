@@ -36,8 +36,8 @@ function resize() {
     //saving original image
     var original=cntx.getImageData(0,0,canv.width,canv.height);
     //resizing the canvas
-    canv.width = window.innerWidth-20;
-    canv.height = window.innerHeight-20;
+    canv.width = window.innerWidth*(0.45);
+    canv.height = window.innerHeight*(0.80);
     //filling the canvas with a background color
     board_color();
     //placing the image back on to this canvas

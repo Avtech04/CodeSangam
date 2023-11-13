@@ -352,5 +352,5 @@ document.querySelector("#sendMessage").addEventListener("submit", function (e) {
   e.preventDefault();
   const message = this.firstElementChild.value;
   this.firstElementChild.value = "";
-  socket.emit("message", { message });
+  socket.emit("message",  {message} );
 });

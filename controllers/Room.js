@@ -21,6 +21,7 @@ class Room {
         room= await room.save();
         var roo=String(room._id);
         socket.roomId=roo;
+        socket.name=player.username;
         socket.join(roo);
         socket.to(roo).emit('joinRoom', user);
         socket.emit('newPrivateRoom', { gameID: roo ,user});
@@ -40,6 +41,7 @@ class Room {
         room.players.push(user);
         room=await room.save();
         socket.roomId=roomID;
+        socket.name=data.user.username;
         socket.join(roomID);
         socket.to(roomID).emit('joinRoom', user);
         const players=room.players;
@@ -76,6 +78,7 @@ class Room {
         room_id=String(room._id);
         socket.join(room_id);
         socket.roomId=room_id;
+        socket.name=player.username;
         if(room.capacity==4){
             console.log("yes");
             socket.to(room_id).emit('startGame');

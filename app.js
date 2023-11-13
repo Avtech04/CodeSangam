@@ -34,6 +34,7 @@ io.on('connection', (socket) => {
     socket.on('joinPublic', async(player)=> new Room(io,socket).joinPublic(player));
     socket.on('undodo',  () =>  new Canvas(io, socket).undoDo());
     socket.on('redoDo',  () =>  new Canvas(io, socket).redoDo());
+    socket.on('message',(data)=> new Game(io,socket).message(data));
     socket.on('startGame', async () => { await new Game(io, socket).startGame(); });
     socket.on('disconnect',()=>{
         console.log(`disconnected ${socket.id}`);

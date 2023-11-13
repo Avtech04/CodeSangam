@@ -22,6 +22,14 @@ class Game {
         const players=room.players;
         io.in(socket.roomId).emit('getPlayers',{players});
     }
+
+    message(data){
+        const{io,socket}=this;
+        const roomId=socket.roomId;
+        const name=socket.name;
+        var message=`${name}: data`;
+        io.in(roomId).emit('message',{...data,name});
+    }
 }
 
 module.exports = Game;
