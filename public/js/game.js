@@ -8,6 +8,16 @@ document.querySelectorAll("button").forEach((button) => {
   button.addEventListener("mousedown", () => click.play());
 });
 var x = socket.id;
+function chooseWord(word) {
+  // clearTimeout(pickWordID);
+  // pad.setReadOnly(false);
+  // socket.emit("chooseWord", { word });
+  const p = document.createElement("p");
+  p.textContent = "codesangam";
+  p.classList.add("lead", "fw-bold", "mb-0");
+  document.querySelector("#wordDiv").innerHTML = "";
+  document.querySelector("#wordDiv").append(p); 
+}
 
 function createScoreCard(players) {
   players.forEach((player) => {
@@ -171,10 +181,6 @@ socket.on("correctGuess", (data) =>
 );
 
 
-
-
-
-// eslint-disable-next-line func-names
 document.querySelector("#sendMessage").addEventListener("submit", function (e) {
   e.preventDefault();
   const message = this.firstElementChild.value;
