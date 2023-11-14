@@ -1,23 +1,17 @@
 
-let timerID = 0;
-let pickWordID = 0;
-let hints = [];
 
 
 document.querySelectorAll("button").forEach((button) => {
   button.addEventListener("mousedown", () => click.play());
 });
 var x = socket.id;
-function chooseWord(word) {
-  // clearTimeout(pickWordID);
-  // pad.setReadOnly(false);
-  // socket.emit("chooseWord", { word });
-  const p = document.createElement("p");
-  p.textContent = "codesangam";
-  p.classList.add("lead", "fw-bold", "mb-0");
-  document.querySelector("#wordDiv").innerHTML = "";
-  document.querySelector("#wordDiv").append(p); 
-}
+// function chooseWord(word) {
+//   const p = document.createElement("p");
+//   p.textContent = "codesangam";
+//   p.classList.add("lead", "fw-bold", "mb-0");
+//   document.querySelector("#wordDiv").innerHTML = "";
+//   document.querySelector("#wordDiv").append(p);   
+// }
 
 function createScoreCard(players) {
   players.forEach((player) => {
@@ -58,7 +52,6 @@ function createScoreCard(players) {
        alert('DONE') ;
 
     });
-
     avatar.append(img);
     details.append(p1, p2);
     p1.append(name);
@@ -87,7 +80,10 @@ function appendMessage(
   const p = document.createElement("p");
   const chat = document.createTextNode(`${message}`);
   const messages = document.querySelector(".messages");
-
+  //var x = socket.id;
+ // blockedSockets.push(x);
+  //alert(blockedSockets.length);
+ // alert("HII");
   if (name !== "") {
     const span = document.createElement("span");
     span.textContent = `${name}: `;
@@ -114,7 +110,6 @@ function appendMessage(
   else 
   if (correctGuess) 
   {
-  //  document.getElementById(`skribblr-${id}`).classList.add("correct");
     p.classList.add("correct");
   }
 
