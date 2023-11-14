@@ -81,7 +81,7 @@ function appendMessage(
   const messages = document.querySelector(".messages");
   //var x = socket.id;
  // blockedSockets.push(x);
-  alert(blockedSockets.length);
+//  alert(blockedSockets.length);
  // console.log(blockedSockets.length);
   if (name !== "") {
     const span = document.createElement("span");
