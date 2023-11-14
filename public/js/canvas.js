@@ -5,7 +5,6 @@ const canv = document.getElementById('canvas1') ;
 const cntx = canv.getContext('2d');
 const canv3 = document.getElementById('canvas3') ;
 const cntx3 = canv3.getContext('2d');
-const video = document.querySelector('#testv');
 const toolbox = document.getElementById('toolbox');
 const sidein = document.getElementById('sidepanelin');
 const sideout = document.getElementById('sidepanelout');
@@ -300,7 +299,7 @@ socket.on('clearCanvas', ()=>{
 socket.on('drawing',(data)=>{
     console.log(data);
     strok=true;
-    cntx.lineWidth=data.sw+10;
+    document.getElementById('strokewidth').value=data.sw;
     document.getElementById('strokecolor').value=data.strokColor;
     stroke_properties(cntx);
     draw1(data);

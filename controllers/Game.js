@@ -64,8 +64,7 @@ class Game {
          else
          if (distance < 3 && currentWord !== '') 
          {
-            // io.in(socket.roomID).emit('message', { ...data, name: socket.player.name });
-           // if (games[socket.roomID].drawer !== socket.id && !socket.hasGuessed) 
+            
            io.in(roomId).emit('message',{...data,name});
             socket.emit('closeGuess', { message: 'That was very close!' });
         }
@@ -73,7 +72,7 @@ class Game {
         {
             io.in(roomId).emit('message',{...data,name});
         }
-       //io.in(roomId).emit('message',{...data,name});
+       
     }
 }
 
