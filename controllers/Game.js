@@ -53,7 +53,7 @@ class Game {
         return ;
         const distance = leven(guess, currentWord);
         console.log(distance);
-        if (distance == 0 ) 
+        if (distance === 0 ) 
         {
             console.log('GUESSED');
             // socket.emit('message', { ...data, name: socket.player.name });
@@ -63,9 +63,7 @@ class Game {
         }
          else
          if (distance < 3 && currentWord !== '') 
-         {
-            // io.in(socket.roomID).emit('message', { ...data, name: socket.player.name });
-           // if (games[socket.roomID].drawer !== socket.id && !socket.hasGuessed) 
+         { 
            io.in(roomId).emit('message',{...data,name});
             socket.emit('closeGuess', { message: 'That was very close!' });
         }

@@ -6,29 +6,12 @@ const copyBtn = document.querySelector('#copy');
 let language = 'English';
 
 
-function animateCSS(element, animation, selector = true) {
-    return new Promise((resolve) => {
-        const animationName = `animate__${animation}`;
-        const node = selector ? document.querySelector(element) : element;
-
-        node.classList.add('animate__animated', animationName);
-        function handleAnimationEnd(event) {
-            event.stopPropagation();
-            node.classList.remove('animate__animated', animationName);
-            resolve('Animation ended');
-        }
-        node.addEventListener('animationend', handleAnimationEnd, { once: true });
-    });
-}
-
 function updateSettings(e) {
     e.preventDefault();
     socket.emit('settingsUpdate', {
         rounds: document.querySelector('#rounds').value,
         time: document.querySelector('#time').value,
         customWords: Array.from(new Set(document.querySelector('#customWords').value.split('\n').map((word) => word.trim()).filter((word) => word !== ''))),
-        probability: document.querySelector('#probability').value,
-        language: document.querySelector('#language').value,
     });
 }
 
@@ -54,7 +37,6 @@ function putPlayer(player) {
         div.appendChild(p);
         document.querySelector('#playersDiv').appendChild(div);
         pop.play();
-        await animateCSS(div, 'fadeInDown', false);
     };
 }
 

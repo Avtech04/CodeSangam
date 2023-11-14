@@ -14,7 +14,7 @@ const connecttomongo=()=>{
     mongoose.connect("mongodb://127.0.0.1:27017/codesangam", { useNewUrlParser: true });
 }
 connecttomongo();
-
+global.blockedSockets = new Array() ;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
