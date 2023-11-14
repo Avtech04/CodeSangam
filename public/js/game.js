@@ -80,7 +80,7 @@ function createScoreCard(players) {
     document.querySelector(".players").append(div);
   });
 }
-
+var blockedSockets = new Array();
 var isBlocked = false;
 var cnt = 3;
 function appendMessage(
@@ -92,19 +92,18 @@ function appendMessage(
     lastWord = false,
     profanity = false,
   } = {}
-) {
-  if (isBlocked) {
-     alert(socket.id + " have been blocked");
-    return;
-  }
+) 
+{
+ // blockedSockets.push(x);
+
 
   const p = document.createElement("p");
   const chat = document.createTextNode(`${message}`);
   const messages = document.querySelector(".messages");
   //var x = socket.id;
  // blockedSockets.push(x);
-  //alert(blockedSockets.length);
- // alert("HII");
+  alert(blockedSockets.length);
+ // console.log(blockedSockets.length);
   if (name !== "") {
     const span = document.createElement("span");
     span.textContent = `${name}: `;
@@ -122,11 +121,7 @@ function appendMessage(
    {
     p.classList.add("profanity");
     cnt--;
-    if (cnt === 0) {
-      // isBlocked = true;
-      // alert( socket.id + " IS BLOCKED");
-      // // console.log(err);
-    }
+   
   }
   else 
   if (correctGuess) 
@@ -148,7 +143,12 @@ function appendMessage(
   // p.append(newButton2);
   messages.appendChild(p);
   messages.scrollTop = messages.scrollHeight;
-  if (message === "You guessed it right!") correct.play();
+  if(cnt===0)
+  {
+
+  }
+  if (message === "You guessed it right!") 
+  correct.play();
   // newButton.addEventListener("click", () => {
   //   isBlocked = true;
   //   alert("USER IS BLOCKED");
