@@ -47,31 +47,10 @@ function createScoreCard(players) {
     newButton.textContent = "Click me!";
     document.body.appendChild(newButton);
     newButton.addEventListener("click", () => {
-      //socket.to(socket.roomID).emit('disconnection', socket.player);
       
-      // socket.emit("kick", socket2 );
-      
-  //    socket.to(roomID).emit('disconnection', player );
-
-       //socket2.leave(roomID) ;
        socket.emit('kick',id);
        alert('DONE') ;
 
-      // io.of('/').in('chat').clients((error, socketIds) => {
-      //   if (error) throw error;
-      
-      //   socketIds.forEach(socketId => io.sockets.sockets[socketId].leave('chat'));
-      
-      // });
-      // io.on("connection", socket => {
-      //   socket.on("disconnecting", () => {
-      //     console.log(socket.rooms); // the Set contains at least the socket ID
-      //   });
-      
-      //   socket.on("disconnect", () => {
-      //     // socket.rooms.size === 0
-      //   });
-      // });
     });
     avatar.append(img);
     details.append(p1, p2);
@@ -157,12 +136,13 @@ function appendMessage(
  // alert(socket.id);
 }
 
-socket.on("getPlayers", (players) => createScoreCard(players));
 
 
-socket.on("startTimer", ({ time }) => startTimer(time));
+
+
+
+
 socket.on("message", appendMessage);
-socket.on("userBlocked", (data) => appendMessage(data, { userBlocked: true }));
 socket.on("closeGuess", (data) => appendMessage(data, { closeGuess: true }));
 socket.on("profanity", (data) => appendMessage(data, { profanity: true }));
 socket.on("correctGuess", (data) =>
