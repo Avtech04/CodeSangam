@@ -66,6 +66,22 @@ function drawing_setup() {
   canv.addEventListener("pointerout", stop_draw);
 }
 
+function disable_setup(){
+  canv.removeEventListener("touchstart", start_draw);
+  canv.removeEventListener("touchmove", draw);
+  canv.removeEventListener("touchend", stop_draw);
+  canv.removeEventListener("mousedown", start_draw);
+  canv.removeEventListener("mousemove", draw);
+  canv.removeEventListener("mouseup", stop_draw);
+  canv.removeEventListener("mouseup", auxillary_stop_draw);
+  canv.removeEventListener("mouseout", stop_draw);
+  canv.removeEventListener("pointerdown", start_draw);
+  canv.removeEventListener("pointermove", draw);
+  canv.removeEventListener("pointerup", stop_draw);
+  canv.removeEventListener("pointerup", auxillary_stop_draw);
+  canv.removeEventListener("pointerout", stop_draw);
+}
+
 function setup() {
   toolbox.style.height=(window.innerHeight-44)+'px';
   
@@ -317,4 +333,13 @@ socket.on("redoDo",async()=>{
   console.log("redo");
   redo_check=0;
   await redo();
+})
+
+socket.on('disableCanvas',async()=>{
+    toolbox.style.visibility='hidden';
+      sidein.style.visibility='visible';
+      for(var opac=1;opac>=0;opac-=0.1){
+        toolbox.style.opacity=opac;
+      }
+      disable_setup();
 })
