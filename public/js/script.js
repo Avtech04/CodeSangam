@@ -4,6 +4,15 @@ const userName = document.getElementById('randomPlay');
 const copyBtn = document.querySelector('#copy');
 user = JSON.parse(user);
 
+function updateSettings(e) 
+{
+    e.preventDefault();
+    socket.emit('settingsUpdate',
+     {
+        rounds: document.querySelector('#rounds').value,
+        time: document.querySelector('#time').value,
+    });
+}
 
 
 //adding player 
@@ -44,7 +53,10 @@ if (user._id) {
             socket.emit('joinRoom', { roomId, user });
         });
         
-    } else {
+    } else 
+    {
+        document.querySelector('#rounds').addEventListener('input', updateSettings);
+        document.querySelector('#time').addEventListener('input', updateSettings);
         createPrivateRoom.addEventListener('click', () => {
             document.querySelector('#landing').remove();
             document.querySelector('#private-room').classList.remove('d-none');

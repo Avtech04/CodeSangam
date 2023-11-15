@@ -1,17 +1,12 @@
-
-
+let timerID = 0;
+let pickWordID = 0;
+let hints = [];
 
 document.querySelectorAll("button").forEach((button) => {
   button.addEventListener("mousedown", () => click.play());
 });
 var x = socket.id;
-// function chooseWord(word) {
-//   const p = document.createElement("p");
-//   p.textContent = "codesangam";
-//   p.classList.add("lead", "fw-bold", "mb-0");
-//   document.querySelector("#wordDiv").innerHTML = "";
-//   document.querySelector("#wordDiv").append(p);   
-// }
+
 
 function createScoreCard(players) {
   players.forEach((player) => {
@@ -75,14 +70,15 @@ function appendMessage(
 {
  // blockedSockets.push(x);
 
-
   const p = document.createElement("p");
   const chat = document.createTextNode(`${message}`);
   const messages = document.querySelector(".messages");
+
   //var x = socket.id;
  // blockedSockets.push(x);
 //  alert(blockedSockets.length);
  // console.log(blockedSockets.length);
+
   if (name !== "") {
     const span = document.createElement("span");
     span.textContent = `${name}: `;
@@ -127,7 +123,7 @@ function appendMessage(
 
   }
   if (message === "You guessed it right!") 
-  correct.play();
+       correct.play();
   // newButton.addEventListener("click", () => {
   //   isBlocked = true;
   //   alert("USER IS BLOCKED");
@@ -135,12 +131,6 @@ function appendMessage(
   // });
  // alert(socket.id);
 }
-
-
-
-
-
-
 
 socket.on("message", appendMessage);
 socket.on("closeGuess", (data) => appendMessage(data, { closeGuess: true }));

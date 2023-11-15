@@ -39,6 +39,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect',()=>{
         console.log(`disconnected ${socket.id}`);
     })
+    socket.on('settingsUpdate', (data) => new Room(io, socket).updateSettings(data));
 });
 
 

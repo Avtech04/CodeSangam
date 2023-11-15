@@ -84,8 +84,20 @@ class Room {
             socket.to(room_id).emit('startGame');
             socket.emit('startGame');
         }
-
     }
+    async updateSettings(data)
+    {
+        const { socket } = this;
+        const { customWords, ...rest } = data;
+        let room=await Rooms.findById(socket.roomId);
+        room.limitTime= Number(data.time) * 1000;
+        room.rounds= Number(data.rounds);
+        room=await room.save();
+        socket.to(socket.roomId).emit('settingsUpdate', rest);
+        // console.log("SETTINGS UPDATED");
+    }
+
+    
     
 }
 
