@@ -94,13 +94,17 @@ class Game {
         reject(err);
       }
       const socket = io.of("/").sockets.get(playerID);
+     // console.log(socket);
+      console.log(socket.roomId);
       socket.on("chooseWord", ({ word }) => {
-        socket.to(socket.roomID).emit("hideWord", {
+        socket.to(socket.roomId).emit("hideWord", 
+        {
           word: splitter
             .splitGraphemes(word)
             .map((char) => (char !== " " ? "_" : char))
-            .join(""),
-        });
+            .join("") ,
+        }
+        );
         socket.removeListener("disconnect", rejection);
         resolve(word);
       });
