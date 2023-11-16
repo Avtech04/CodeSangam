@@ -150,9 +150,13 @@ socket.on("profanity", (data) => appendMessage(data, { profanity: true }));
 socket.on("correctGuess", (data) =>
   appendMessage(data, { correctGuess: true })
 );
+socket.on('lastWord', ( word ) => appendMessage({ message: `The word was ${word}` }, { lastWord: true }));
+
 socket.on('hideWord', ({ word }) => {
   const p = document.createElement('p');
   p.textContent = word;
+  console.log("HIDDEN WORD IS");
+  console.log(word);
   p.classList.add('lead', 'fw-bold', 'mb-0');
   p.style.letterSpacing = '0.5em';
   document.querySelector('#wordDiv').innerHTML = '';
@@ -225,6 +229,8 @@ function startTimer(ms)
   timerStart.play();
   document.querySelectorAll('.players .correct').forEach((player) => player.classList.remove('correct'));
 }
+
+
 
 socket.on('startTimer', ( time ) => startTimer(time));
 

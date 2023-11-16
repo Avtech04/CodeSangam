@@ -4,11 +4,12 @@ const http=require('http').Server(app);
 const io = require('socket.io')(http);
 const mongoose=require("mongoose");
 const bodyParser=require("body-parser");
+const { EventEmitter } = require('events');
 const routes=require('./routes/authroutes');
 const Room=require('./controllers/Room');
 const Game=require('./controllers/Game');
 const Canvas=require('./controllers/Canvas');
-
+global.round = new EventEmitter();
 //database connection
 const connecttomongo=()=>{
     mongoose.connect("mongodb://127.0.0.1:27017/codesangam", { useNewUrlParser: true });

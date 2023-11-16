@@ -2,7 +2,7 @@ const Rooms = require("../models/room");
 var Filter = require("bad-words"),
   filter = new Filter();
 const leven = require("leven");
-const { get3Words } = require("./wordHelper");
+const { get3Words, wait } = require("./wordHelper");
 const GraphemeSplitter = require("grapheme-splitter");
 const splitter = new GraphemeSplitter();
 class Game {
@@ -26,17 +26,20 @@ class Game {
     io.in(socket.roomId).emit("getPlayers", { players });
   }
 
-  message(data) {
+  async message(data) {
     const { io, socket } = this;
     const roomId = socket.roomId;
     const name = socket.name;
-
+    const roomID = socket.roomId;
+    let room = await Rooms.findById(roomID);
     var message = `${name}: data`;
     //  console.log(typeof(data));
-    const currentWord = "codesangam";
-
+    const currentWord = room.currentWord ;
+    // console.log(currentWord);
+    // console.log("in chat");
     const guess = data.message.toLowerCase().trim();
-    if (guess === "") return;
+    if (guess === "") 
+      return;
     const temp = filter.clean(guess);
     var pres = false;
     for (var i = 0; i < temp.length; i++) {
@@ -53,10 +56,12 @@ class Game {
         break;
       }
     }
-    if (pres) return;
+    if (pres) 
+      return;
     const distance = leven(guess, currentWord);
-    console.log(distance);
-    if (distance === 0) {
+    // console.log(distance);
+    if (distance === 0)
+     {
       console.log("GUESSED");
       // socket.emit('message', { ...data, name: socket.player.name });
       socket.emit("correctGuess", {
@@ -67,16 +72,20 @@ class Game {
         message: `${name} has guessed the correct answer`,
         id: socket.id,
       });
-    } else if (distance < 3 && currentWord !== "") {
+    } else
+     if (distance < 3 && currentWord !== "")
+     {
       io.in(roomId).emit("message", { ...data, name });
       socket.emit("closeGuess", { message: "That was very close!" });
-    } else {
+    } else
+     {
       io.in(roomId).emit("message", { ...data, name });
     }
   }
 
  
-  chosenWord(playerID) {
+  chosenWord(playerID) 
+  {
     const { io } = this;
     return new Promise((resolve, reject) =>
      {
@@ -105,23 +114,27 @@ class Game {
     if (!room) return;
     const rounds = room.rounds;
     const players = Array.from(await io.in(socket.roomId).allSockets());
-    console.log("Players Array IS");
-    console.log(players);
-   // socket.to(socket.roomId).emit("startGame");
+    // console.log("Players Array IS");
+    // console.log(players);
+   socket.to(socket.roomId).emit("startGame");
     for (let j = 0; j < rounds; j++) {
       for (let i = 0; i < players.length; i++) {
        await this.giveTurnTo(players, i);
        console.log("GAME IS RUNNING");
       }
     }
-    // io.to(socket.roomID).emit("endGame", { stats: room });
+   // console.log("GAME HAS ENDED");
+    io.to(socket.roomID).emit("endGame", { stats: room });
     // delete the room
+
   }
-  async giveTurnTo(players, i) {
+  async giveTurnTo(players, i) 
+  {
     const { io, socket } = this;
     const roomID = socket.roomId;
     let room = await Rooms.findById(roomID);
-    if (!room) return;
+    if (!room)
+     return;
     const time = room.limitTime;
     const player = players[i];
     const prevPlayer = players[(i - 1 + players.length) % players.length];
@@ -146,17 +159,22 @@ class Game {
       io.to(player).emit("chooseWord", get3Words());
         const word = await this.chosenWord(player);
         room.currentWord= word ;
-       // room= await room.save();
+         room= await room.save();
+
        // io.to(roomID).emit("clearCanvas");
        // drawer.to(roomID).broadcast.emit("hints", getHints(word, roomID));
        // games[roomID].startTime = Date.now() / 1000;
+
         console.log("Chosen Word is " + word);
         io.to(roomID).emit("startTimer", time );
-        // if (await wait(roomID, drawer, time))
-        //   drawer.to(roomID).broadcast.emit("lastWord", { word });
+
+        if (await wait(roomID, drawer, time))
+          drawer.to(roomID).broadcast.emit("lastWord", word );
+
       } catch (error) {
         console.log(error);
       }
+   // console.log("DONE");
   }
 }
 

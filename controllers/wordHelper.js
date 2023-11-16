@@ -8,7 +8,16 @@ function get3Words(roomID) {
     console.log(arr);
     return arr;
 }
-
+function wait(roomID, drawer, ms) {
+    return new Promise((resolve, reject) => {
+        round.on('everybodyGuessed', ({ roomID: callerRoomID }) => {
+            if (callerRoomID === roomID) resolve();
+        });
+        drawer.on('disconnect', (err) => reject(err));
+        setTimeout(() => resolve(true), ms);
+    });
+}
 module.exports = {
     get3Words,
+    wait
 };
