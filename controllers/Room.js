@@ -96,8 +96,9 @@ class Room {
         socket.to(socket.roomId).emit('settingsUpdate', rest);
         // console.log("SETTINGS UPDATED");
     }
+   
 
-    
+
     
 }
 

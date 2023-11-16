@@ -39,6 +39,9 @@ io.on('connection', (socket) => {
     socket.on('disconnect',()=>{
         console.log(`disconnected ${socket.id}`);
     })
+    // socket.on('chooseWord', (word) =>{
+    //     new Game(io, socket).startGame();
+    // })
     socket.on('settingsUpdate', (data) => new Room(io, socket).updateSettings(data));
 });
 

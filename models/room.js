@@ -11,10 +11,14 @@ const roomSchema= new mongoose.Schema({
         required:true,
         default:'2'
     },
+    currentWord:{
+      type:String,
+      default:"codesangam",  
+    },
     limitTime:{
         type:Number,
         required:true,
-        default:'80'
+        default:40000
     },
     admin:{
         type:String
