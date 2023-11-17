@@ -334,7 +334,10 @@ socket.on("redoDo",async()=>{
   redo_check=0;
   await redo();
 })
-
+socket.on('rectDo',async()=>{
+  
+  await rect();
+})
 socket.on('disableCanvas',async()=>{
     toolbox.style.visibility='hidden';
       sidein.style.visibility='visible';

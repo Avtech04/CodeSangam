@@ -1,0 +1,216 @@
+body {
+  background-image: linear-gradient(#205, #000 50%);
+  min-height: 20vh;
+  display: grid;
+  place-items: center;
+  perspective: 800px;
+}
+body *:not(:empty) {
+  transform-style: preserve-3d;
+}
+
+:root {
+  --color-bricks: maroon;
+  --color-mortar: darkslategray;
+  --color-roof: #0D47A1;
+  --color-wood: #5D4037;
+  --color-door: #001;
+  --color-sail: #1A237E77;
+  --color-blade: #0277BD;
+  --color-floor: #002820;
+}
+
+.scene {
+  position: relative;
+  top: 30vh;
+  transform: rotateY(30deg);
+}
+@keyframes scene {
+  from {
+    transform: rotateY(-60deg);
+  }
+  to {
+    transform: rotateY(60deg);
+  }
+}
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: -800px;
+  background-color: var(--color-floor);
+  background-image: radial-gradient(closest-side, rgba(0, 0, 0, 0.6666666667), transparent 17%, #000), repeating-linear-gradient(transparent 0 30px, rgba(255, 255, 255, 0.0666666667) 31px 32px, transparent 33px), repeating-linear-gradient(90deg, transparent 0 30px, rgba(255, 255, 255, 0.0666666667) 31px 32px, transparent 33px);
+  transform: rotateX(90deg) translateZ(-15em);
+}
+
+.windmill {
+  position: absolute;
+  left: -400px;
+  transform: translateY(-5em);
+}
+
+.fan {
+  position: absolute;
+  inset: -0.5em;
+  background-color: var(--color-wood);
+  transform: translateY(1.5em) translateZ(8em);
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5333333333) inset;
+  animation: fan 20s infinite linear;
+}
+@keyframes fan {
+  from {
+    transform: translateY(1.5em) translateZ(8em) rotateZ(0deg);
+  }
+  to {
+    transform: translateY(1.5em) translateZ(8em) rotateZ(-360deg);
+  }
+}
+
+.blade {
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 1em;
+  height: 8em;
+  background-color: inherit;
+  box-shadow: inherit;
+  transform-origin: top;
+  transform: rotateZ(var(--rz, 0)) rotateX(-90deg) translateZ(0.5em);
+}
+.blade:nth-child(1) {
+  --rz: 0deg;
+}
+.blade:nth-child(2) {
+  --rz: 90deg;
+}
+.blade:nth-child(3) {
+  --rz: 180deg;
+}
+.blade:nth-child(4) {
+  --rz: 270deg;
+}
+.blade .wood {
+  position: absolute;
+  left: 0.2em;
+  top: 0.7em;
+  width: 0.6em;
+  height: 12em;
+  background-color: inherit;
+  box-shadow: inherit;
+  transform-origin: top;
+  transform: rotateX(90deg) rotateY(var(--ry, 0)) translateZ(0.3em);
+}
+.blade .wood:nth-child(1) {
+  --ry: 0deg;
+}
+.blade .wood:nth-child(2) {
+  --ry: 90deg;
+}
+.blade .wood:nth-child(3) {
+  --ry: 180deg;
+}
+.blade .wood:nth-child(4) {
+  --ry: 270deg;
+}
+.blade .sail {
+  position: absolute;
+  left: -3em;
+  top: 0.4em;
+  width: 5em;
+  height: 11em;
+  transform-origin: 4em 0;
+  transform: rotateX(90deg) translateY(1em) rotateY(10deg);
+  background-color: var(--color-sail);
+  background-image: linear-gradient(95deg, var(--color-blade) 1.2em, transparent 0), linear-gradient(-95deg, var(--color-blade) 1.2em, transparent 0), repeating-radial-gradient(circle at 50% -5em, transparent 0 0.8em, var(--color-blade) 0 1em), repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 0 1px, transparent 0 0.25em), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 0 1px, transparent 0 0.25em), radial-gradient(circle at 50% -5em, var(--color-blade) 5.7em, transparent 0);
+  -webkit-clip-path: polygon(1em 0.5em, 3em 0, 4em 0.5em, 100% 98%, 50% 102%, 0 98%);
+          clip-path: polygon(1em 0.5em, 3em 0, 4em 0.5em, 100% 98%, 50% 102%, 0 98%);
+}
+.blade::after {
+  content: "";
+  position: absolute;
+  left: 0.2em;
+  top: 0.4em;
+  width: 0.6em;
+  height: 0.6em;
+  background-color: inherit;
+  box-shadow: inherit;
+  transform-origin: top;
+  transform: translateZ(12em);
+}
+
+.side {
+  position: absolute;
+}
+.side .roof {
+  position: absolute;
+  bottom: -0.5em;
+  width: 5em;
+  height: 8em;
+  background-color: var(--color-roof);
+  transform-origin: bottom;
+  transform: translateX(-50%) rotateY(var(--ry)) translateZ(calc(2.5em / tan(22.5deg))) rotatex(49deg);
+  -webkit-clip-path: polygon(50% 0, 100% 100%, 0 100%);
+          clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background-size: 1em 1em;
+  background-image: radial-gradient(circle at 50% -25%, transparent 0.75em, rgba(0, 0, 0, 0.4) 0, transparent);
+}
+.side .wall {
+  position: absolute;
+  width: 5em;
+  height: 20em;
+  transform-origin: bottom;
+  transform: translateX(-50%) rotateY(var(--ry)) translateZ(calc(2.5em / tan(22.5deg))) rotatex(3deg);
+  -webkit-clip-path: polygon(0.5em 0, 5.5em 0, 100% 100%, 0 100%);
+          clip-path: polygon(0.5em 0, 5.5em 0, 100% 100%, 0 100%);
+  background-size: 1em 1em;
+  background-image: linear-gradient(var(--color-mortar) 0.04em, transparent 0), conic-gradient(at 0.54em 0.46em, var(--color-bricks) 90deg, transparent 0), conic-gradient(from 270deg at 0.46em 0.46em, var(--color-bricks) 90deg, transparent 0), linear-gradient(90deg, var(--color-mortar) 0.04em, transparent 0 0.96em, var(--color-mortar) 0), linear-gradient(var(--color-mortar) 0.54em, var(--color-bricks) 0 0.96em, var(--color-mortar) 0);
+}
+.side:nth-child(2) .wall::after, .side:nth-child(odd) .wall::after {
+  content: "";
+  position: absolute;
+  left: var(--windowInsetInline, 1em);
+  right: var(--windowInsetInline, 1em);
+  top: var(--windowTop, 3em);
+  bottom: var(--windowBottom, 13em);
+  background-color: var(--color-door);
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.4666666667) 0 1px, transparent 0 5px), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.4666666667) 0 1px, transparent 0 5px);
+  border: 0.5em solid var(--color-wood);
+  box-shadow: 0 0em 0.25em rgba(0, 0, 0, 0.4666666667);
+}
+.side:nth-child(2) {
+  --windowTop: 14em;
+  --windowBottom: -0.5em;
+  --windowInsetInline: 0.5em;
+}
+.side:nth-child(2) .wall::before {
+  content: "";
+  position: absolute;
+  left: 1.5em;
+  top: 0.5em;
+  width: 2em;
+  height: 2em;
+  background-image: radial-gradient(closest-side, #000, transparent);
+}
+.side:nth-child(2) {
+  --ry: 0deg;
+}
+.side:nth-child(3) {
+  --ry: 45deg;
+}
+.side:nth-child(4) {
+  --ry: 90deg;
+}
+.side:nth-child(5) {
+  --ry: 135deg;
+}
+.side:nth-child(6) {
+  --ry: 180deg;
+}
+.side:nth-child(7) {
+  --ry: 225deg;
+}
+.side:nth-child(8) {
+  --ry: 270deg;
+}
+.side:nth-child(9) {
+  --ry: 315deg;
+}/*# sourceMappingURL=windmill.css.map */

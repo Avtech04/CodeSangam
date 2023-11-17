@@ -114,3 +114,8 @@ socket.on("joinRoom", (data) => {
 });
 
 socket.on('otherPlayers', (data) => data.players.forEach((player) => putPlayer(player)));
+
+
+let color =  background-color;
+const rand = () => Math.floor(Math.random() * 255 + 1);
+setTimeout(() => color.cssText = `--paint-color: rgb(${rand()}, ${rand()}, ${rand()})`, 5000);

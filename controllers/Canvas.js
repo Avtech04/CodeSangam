@@ -26,6 +26,10 @@ class Canvas {
         const { socket } = this;
         socket.broadcast.to(socket.roomId).emit('redoDo');
     }
+    rectDo(){
+        const { socket } = this;
+        socket.broadcast.to(socket.roomId).emit('rectDo');
+    }
 }
 
 module.exports = Canvas;

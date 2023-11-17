@@ -1,0 +1,199 @@
+// *, *::before, *::after {
+//     padding: 0;
+//     margin: 0 auto;
+//     box-sizing: border-box;
+// }
+
+body {
+  background-image: linear-gradient(#205, #000 50%);
+  min-height: 20vh;
+  display: grid;
+  place-items:center;
+  perspective: 800px;
+  
+  *:not(:empty) {
+    transform-style: preserve-3d;
+  }
+}
+:root {
+    --color-bricks: maroon;
+    --color-mortar: darkslategray;
+    --color-roof: #0D47A1;
+    --color-wood: #5D4037;
+    --color-door: #001;
+    --color-sail: #1A237E77;
+    --color-blade: #0277BD;
+    --color-floor: #002820;
+  }
+  
+  .scene {
+    position: relative;
+    top: 30vh;
+
+    transform: rotateY(30deg);
+    // animation: scene 30s -10s infinite ease-in-out alternate;
+    
+    @keyframes scene {
+      from { transform: rotateY(-60deg); }
+      to { transform: rotateY(60deg); }
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -800px;
+      background-color: var(--color-floor);
+      background-image:
+        radial-gradient(closest-side, #000a, transparent 17%, #000),
+        repeating-linear-gradient(transparent 0 30px, #fff1 31px 32px, transparent 33px),
+        repeating-linear-gradient(90deg, transparent 0 30px, #fff1 31px 32px, transparent 33px);
+      transform: rotateX(90deg) translateZ(-15em);
+    }
+  
+  }
+  
+  .windmill {
+    position: absolute;
+    left:-400px;
+    // top: 10vh;
+    transform: translateY(-5em);
+  }
+  
+  .fan {
+    position: absolute;
+    inset: -0.5em;
+    background-color: var(--color-wood);
+    transform: translateY(1.5em) translateZ(8em);
+    box-shadow: 0 0 0.5em #0008 inset; 
+    animation: fan 20s infinite linear;
+    
+    @keyframes fan {
+      from { transform: translateY(1.5em) translateZ(8em) rotateZ(0deg); }
+      to { transform: translateY(1.5em) translateZ(8em) rotateZ(-360deg); }
+    }
+  }
+  
+  .blade {
+    position: absolute;
+    left: 0; top: 0.5em;
+    width: 1em; height: 8em;
+    background-color: inherit;
+    box-shadow: inherit;
+    transform-origin: top;
+    transform: rotateZ(var(--rz, 0)) rotateX(-90deg) translateZ(0.5em);
+    
+    @for $i from 0 to 4 {
+      &:nth-child(#{$i + 1}) {
+        --rz: #{$i * 90}deg;
+      }
+    }
+    
+    .wood {
+      position: absolute;
+      left: 0.2em; top: 0.7em;
+      width: 0.6em; height: 12em;
+      background-color: inherit;
+      box-shadow: inherit;
+      transform-origin: top;
+      transform: rotateX(90deg) rotateY(var(--ry, 0)) translateZ(0.3em);
+      
+      @for $i from 0 to 4 {
+        &:nth-child(#{$i + 1}) {
+          --ry: #{$i * 90}deg;
+        }
+      }
+    }
+    
+    .sail {
+      position: absolute;
+      left: -3em; top: 0.4em;
+      width: 5em; height: 11em;
+      transform-origin: 4em 0;
+      transform: rotateX(90deg) translateY(1em) rotateY(10deg);
+      background-color: var(--color-sail);
+      background-image:
+        linear-gradient(95deg, var(--color-blade) 1.2em, transparent 0),
+        linear-gradient(-95deg, var(--color-blade) 1.2em, transparent 0),
+        repeating-radial-gradient(circle at 50% -5em, transparent 0 0.8em, var(--color-blade) 0 1em),
+        repeating-linear-gradient(45deg, #fff3 0 1px, transparent 0 0.25em),
+        repeating-linear-gradient(-45deg, #fff3 0 1px, transparent 0 0.25em),
+        radial-gradient(circle at 50% -5em, var(--color-blade) 5.7em, transparent 0);
+      clip-path: polygon(1em 0.5em, 3em 0, 4em 0.5em, 100% 98%, 50% 102%, 0 98%);
+  }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0.2em; top: 0.4em;
+      width: 0.6em; height: 0.6em;
+      background-color: inherit;
+      box-shadow: inherit;
+      transform-origin: top;
+      transform: translateZ(12em);
+    }
+  }
+  
+  .side {
+    position: absolute;
+    
+    .roof {
+      position: absolute;
+      bottom: -0.5em;
+      width: 5em; height: 8em;
+      background-color: var(--color-roof);
+      transform-origin: bottom;
+      transform: translateX(-50%) rotateY(var(--ry)) translateZ(calc(2.5em / tan(22.5deg))) rotatex(49deg);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      background-size: 1em 1em;
+      background-image: radial-gradient(circle at 50% -25%, transparent 0.75em, #0006 0, transparent);
+    }
+    
+    .wall {
+      position: absolute;
+      width: 5em; height: 20em;
+      transform-origin: bottom;
+      transform: translateX(-50%) rotateY(var(--ry)) translateZ(calc(2.5em / tan(22.5deg))) rotatex(3deg);
+      clip-path: polygon(0.5em 0, 5.5em 0, 100% 100%, 0 100%);
+      background-size: 1em 1em;
+      background-image:
+        linear-gradient(var(--color-mortar) 0.04em, transparent 0),
+        conic-gradient(at 0.54em 0.46em, var(--color-bricks) 90deg, transparent 0),
+        conic-gradient(from 270deg at 0.46em 0.46em, var(--color-bricks) 90deg, transparent 0),
+        linear-gradient(90deg, var(--color-mortar) 0.04em, transparent 0 0.96em, var(--color-mortar) 0),
+        linear-gradient(var(--color-mortar) 0.54em, var(--color-bricks) 0 0.96em, var(--color-mortar) 0);    
+    }
+    
+    &:nth-child(2) .wall::after,
+    &:nth-child(odd) .wall::after {
+      content: '';
+      position: absolute;
+      left: var(--windowInsetInline, 1em); right: var(--windowInsetInline, 1em);
+      top: var(--windowTop, 3em); bottom: var(--windowBottom, 13em);
+      background-color: var(--color-door);
+      background-image:
+        repeating-linear-gradient(45deg, #fff7 0 1px, transparent 0 5px),
+        repeating-linear-gradient(-45deg, #fff7 0 1px, transparent 0 5px);
+      border: 0.5em solid var(--color-wood);
+      box-shadow: 0 0em 0.25em #0007;
+    }
+    
+    &:nth-child(2) {
+      --windowTop: 14em;
+      --windowBottom: -0.5em;
+      --windowInsetInline: 0.5em;
+      
+      .wall::before {
+        content: '';
+        position: absolute;
+        left: 1.5em; top: 0.5em;
+        width: 2em; height: 2em;
+        background-image: radial-gradient(closest-side, #000, transparent);
+      }
+    }
+    
+    @for $i from 0 to 8 {
+      &:nth-child(#{$i + 2}) {
+        --ry: #{$i * 45}deg;
+      }
+    }
+  }
