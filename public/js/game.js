@@ -55,9 +55,6 @@ function createScoreCard(players) {
   });
 }
 
-var blockedSockets = new Array();
-var isBlocked = false;
-var cnt = 3;
 function appendMessage(
   { name = "", message, id },
   {
@@ -96,8 +93,6 @@ function appendMessage(
    if (profanity) 
    {
     p.classList.add("profanity");
-    cnt--;
-   
   }
   else 
   if (correctGuess) 
@@ -263,7 +258,14 @@ function createScoreCard(players)
       const p2 = document.createElement('p');
       const name = document.createTextNode(player.name);
       const score = document.createTextNode('Score: 0');
+      const newButton = document.createElement("button");
+      newButton.textContent = "Block!";
 
+       newButton.addEventListener("click", () => 
+       {
+          socket.emit('chatBlock',player.id);
+      });
+      
       // img.src = player.avatar;
       img.classList.add('img-fluid', 'rounded-circle');
       div.classList.add('row', 'justify-content-end', 'py-1', 'align-items-center');
@@ -271,8 +273,9 @@ function createScoreCard(players)
       details.classList.add('col-7', 'col-xl-6', 'text-center', 'my-auto');
       p1.classList.add('mb-0');
       p2.classList.add('mb-0');
-      div.id = `${player.id}` ;
+      div.id = player.id ;
       div.append(details, avatar);
+      div.append(newButton);
       avatar.append(img);
       details.append(p1, p2);
       p1.append(name);

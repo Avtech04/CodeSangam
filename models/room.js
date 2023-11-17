@@ -28,6 +28,8 @@ const roomSchema= new mongoose.Schema({
     },
     probableWords:{},
     players:[],
+    blockedSockets:[], // consists of socketID of blocked sockets
+    profanityCount:[], // key value pair DS to store blocked warnings
     capacity:{
         type:Number
     }

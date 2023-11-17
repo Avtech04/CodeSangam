@@ -25,13 +25,37 @@ class Game {
     const players = room.players;
     io.in(socket.roomId).emit("getPlayers", { players });
   }
+  async pushSocket (id)
+  {
+    const { io, socket } = this;
+    const roomId = socket.roomId;
+    let room = await Rooms.findById(roomId);
+    room.blockedSockets.push(id);
+    room= await room.save();
+  }
 
   async message(data) {
     const { io, socket } = this;
     const roomId = socket.roomId;
     const name = socket.name;
     const roomID = socket.roomId;
+    const id= socket.id;
     let room = await Rooms.findById(roomID);
+    
+    for(var i=0; i< room.blockedSockets.length ;i++)
+    {
+       var x= room.blockedSockets[i];
+       if(x=== id)
+       { 
+           //console.log("User is blocked");
+           socket.emit("profanity", {
+            message: "You have been chat blocked!",
+            id: socket.id,
+          });
+          return;
+        }
+    }
+
     var message = `${name}: data`;
     //  console.log(typeof(data));
     const currentWord = room.currentWord ;
@@ -43,7 +67,8 @@ class Game {
     const temp = filter.clean(guess);
     var pres = false;
     for (var i = 0; i < temp.length; i++) {
-      if (temp[i] === "*") {
+      if (temp[i] === "*") 
+      {
         socket.emit("profanity", {
           message: "You are using wrong language",
           id: socket.id,
@@ -52,8 +77,32 @@ class Game {
           message: `${name} is using wrong language`,
           id: socket.id,
         });
+        // updating the profanity cnt
+        /// 3 pei chat blocked
+        var found= false;
+        for(var i=0; i< room.profanityCount.length ;i++)
+        {
+          // var x= room.profanityCount[i];
+           if(room.profanityCount[i].id === id)
+           {
+              room.profanityCount[i].cnt +=1 ; 
+              this.pushSocket(socket.id);
+              found = true;
+              break;
+            }
+        }
+        if(found=== false)
+        {
+           var obj= {
+             id: socket.id,
+             cnt : 1,
+           }
+          room.profanityCount.push(obj);
+        }
+        room= await room.save();
+     //  console.log(room.profanityCount );
         pres = true;
-        break;
+        return ;
       }
     }
     if (pres) 

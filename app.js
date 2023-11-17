@@ -10,12 +10,13 @@ const Room=require('./controllers/Room');
 const Game=require('./controllers/Game');
 const Canvas=require('./controllers/Canvas');
 global.round = new EventEmitter();
+global.blockedSockets = new Array() ;
 //database connection
 const connecttomongo=()=>{
     mongoose.connect("mongodb://127.0.0.1:27017/codesangam", { useNewUrlParser: true });
 }
 connecttomongo();
-global.blockedSockets = new Array() ;
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -40,7 +41,7 @@ io.on('connection', (socket) => {
     socket.on('redoDo',  () =>  new Canvas(io, socket).redoDo());
     socket.on('message',(data)=> new Game(io,socket).message(data));
     socket.on('startGame', async () => { await new Game(io, socket).startGame(); });
-   
+    socket.on('chatBlock', async(id)=> {await new Game(io, socket).pushSocket(id);} )
     socket.on('disconnect',()=>{
         console.log(`disconnected ${socket.id}`);
     })
