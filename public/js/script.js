@@ -46,7 +46,8 @@ if (user._id) {
         document.querySelector('#playGame').addEventListener('click', async () => {
             document.querySelector('#landing').remove();
             document.querySelector('#private-room').classList.remove('d-none');
-            if (roomId) {
+            if (roomId)
+             {
                 document.querySelector('#gameLink').value = `${window.location.protocol}//${window.location.host}/game/?id=${roomId}`;
                 //putPlayer();
             }
@@ -77,6 +78,7 @@ if (user._id) {
 document.querySelector('#startGame').addEventListener('click', async () => {
     showCanvas();
     socket.emit('startGame');
+   socket.emit('getPlayers');
 });
 
 function showCanvas() {

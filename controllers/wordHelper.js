@@ -25,7 +25,7 @@ request.get({
   if(error) return console.error('Request failed:', error);
   else if(response.statusCode != 200) return console.error('Error:', response.statusCode, body.toString('utf8'));
   else {
-    console.log(body);
+  //  console.log(body);
     return body.word;
     }
 });
@@ -33,13 +33,13 @@ request.get({
 }
 function get3Words(roomID) {
     var arr= new Array();
-    var word=  getRandom();
-    console.log(word);
-    arr.push(word);
-    arr.push(word); 
-    arr.push(word);
-    console.log("3 words are");
-    console.log(arr);
+    // var word=  getRandom();
+    // console.log(word);
+    arr.push( "arpit" );
+    arr.push("ayush" ); 
+    arr.push("ankit" );
+    // console.log("3 words are");
+    // console.log(arr);
     return arr;
 }
 function wait(roomID, drawer, ms) {

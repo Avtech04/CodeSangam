@@ -13,7 +13,7 @@ class Game {
 
   async startGame() {
     const { io, socket } = this;
-    console.log("yes");
+  //  console.log("yes");
     const players = Array.from(await io.in(socket.roomId).allSockets());
     console.log(players);
     socket.to(socket.roomId).emit("startGame");
@@ -95,7 +95,7 @@ class Game {
       }
       const socket = io.of("/").sockets.get(playerID);
      // console.log(socket);
-      console.log(socket.roomId);
+    //  console.log(socket.roomId);
       socket.on("chooseWord", ({ word }) => {
         socket.to(socket.roomId).emit("hideWord", 
         {
@@ -124,7 +124,7 @@ class Game {
     for (let j = 0; j < rounds; j++) {
       for (let i = 0; i < players.length; i++) {
        await this.giveTurnTo(players, i);
-       console.log("GAME IS RUNNING");
+      // console.log("GAME IS RUNNING");
       }
     }
    // console.log("GAME HAS ENDED");
@@ -143,18 +143,23 @@ class Game {
     const player = players[i];
     const prevPlayer = players[(i - 1 + players.length) % players.length];
     const drawer = io.of("/").sockets.get(player);
+
+    // console.log("Just Checking"); 
+    // console.log(player);
+    // console.log(drawer);
+
     if (!drawer || !room) 
        return;
     // this.resetGuessedFlag(players);
     // games[roomID].totalGuesses = 0;
     // games[roomID].currentWord = "";
-    console.log(room);
+  //  console.log(room);
     room.currentWord = "";
 
     //  games[roomID].drawer = player;
     //  io.to(prevPlayer).emit("disableCanvas");
     // console.log(drawer);
-    console.log(drawer.name + " is choosing");
+  //  console.log(drawer.name + " is choosing");
     drawer.to(roomID).broadcast.emit("choosing", { name: drawer.name });
     // console.log(room);
   //  io.to(player).emit("chooseWord", get3Words());
@@ -169,7 +174,7 @@ class Game {
        // drawer.to(roomID).broadcast.emit("hints", getHints(word, roomID));
        // games[roomID].startTime = Date.now() / 1000;
 
-        console.log("Chosen Word is " + word);
+       console.log("Chosen Word is " + word);
         io.to(roomID).emit("startTimer", time );
 
         if (await wait(roomID, drawer, time))
@@ -180,6 +185,47 @@ class Game {
       }
    // console.log("DONE");
   }
+  async getPlayers()
+   {
+    // console.log("LUFFY ");
+    const { io, socket } = this;
+    const roomID = socket.roomId;
+    const players = Array.from(await io.in(roomID).allSockets());
+  //   players.reduce((acc, id) => {
+  //     const { player } = io.of('/').sockets.get(id);
+  //     acc.push(player);
+  //     console.log();
+  // });
+
+  //    io.in(roomID ).emit('getPlayers', "arpit" ) ;
+  //    const { pq } = io.of('/').sockets.get(players[0]) ;
+  //    console.log("PQ is");
+  //    console.log(pq);
+  //  console.log("Players Array is ");
+  //      console.log(players);
+
+       const acc= new Array();
+       for(var i=0; i< players.length;i++)
+       {
+         const pl= players[i];
+         const drawer = io.of("/").sockets.get(pl);
+         acc.push(drawer);
+        //  console.log(pl);
+        //  console.log(drawer);
+       }
+      // console.log(acc);
+       const PlayerData = new Array();
+       for(var i=0;i<acc.length; i++)
+       {
+          var obj= {
+             id : acc[i].id,
+             name: acc[i].name
+          }
+          PlayerData.push(obj);
+       }
+    io.in(roomID ).emit('getPlayers',PlayerData ) ;
+
+   }
 }
 
 module.exports = Game;

@@ -54,6 +54,7 @@ function createScoreCard(players) {
     document.querySelector(".players").append(div);
   });
 }
+
 var blockedSockets = new Array();
 var isBlocked = false;
 var cnt = 3;
@@ -165,9 +166,7 @@ socket.on('hideWord', ({ word} ) => {
   document.querySelector('#wordDiv').innerHTML = '';
   document.querySelector('#wordDiv').append(p);
 //  console.log( "+ +" );
-
 });
-
 
 function chooseWord(word) 
 {
@@ -239,9 +238,51 @@ function startTimer(ms)
 
 socket.on('startTimer', ( time ) => startTimer(time));
 
-document.querySelector("#sendMessage").addEventListener("submit", function (e) {
+document.querySelector("#sendMessage").addEventListener("submit", function (e) 
+{
   e.preventDefault();
   const message = this.firstElementChild.value;
   this.firstElementChild.value = "";
   socket.emit("message",  {message} );
 });
+
+
+function createScoreCard(players)
+ {
+// console.log("Player Array is");
+   // alert("WE inside");
+  players.forEach((player) => 
+  {
+    //console.log(player);
+   // alert(player);
+      const div = document.createElement('div');
+      const avatar = document.createElement('div');
+      const details = document.createElement('div');
+      const img = document.createElement('img');
+      const p1 = document.createElement('p');
+      const p2 = document.createElement('p');
+      const name = document.createTextNode(player.name);
+      const score = document.createTextNode('Score: 0');
+
+      // img.src = player.avatar;
+      img.classList.add('img-fluid', 'rounded-circle');
+      div.classList.add('row', 'justify-content-end', 'py-1', 'align-items-center');
+      avatar.classList.add('col-5', 'col-xl-4');
+      details.classList.add('col-7', 'col-xl-6', 'text-center', 'my-auto');
+      p1.classList.add('mb-0');
+      p2.classList.add('mb-0');
+      div.id = `${player.id}` ;
+      div.append(details, avatar);
+      avatar.append(img);
+      details.append(p1, p2);
+      p1.append(name);
+      p2.append(score);
+      document.querySelector('.players').append(div);
+  });
+}
+
+socket.on('getPlayers', (players) =>
+{ 
+ createScoreCard(players);
+}
+ );
