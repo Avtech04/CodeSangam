@@ -207,6 +207,7 @@ function startTimer(ms)
   let secs = ms / 1000;
   const id = setInterval((function updateClock() {
     if (secs === 0) clearInterval(id);
+    document.getElementById("clock").innerHTML =secs;
     console.log(secs);
     secs--;
     return updateClock;
@@ -365,7 +366,7 @@ socket.on('getPlayersO', (players)=>{
 socket.on('endGame', async ({ stats }) => {
   //let players = Object.keys(stats).filter((val) => val.length === 20);
  // players = players.sort((id1, id2) => stats[id2].score - stats[id1].score);
-  alert("Game Has ended");
+  alert("You have been kicked by the admin .");
   //alert(stats);
   clearInterval(timerID);
  // await animateCSS('#gameZone', 'fadeOutLeft');
