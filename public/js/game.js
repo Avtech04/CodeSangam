@@ -363,41 +363,33 @@ socket.on('getPlayersO', (players)=>{
 });
 
 
-socket.on('endGame', async ({ stats }) => {
-  //let players = Object.keys(stats).filter((val) => val.length === 20);
- // players = players.sort((id1, id2) => stats[id2].score - stats[id1].score);
+socket.on('endGame', async ( stats ) => 
+{
   alert("You have been kicked by the admin .");
-  //alert(stats);
-  clearInterval(timerID);
- // await animateCSS('#gameZone', 'fadeOutLeft');
   document.querySelector('#gameZone').remove();
-  for(var i=0; i< stats.length ;i++ )
-  {
-    const row = document.createElement('div');
-    const imgDiv = document.createElement('div');
-    const nameDiv = document.createElement('div');
-    const scoreDiv = document.createElement('div');
-    const name = document.createElement('p');
-    const score = document.createElement('p');
-    name.textContent = stats[i].name;
-      score.textContent = stats[i].score;
-      row.classList.add('row', 'mx-0', 'align-items-center');
-      avatar.classList.add('img-fluid', 'rounded-circle');
-      imgDiv.classList.add('col-2', 'text-center');
-      nameDiv.classList.add('col-7', 'text-center');
-      scoreDiv.classList.add('col-3', 'text-center');
-      name.classList.add('display-6', 'fw-normal', 'mb-0');
-      score.classList.add('display-6', 'fw-normal', 'mb-0');
-      alert("in the loop");
-      imgDiv.append(avatar);
-      nameDiv.append(name);
-      scoreDiv.append(score);
-      row.append(imgDiv, nameDiv, scoreDiv);
-      document.querySelector('#statsDiv').append(row, document.createElement('hr'));
 
-  }
-  // clock.stop();
-  // gameOver.play();
+  stats.forEach((player) => 
+  {
+   alert(player.name);
+   const row = document.createElement('div');
+   const nameDiv = document.createElement('div');
+   const scoreDiv = document.createElement('div');
+   const name = document.createElement('p');
+   const score = document.createElement('p');
+   name.textContent = player.name;
+   score.textContent = player.score;
+
+   row.classList.add('row', 'mx-0', 'align-items-center');
+   nameDiv.classList.add('col-7', 'text-center');
+   scoreDiv.classList.add('col-3', 'text-center');
+   name.classList.add('display-6', 'fw-normal', 'mb-0');
+   score.classList.add('display-6', 'fw-normal', 'mb-0');
+   nameDiv.append(name);
+   scoreDiv.append(score);
+   row.append(nameDiv, scoreDiv);
+   document.querySelector('#statsDiv').append(row, document.createElement('hr'));
+  });
+  
   document.querySelector('#gameEnded').classList.remove('d-none');
- // animateCSS('#gameEnded>div', 'fadeInRight');
+
 });

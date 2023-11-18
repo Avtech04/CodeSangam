@@ -28,20 +28,35 @@ class Game {
     socket.emit("startGame");
     console.log(rounds);
     for (let j = 0; j < rounds; j++) {
-      console.log(j);
+     // console.log(j);
       for (let i = 0; i < players.length; i++) {
-        console.log('inside');
+     //   console.log('inside');
         io.to(roomId).emit('clearCanvas');
+
         await this.giveTurnTo(players, i);
       }
     }
-
-    io.to(socket.roomId).emit('endGame', { stats: room.players });
+    console.log(room.players);
+    const stats = room.players;
+    io.to(roomId).emit('endGame', stats );
   }
 
   async giveTurnTo(players, i) {
     const { io, socket } = this;
     const roomId = socket.roomId;
+
+    const curp = Array.from(await io.in(roomId).allSockets());
+    var pres= false;
+    for( var ii=0 ;ii < curp.length ; ii++ )
+    {
+       if(curp[ii] == players[i])
+       {
+          pres= true;
+       }
+    }
+    if(pres === false)
+    return ;
+
     let room = await Rooms.findById(roomId);
     const time = room.limitTime;
     const player = players[i];
@@ -49,6 +64,7 @@ class Game {
     const drawer = io.of('/').sockets.get(player);
     room.drawer= player;
     room.tempBlock= {};
+
     if (!drawer || !room) 
     return;
     io.to(prevPlayer).emit('disableCanvas');
@@ -62,7 +78,8 @@ class Game {
       await room.save();
       const startTime = Date.now() / 1000;
       io.to(roomId).emit('startTimer', time);
-      if (await wait(startTime, drawer, time)) drawer.to(roomId).broadcast.emit('lastWord', word);
+      if (await wait(startTime, drawer, time)) 
+      drawer.to(roomId).broadcast.emit('lastWord', word);
     } catch (error) {
       console.log(error);
     }
@@ -275,11 +292,15 @@ class Game {
     }
    }
 
-   async kickPlayers(data){
+   async kickPlayers(data)
+   {
     const{io,socket}=this;
-    const players = Array.from(await io.in(socket.roomID).allSockets());
+  //  const players = Array.from(await io.in(socket.roomID).allSockets());
     const player = io.of("/").sockets.get(data);
-    player.emit("endGame", { stats:{} });
+    const roomID = socket.roomId;
+    let room = await Rooms.findById(roomID);
+    var stats= room.players;
+    player.emit("endGame", stats );
    // console.log("kick is working");
     player.leave(socket.roomId);
     const players1 = Array.from(await io.in(socket.roomID).allSockets());

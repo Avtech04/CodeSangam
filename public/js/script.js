@@ -35,10 +35,13 @@ function putPlayer(player) {
     document.querySelector('#playersDiv').appendChild(div);
 
 }
+
 console.log(roomId);
 
-if (user._id) {
-    if (roomId) {
+if (user._id) 
+{
+    if (roomId) 
+    {
         // player
         document.querySelector('#rounds').setAttribute('disabled', true);
         document.querySelector('#time').setAttribute('disabled', true);
@@ -54,22 +57,28 @@ if (user._id) {
             socket.emit('joinRoom', { roomId, user });
         });
         
-    } else 
+    } 
+    else 
     {
         document.querySelector('#rounds').addEventListener('input', updateSettings);
         document.querySelector('#time').addEventListener('input', updateSettings);
-        createPrivateRoom.addEventListener('click', () => {
+        createPrivateRoom.addEventListener('click', () => 
+        {
             document.querySelector('#landing').remove();
             document.querySelector('#private-room').classList.remove('d-none');
             socket.emit('create-private-room', user);
         });
     }
+
     document.querySelector('#randomPlay').addEventListener('click',()=>{
         document.querySelector('#landing').remove();
         document.querySelector('#waiting').classList.remove('d-none');
         socket.emit('joinPublic',user);
     })
-} else {
+
+} 
+else
+ {
     console.log('yes');
     document.querySelector('#waiting').classList.remove('d-none');
     socket.emit('joinPublic',user);

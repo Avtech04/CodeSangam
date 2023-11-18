@@ -6,7 +6,8 @@ class Room {
         this.socket = socket;
     }
 
-    async createPrivateRoom(player) {
+    async createPrivateRoom(player) 
+    {
         console.log(player);
         const { io,socket } = this;
         let user={
@@ -58,7 +59,8 @@ class Room {
         console.log(player);
         console.log(room);
         var room_id;
-        let user={
+        let user=
+        {
             name:player.username,
             score:0,
             socketId:socket.id,
