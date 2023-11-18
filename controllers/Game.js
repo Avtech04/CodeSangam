@@ -47,7 +47,10 @@ class Game {
     const player = players[i];
     const prevPlayer = players[(i - 1 + players.length) % players.length];
     const drawer = io.of('/').sockets.get(player);
-    if (!drawer || !room) return;
+    room.drawer= player;
+    room.tempBlock= {};
+    if (!drawer || !room) 
+    return;
     io.to(prevPlayer).emit('disableCanvas');
     drawer.to(roomId).broadcast.emit('choosing', { name: drawer.name });
     
