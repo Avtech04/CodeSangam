@@ -264,7 +264,7 @@ function createScoreCard(players)
 
        newButton.addEventListener("click", () => 
        {
-          socket.emit('chatBlock',player.id);
+          socket.emit('chatBlock',player.socketId);
       });
       const newButton2 = document.createElement("button");
       newButton2.textContent = "Kick!";
@@ -272,7 +272,7 @@ function createScoreCard(players)
        newButton2.addEventListener("click", () => 
        {
         //  socket.emit('chatBlock',player.id);
-          socket.emit('KickPlayer', player.id );
+          socket.emit('KickPlayer', player.socketId );
       });
 
       
@@ -283,7 +283,7 @@ function createScoreCard(players)
       details.classList.add('col-7', 'col-xl-6', 'text-center', 'my-auto');
       p1.classList.add('mb-0');
       p2.classList.add('mb-0');
-      div.id = player.id ;
+      div.id = player.socketId ;
       div.append(details, avatar);
      div.append(newButton);
       // div.append(spa);
@@ -296,12 +296,73 @@ function createScoreCard(players)
 
   });
 }
+function createScoreCard2(players)
+ {
+// console.log("Player Array is");
+   // alert("WE inside");
+  players.forEach((player) => 
+  {
+    //console.log(player);
+   // alert(player);
+      const div = document.createElement('div');
+      const avatar = document.createElement('div');
+      const details = document.createElement('div');
+      const img = document.createElement('img');
+      const p1 = document.createElement('p');
+      const p2 = document.createElement('p');
+      const name = document.createTextNode(player.name);
+      const score = document.createTextNode('Score: 0');
+      const spa= document.createElement('div');
+      // const newButton = document.createElement("button");
+      // newButton.textContent = "Block!";
+
+      //  newButton.addEventListener("click", () => 
+      //  {
+      //     socket.emit('chatBlock',player.id);
+      // });
+      // const newButton2 = document.createElement("button");
+      // newButton2.textContent = "Kick!";
+
+      //  newButton2.addEventListener("click", () => 
+      //  {
+      //   //  socket.emit('chatBlock',player.id);
+      //     socket.emit('KickPlayer', player.id );
+      // });
+
+      
+      // img.src = player.avatar;
+      img.classList.add('img-fluid', 'rounded-circle');
+      div.classList.add('row', 'justify-content-end', 'py-1', 'align-items-center');
+      avatar.classList.add('col-5', 'col-xl-4');
+      details.classList.add('col-7', 'col-xl-6', 'text-center', 'my-auto');
+      p1.classList.add('mb-0');
+      p2.classList.add('mb-0');
+      div.id = player.socketId ;
+      div.append(details, avatar);
+    //  div.append(newButton);
+      // div.append(spa);
+      // div.append(newButton2);
+      avatar.append(img);
+      details.append(p1, p2);
+      p1.append(name);
+      p2.append(score);
+      document.querySelector('.players').append(div);
+
+  });
+}
+
 
 socket.on('getPlayers', (players) =>
 { 
  createScoreCard(players);
 }
  );
+socket.on('getplayersA' , (players) =>{
+  createScoreCard(players);
+});
+socket.on('getPlayersO', (players)=>{
+  createScoreCard2(players);
+});
 
  socket.on('updateScore', ({
   playerID,

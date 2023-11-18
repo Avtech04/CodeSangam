@@ -19,13 +19,7 @@ class Game {
     console.log(players);
     socket.to(socket.roomId).emit("startGame");
   }
-
-  async getPlayers() {
-    const { io, socket } = this;
-    let room = await Rooms.findById(socket.roomId);
-    const players = room.players;
-    io.in(socket.roomId).emit("getPlayers", { players });
-  }
+  
   async pushSocket (id)
   {
     const { io, socket } = this;
@@ -134,9 +128,10 @@ class Game {
           console.log(room.players[i].score);
           console.log(score2);
              ns= room.players[i].score + score2;
-             room.players[i].score = ns; ;
+             room.players[i].score = ns; 
+             room = await room.save() ;
             // console.log("ns is "+ ns);
-            // break;
+            break;
          }
       }
      // console.log("Current Contri is " + score2);
@@ -159,8 +154,8 @@ class Game {
       // normal message
       io.in(roomId).emit("message", { ...data, name });
     }
-    room = await room.save() ;
- //  console.log(room);
+  
+   console.log(room);
   }
 
  
@@ -274,40 +269,43 @@ class Game {
     // console.log("LUFFY ");
     const { io, socket } = this;
     const roomID = socket.roomId;
-    const players = Array.from(await io.in(roomID).allSockets());
-  //   players.reduce((acc, id) => {
-  //     const { player } = io.of('/').sockets.get(id);
-  //     acc.push(player);
-  //     console.log();
-  // });
+    // const players = Array.from(await io.in(roomID).allSockets());
+    //    const acc= new Array();
+    //    for(var i=0; i< players.length;i++)
+    //    {
+    //      const pl= players[i];
+    //      const drawer = io.of("/").sockets.get(pl);
+    //      acc.push(drawer);
+    //     //  console.log(pl);
+    //     //  console.log(drawer);
+    //    }
+   
+    //    const PlayerData = new Array();
+    //    for(var i=0;i<acc.length; i++)
+    //    {
+    //       var obj= {
+    //          id : acc[i].id,
+    //          name: acc[i].name
+    //       }
+    //       PlayerData.push(obj);
+    //    }
+    // io.in(roomID ).emit('getPlayers',PlayerData ) ;
 
-  //    io.in(roomID ).emit('getPlayers', "arpit" ) ;
-  //    const { pq } = io.of('/').sockets.get(players[0]) ;
-  //    console.log("PQ is");
-  //    console.log(pq);
-  //  console.log("Players Array is ");
-  //      console.log(players);
-
-       const acc= new Array();
-       for(var i=0; i< players.length;i++)
-       {
-         const pl= players[i];
-         const drawer = io.of("/").sockets.get(pl);
-         acc.push(drawer);
-        //  console.log(pl);
-        //  console.log(drawer);
-       }
-      // console.log(acc);
-       const PlayerData = new Array();
-       for(var i=0;i<acc.length; i++)
-       {
-          var obj= {
-             id : acc[i].id,
-             name: acc[i].name
-          }
-          PlayerData.push(obj);
-       }
-    io.in(roomID ).emit('getPlayers',PlayerData ) ;
+    let room = await Rooms.findById(roomID);
+    const players = room.players;
+    for(var i=0;i< players.length;i++)
+    {
+        if(players[i].isAdmin === true )
+        {
+          const drawer = io.of("/").sockets.get(players[i].socketId);
+          drawer.emit('getplayersA', players);
+        }
+        else
+        {
+          const drawer = io.of("/").sockets.get(players[i].socketId);
+          drawer.emit('getPlayersO', players);
+        }
+    }
    }
 
    async kickPlayers(data){

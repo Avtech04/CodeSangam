@@ -12,7 +12,8 @@ class Room {
             name:player.username,
             score: 0 ,
             socketId:socket.id,
-            userId:player._id
+            userId:player._id,
+            isAdmin: true ,
         }
         var room= new Rooms();
         room.Type='Private';
@@ -36,7 +37,8 @@ class Room {
             name:data.user.username,
             score: 0 ,
             socketId:socket.id,
-            userId:data.user._id
+            userId:data.user._id,
+            isAdmin : false,
         }
         let room=await Rooms.findById(roomID);
         room.players.push(user);

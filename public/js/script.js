@@ -78,7 +78,7 @@ if (user._id) {
 document.querySelector('#startGame').addEventListener('click', async () => {
     showCanvas();
     socket.emit('startGame');
-   socket.emit('getPlayers');
+    socket.emit('getPlayers');
 });
 
 function showCanvas() {
