@@ -27,7 +27,7 @@ class Game {
     }
     socket.emit("startGame");
     console.log(rounds);
-    for (let j = 0; j < rounds; j++) {
+    for (let j = 0; j < rounds -1 ; j++) {
      // console.log(j);
       for (let i = 0; i < players.length; i++) {
      //   console.log('inside');
