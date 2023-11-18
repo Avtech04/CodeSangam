@@ -1,4 +1,5 @@
 const Rooms=require('../models/room');
+const Game=require('./Game');
 class Room {
     constructor(io, socket) {
         this.io = io;
@@ -84,8 +85,7 @@ class Room {
         socket.name=player.username;
         if(room.capacity==4){
             console.log("yes");
-            socket.to(room_id).emit('startGame');
-            socket.emit('startGame');
+            await new Game(io,socket).startGame();
         }
     }
     async updateSettings(data)

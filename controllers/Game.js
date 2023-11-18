@@ -6,6 +6,9 @@ const { get3Words, wait, returnScore } = require("./wordHelper");
 const GraphemeSplitter = require("grapheme-splitter");
 const { game } = require("./authController");
 const splitter = new GraphemeSplitter();
+
+
+
 class Game {
   constructor(io, socket) {
     this.io = io;
@@ -14,19 +17,72 @@ class Game {
 
   async startGame() {
     const { io, socket } = this;
-  //  console.log("yes");
+    const roomId = socket.roomId;
+    let room = await Rooms.findById(roomId);
+    const rounds = room.rounds;
     const players = Array.from(await io.in(socket.roomId).allSockets());
-    console.log(players);
     socket.to(socket.roomId).emit("startGame");
+    for(let i=0;i<players.length;i++){
+      await io.to(players[i]).emit('disableCanvas');
+    }
+    socket.emit("startGame");
+    console.log(rounds);
+    for (let j = 0; j < rounds; j++) {
+      console.log(j);
+      for (let i = 0; i < players.length; i++) {
+        console.log('inside');
+        io.to(roomId).emit('clearCanvas');
+        await this.giveTurnTo(players, i);
+      }
+    }
+
+    io.to(socket.roomId).emit('endGame', { stats: room.players });
   }
-  
-  async pushSocket (id)
-  {
+
+  async giveTurnTo(players, i) {
+    const { io, socket } = this;
+    const roomId = socket.roomId;
+    let room = await Rooms.findById(roomId);
+    const time = room.limitTime;
+    const player = players[i];
+    const prevPlayer = players[(i - 1 + players.length) % players.length];
+    const drawer = io.of('/').sockets.get(player);
+    if (!drawer || !room) return;
+    io.to(prevPlayer).emit('disableCanvas');
+    drawer.to(roomId).broadcast.emit('choosing', { name: drawer.name });
+    
+    io.to(player).emit('chooseWord', await get3Words(roomId));
+    try {
+      const word = await this.chosenWord(player);
+      io.to(player).emit('enableCanvas');
+      room.currentWord = word;
+      await room.save();
+      const startTime = Date.now() / 1000;
+      io.to(roomId).emit('startTimer', time);
+      if (await wait(startTime, drawer, time)) drawer.to(roomId).broadcast.emit('lastWord', word);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  chosenWord(socketId) {
+    const { io } = this;
+    return new Promise((resolve, reject) => {
+      function rejection(err) { reject(err); }
+      const socket = io.of('/').sockets.get(socketId);
+      socket.on('chooseWord', ({ word }) => {
+        socket.to(socket.roomId).emit('hideWord', { word: splitter.splitGraphemes(word).map((char) => (char !== ' ' ? '_' : char)).join('') });
+        resolve(word);
+      });
+    });
+  }
+
+  async pushSocket(id) {
     const { io, socket } = this;
     const roomId = socket.roomId;
     let room = await Rooms.findById(roomId);
     room.blockedSockets.push(id);
-    room= await room.save();
+    room = await room.save();
   }
 
   async message(data) {
@@ -34,21 +90,19 @@ class Game {
     const roomId = socket.roomId;
     const name = socket.name;
     const roomID = socket.roomId;
-    const id= socket.id;
+    const id = socket.id;
     let room = await Rooms.findById(roomID);
-    
-    for(var i=0; i< room.blockedSockets.length ;i++)
-    {
-       var x= room.blockedSockets[i];
-       if(x=== id)
-       { 
-           //console.log("User is blocked");
-           socket.emit("profanity", {
-            message: "You have been chat blocked!",
-            id: socket.id,
-          });
-          return;
-        }
+
+    for (var i = 0; i < room.blockedSockets.length; i++) {
+      var x = room.blockedSockets[i];
+      if (x === id) {
+        //console.log("User is blocked");
+        socket.emit("profanity", {
+          message: "You have been chat blocked!",
+          id: socket.id,
+        });
+        return;
+      }
     }
     if(id=== room.drawer)
     {
@@ -72,18 +126,15 @@ class Game {
     
 
     var message = `${name}: data`;
-    //  console.log(typeof(data));
-    const currentWord = room.currentWord ;
-    // console.log(currentWord);
-    // console.log("in chat");
+    const currentWord = room.currentWord;
+
     const guess = data.message.toLowerCase().trim();
-    if (guess === "") 
+    if (guess === "")
       return;
     const temp = filter.clean(guess);
     var pres = false;
     for (var i = 0; i < temp.length; i++) {
-      if (temp[i] === "*") 
-      {
+      if (temp[i] === "*") {
         socket.emit("profanity", {
           message: "You are using wrong language",
           id: socket.id,
@@ -98,34 +149,31 @@ class Game {
         for(var i=0; i< room.profanityCount.length ;i++)
         {
           // var x= room.profanityCount[i];
-           if(room.profanityCount[i].id === id)
-           {
-              room.profanityCount[i].cnt +=1 ; 
-              this.pushSocket(socket.id);
-              found = true;
-              break;
-            }
+          if (room.profanityCount[i].id === id) {
+            room.profanityCount[i].cnt += 1;
+            this.pushSocket(socket.id);
+            found = true;
+            break;
+          }
         }
-        if(found=== false)
-        {
-           var obj= {
-             id: socket.id,
-             cnt : 1,
-           }
+        if (found === false) {
+          var obj = {
+            id: socket.id,
+            cnt: 1,
+          }
           room.profanityCount.push(obj);
         }
-        room= await room.save();
-     //  console.log(room.profanityCount );
+        room = await room.save();
+        //  console.log(room.profanityCount );
         pres = true;
-        return ;
+        return;
       }
     }
-    if (pres) 
+    if (pres)
       return;
     const distance = leven(guess, currentWord);
     // console.log(distance);
-    if (distance === 0)
-     {
+    if (distance === 0) {
       console.log("GUESSED");
       // socket.emit('message', { ...data, name: socket.player.name });
       socket.emit("correctGuess", {
@@ -180,35 +228,8 @@ class Game {
    console.log(room);
   }
 
- 
-  chosenWord(playerID) 
-  {
-    const { io } = this;
-    return new Promise((resolve, reject) =>
-     {
-      function rejection(err) 
-      {
-        reject(err);
-      }
-      const socket = io.of("/").sockets.get(playerID);
-     // console.log(socket);
-    //  console.log(socket.roomId);
-      socket.on("chooseWord", ({ word }) => {
-        socket.to(socket.roomId).emit("hideWord", 
-        {
-          word: splitter
-            .splitGraphemes(word)
-            .map((char) => (char !== " " ? "_" : char))
-            .join("") ,
-        }
-        );
-        socket.removeListener("disconnect", rejection);
-        resolve(word);
-      });
-      socket.once("disconnect", rejection);
-    });
-  }
 
+<<<<<<< HEAD
   async startGame() {
     const { io, socket } = this;
     let room = await Rooms.findById(socket.roomId);
@@ -290,6 +311,9 @@ class Game {
   }
   async getPlayers()
    {
+=======
+  async getPlayers() {
+>>>>>>> 868c5db8c56d8b996f901ce1113320889113bed6
     // console.log("LUFFY ");
     const { io, socket } = this;
     const roomID = socket.roomId;
