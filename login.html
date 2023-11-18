@@ -1,41 +1,3 @@
-
-        
-              <!-- <div class="card-body p-md-5 mx-md-4">
-
-                <div class="text-center">
-                  <img src="download (1).png"
-                    style="width: 185px;" alt="logo">
-                  <h4 class="mt-1 mb-5 pb-1">Login Here</h4>
-                </div>
-
-                <form action="/login" method="POST">
-                  <p>Please login to your account</p>
-
-                  <div class="form-outline mb-4">
-                    <input type="email" id="form2Example11" class="form-control"
-                      name="email" placeholder="Phone number or email address" />
-                    <label class="form-label" for="form2Example11">Username</label>
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input type="password" id="form2Example22"  name="password" class="form-control" />
-                    <label class="form-label" for="form2Example22">Password</label>
-                  </div>
-
-                  <div class="text-center pt-1 mb-5 pb-1">
-                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Log
-                      in</button>
-                    <a class="text-muted" href="#!">Forgot password?</a>
-                  </div>
-
-                  <div class="d-flex align-items-center justify-content-center pb-4">
-                    <p class="mb-0 me-2">Don't have an account?</p>
-                    <a href="/signup"> <button type="button"  class="btn btn-outline-danger"> Create new</button></a>
-                  </div>
-
-                </form>
-
-              </div> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,10 +24,10 @@ body {
   height: 300px;
   width: 500px;
   /* margin: auto; */
-  margin-top: 6vh;
+  margin-top: 3vh;
   /* margin-left: 20vw; */
   position: absolute;
-  top: 0;
+  top: -5vh;
   right: 20vw;
   bottom: 0;
   /* left: 0; */
@@ -240,6 +202,117 @@ body {
     outline: none;
     border: 2px;
 }
+
+
+.signin
+{
+  font-family: 'Quicksand', sans-serif;
+	position: absolute;
+	width: 300px;
+  top: 32vh;
+  right:22vw;
+  /* background: #222;   */
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 40px;
+	border-radius: 4px;
+	box-shadow: 0 15px 35px rgba(0,0,0,9);
+}
+.signin .content 
+{
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 40px;
+}
+.signin .content h2 
+{
+	font-size: 2em;
+	color: #0f0;
+	text-transform: uppercase;
+}
+::placeholder {
+  color:rgb(209, 205, 205);
+  opacity: 1; /* Firefox */
+}
+
+::-ms-input-placeholder { /* Edge 12 -18 */
+  color: white;
+}
+.signin .content .form 
+{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+  margin-top: -50px;
+}
+.signin .content .form .inputBox
+{
+	position: relative;
+	width: 100%;
+  margin-bottom: 25px;
+  /* box-shadow: 0 15px 15px rgba(0,0,0,9); */
+}
+.signin .content .form .inputBox input 
+{
+	position: relative;
+	width: 100%;
+	/* background: #333; */
+  background-color: transparent;
+	border: none;
+	outline: none;
+	padding: 25px 10px 7.5px;
+	border-radius: 4px;
+	color: #fff;
+	font-weight: 500;
+	font-size: 1em;
+  margin-bottom: 20px;
+  box-shadow: 0 15px 15px rgba(0,0,0,9);
+}
+
+.signin .content .form .links 
+{
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+.signin .content .form .links a 
+{
+	color: #fff;
+	text-decoration: none;
+}
+.signin .content .form .links a:nth-child(2)
+{
+	color: #0f0;
+	font-weight: 600;
+}
+.signin .content .form .inputBox input[type="submit"]
+{
+	padding: 10px;
+	background: #0f0;
+	color: #000;
+	font-weight: 600;
+	font-size: 1.35em;
+	letter-spacing: 0.05em;
+	cursor: pointer;
+  margin-top: 12px;
+}
+input[type="submit"]:active
+{
+	opacity: 0.6;
+}
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -330,31 +403,31 @@ body {
           </div>
         </div>
       </div>
-      <form action="/login" method="POST">
-        <div class="form-outline mb-4">
-          <input type="email" id="form2Example11" class="form-control"
-            name="email" placeholder="Phone number or email address" />
-          <label class="form-label" for="form2Example11">Username</label>
+     
+      <div class="signin">
+        <div class="content">
+          <h2>Sign In</h2>
+          <div class="form">
+            <form action="/login" method="post">
+            <div class="inputBox">
+              <input type="email" name="email" placeholder="Enter your email" required>
+             
+            </div>
+            <div class="inputBox">
+              <input type="password" name="password" placeholder="Enter your password" required>
+              
+            </div>
+            <div class="links">
+              <a href="#">Forgot Password</a>
+              <a href="/signup">Signup</a>
+            </div>
+            <div class="inputBox">
+              <input type="submit" value="Login">
+            </div>
+          </form>
+          </div>
         </div>
-
-        <div class="form-outline mb-4">
-          <input type="password" id="form2Example22"  name="password" class="form-control" />
-          <label class="form-label" for="form2Example22">Password</label>
-        </div>
-
-        <div class="text-center pt-1 mb-5 pb-1">
-          <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Log
-            in</button>
-          <a class="text-muted" href="#!">Forgot password?</a>
-        </div>
-
-        <div class="d-flex align-items-center justify-content-center pb-4">
-          <p class="mb-0 me-2">Don't have an account?</p>
-          <a href="/signup"> <button type="button"  class="btn btn-outline-danger"> Create new</button></a>
-        </div>
-
-      </form>
-
+      </div>
 </body>
 <script src="js/script.js"></script>
 </html>
