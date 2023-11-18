@@ -2,8 +2,9 @@ const Rooms = require("../models/room");
 var Filter = require("bad-words"),
   filter = new Filter();
 const leven = require("leven");
-const { get3Words, wait } = require("./wordHelper");
+const { get3Words, wait, returnScore } = require("./wordHelper");
 const GraphemeSplitter = require("grapheme-splitter");
+const { game } = require("./authController");
 const splitter = new GraphemeSplitter();
 class Game {
   constructor(io, socket) {
@@ -78,7 +79,7 @@ class Game {
           id: socket.id,
         });
         // updating the profanity cnt
-        /// 3 pei chat blocked
+        /// 2 pei chat blocked
         var found= false;
         for(var i=0; i< room.profanityCount.length ;i++)
         {
@@ -121,15 +122,45 @@ class Game {
         message: `${name} has guessed the correct answer`,
         id: socket.id,
       });
+
+      // add Score
+      var score2  = returnScore(room.startTime, room.limitTime);
+    //  room.score[id] += score2;
+      var ns=5;
+      for(var i=0; i< room.players.length ;i++ )
+      {
+         if(room.players[i].socketId === id)
+         {
+          console.log(room.players[i].score);
+          console.log(score2);
+             ns= room.players[i].score + score2;
+             room.players[i].score = ns; ;
+            // console.log("ns is "+ ns);
+            // break;
+         }
+      }
+     // console.log("Current Contri is " + score2);
+    //  console.log("UPdated Score is " + ns);
+      // emitting in game
+      io.in(roomID).emit('updateScore', {
+        playerID: socket.id,
+        score: ns,
+        // drawerID: drawer.id,
+        // drawerScore: games[socket.roomID][drawer.id].score,
+    });
+      //console.log(score2);
     } else
-     if (distance < 3 && currentWord !== "")
+     if (distance <= 3 && currentWord !== "")
      {
       io.in(roomId).emit("message", { ...data, name });
       socket.emit("closeGuess", { message: "That was very close!" });
     } else
      {
+      // normal message
       io.in(roomId).emit("message", { ...data, name });
     }
+    room = await room.save() ;
+ //  console.log(room);
   }
 
  
@@ -164,7 +195,8 @@ class Game {
   async startGame() {
     const { io, socket } = this;
     let room = await Rooms.findById(socket.roomId);
-    if (!room) return;
+    if (!room) 
+    return;
     const rounds = room.rounds;
     const players = Array.from(await io.in(socket.roomId).allSockets());
     // console.log("Players Array IS");
@@ -177,7 +209,8 @@ class Game {
       }
     }
    // console.log("GAME HAS ENDED");
-    io.to(socket.roomID).emit("endGame", { stats: room });
+    console.log(room.players);
+    io.to(socket.roomId).emit("endGame", { stats: room.players });
     // delete the room
 
   }
@@ -217,15 +250,17 @@ class Game {
       io.to(player).emit("chooseWord", get3Words());
         const word = await this.chosenWord(player);
         room.currentWord= word ;
-         room= await room.save();
+        
 
        // io.to(roomID).emit("clearCanvas");
        // drawer.to(roomID).broadcast.emit("hints", getHints(word, roomID));
        // games[roomID].startTime = Date.now() / 1000;
-
+      //  console.log( Date.now()/1000 ) ;
+        room.startTime= Date.now()/1000 ;
        console.log("Chosen Word is " + word);
+       room= await room.save();
         io.to(roomID).emit("startTimer", time );
-
+       
         if (await wait(roomID, drawer, time))
           drawer.to(roomID).broadcast.emit("lastWord", word );
 
@@ -273,8 +308,19 @@ class Game {
           PlayerData.push(obj);
        }
     io.in(roomID ).emit('getPlayers',PlayerData ) ;
-
    }
+
+   async kickPlayers(data){
+    const{io,socket}=this;
+    const players = Array.from(await io.in(socket.roomID).allSockets());
+    const player = io.of("/").sockets.get(data);
+    player.emit("endGame", { stats:{} });
+   // console.log("kick is working");
+    player.leave(socket.roomId);
+    const players1 = Array.from(await io.in(socket.roomID).allSockets());
+    console.log(players1);
+}
+
 }
 
 module.exports = Game;

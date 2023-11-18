@@ -52,10 +52,20 @@ function wait(roomID, drawer, ms) {
     });
 }
 
+function returnScore (start, total)
+{
+    // var x= Date.now() / 1000;
+    // var used= x- start;
+    // var perused= (used / total) * 100;
+    // var remaining = 100 -perused;
+    // return 1000 * remaining /100 ;
+    return 100;
+}
 
 
 module.exports = {
     get3Words,
     wait,
-    getRandom
+    getRandom,
+    returnScore
 };

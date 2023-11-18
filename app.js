@@ -49,6 +49,10 @@ io.on('connection', (socket) => {
     //     new Game(io, socket).startGame();
     // })
     socket.on('settingsUpdate', (data) => new Room(io, socket).updateSettings(data));
+    socket.on('KickPlayer' , async (data) =>{
+        await new Game(io, socket).kickPlayers(data) ;
+    } );
+
 });
 
 

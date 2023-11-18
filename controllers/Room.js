@@ -10,7 +10,7 @@ class Room {
         const { io,socket } = this;
         let user={
             name:player.username,
-            score:0,
+            score: 0 ,
             socketId:socket.id,
             userId:player._id
         }
@@ -27,13 +27,14 @@ class Room {
         socket.emit('newPrivateRoom', { gameID: roo ,user});
     }
 
-    async joinRoom(data) {
+    async joinRoom(data)
+     {
         const { io, socket } = this; 
         console.log(data);
         const roomID = data.roomId;
         let user={
             name:data.user.username,
-            score:0,
+            score: 0 ,
             socketId:socket.id,
             userId:data.user._id
         }

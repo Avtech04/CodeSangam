@@ -258,6 +258,7 @@ function createScoreCard(players)
       const p2 = document.createElement('p');
       const name = document.createTextNode(player.name);
       const score = document.createTextNode('Score: 0');
+      const spa= document.createElement('div');
       const newButton = document.createElement("button");
       newButton.textContent = "Block!";
 
@@ -265,6 +266,15 @@ function createScoreCard(players)
        {
           socket.emit('chatBlock',player.id);
       });
+      const newButton2 = document.createElement("button");
+      newButton2.textContent = "Kick!";
+
+       newButton2.addEventListener("click", () => 
+       {
+        //  socket.emit('chatBlock',player.id);
+          socket.emit('KickPlayer', player.id );
+      });
+
       
       // img.src = player.avatar;
       img.classList.add('img-fluid', 'rounded-circle');
@@ -275,12 +285,15 @@ function createScoreCard(players)
       p2.classList.add('mb-0');
       div.id = player.id ;
       div.append(details, avatar);
-      div.append(newButton);
+     div.append(newButton);
+      // div.append(spa);
+      div.append(newButton2);
       avatar.append(img);
       details.append(p1, p2);
       p1.append(name);
       p2.append(score);
       document.querySelector('.players').append(div);
+
   });
 }
 
@@ -289,3 +302,55 @@ socket.on('getPlayers', (players) =>
  createScoreCard(players);
 }
  );
+
+ socket.on('updateScore', ({
+  playerID,
+  score
+  // ,
+  // drawerID,
+  // drawerScore,
+}) => {
+  document.querySelector(`#${playerID}> div p:last-child`).textContent 
+  = `Score: ${score}`;
+  // document.querySelector(`#skribblr-${drawerID}>div p:last-child`).textContent = `Score: ${drawerScore}`;
+});
+
+
+socket.on('endGame', async ({ stats }) => {
+  //let players = Object.keys(stats).filter((val) => val.length === 20);
+ // players = players.sort((id1, id2) => stats[id2].score - stats[id1].score);
+  alert("Game Has ended");
+  //alert(stats);
+  clearInterval(timerID);
+ // await animateCSS('#gameZone', 'fadeOutLeft');
+  document.querySelector('#gameZone').remove();
+  for(var i=0; i< stats.length ;i++ )
+  {
+    const row = document.createElement('div');
+    const imgDiv = document.createElement('div');
+    const nameDiv = document.createElement('div');
+    const scoreDiv = document.createElement('div');
+    const name = document.createElement('p');
+    const score = document.createElement('p');
+    name.textContent = stats[i].name;
+      score.textContent = stats[i].score;
+      row.classList.add('row', 'mx-0', 'align-items-center');
+      avatar.classList.add('img-fluid', 'rounded-circle');
+      imgDiv.classList.add('col-2', 'text-center');
+      nameDiv.classList.add('col-7', 'text-center');
+      scoreDiv.classList.add('col-3', 'text-center');
+      name.classList.add('display-6', 'fw-normal', 'mb-0');
+      score.classList.add('display-6', 'fw-normal', 'mb-0');
+      alert("in the loop");
+      imgDiv.append(avatar);
+      nameDiv.append(name);
+      scoreDiv.append(score);
+      row.append(imgDiv, nameDiv, scoreDiv);
+      document.querySelector('#statsDiv').append(row, document.createElement('hr'));
+
+  }
+  // clock.stop();
+  // gameOver.play();
+  document.querySelector('#gameEnded').classList.remove('d-none');
+ // animateCSS('#gameEnded>div', 'fadeInRight');
+});

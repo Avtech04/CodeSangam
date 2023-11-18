@@ -23,6 +23,9 @@ const roomSchema= new mongoose.Schema({
     admin:{
         type:String
     },
+    drawer:{
+        type:String
+    },
     roomID:{
         type:String
     },
@@ -32,7 +35,10 @@ const roomSchema= new mongoose.Schema({
     profanityCount:[], // key value pair DS to store blocked warnings
     capacity:{
         type:Number
-    }
+    },
+    startTime :{
+        type:Number,
+    },
 },
 {timestamps:true});
 
