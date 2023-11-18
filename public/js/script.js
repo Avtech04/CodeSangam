@@ -36,6 +36,24 @@ function putPlayer(player) {
 
 }
 
+function putPlayerPublic(player){
+    const div = document.createElement('div');
+    const img = document.createElement('img');
+    const p = document.createElement('p');
+    const text = document.createTextNode(player.name);
+    div.id = `${player.userId}`;
+    p.appendChild(text);
+    p.classList.add('text-center');
+
+    img.src = 'https://avatars.dicebear.com/api/avataaars/.svg';
+    img.alt = player.name;
+    img.classList.add('img-fluid', 'rounded-circle');
+    div.classList.add('col-4', 'col-sm-3', 'col-md-4', 'col-lg-3');
+
+    div.appendChild(img);
+    div.appendChild(p);
+    document.querySelector('#playersPublic').appendChild(div);
+}
 console.log(roomId);
 
 if (user._id) 
@@ -121,9 +139,12 @@ socket.on("joinRoom", (data) => {
     console.log("yes");
     putPlayer(data);
 });
+socket.on('joinPublicRoom',(data)=>{
+    putPlayerPublic(data);
+})
 
 socket.on('otherPlayers', (data) => data.players.forEach((player) => putPlayer(player)));
-
+socket.on('otherPublicPlayers',(data)=> {data.players.forEach((player) => putPlayerPublic(player))});
 
 let color =  background-color;
 const rand = () => Math.floor(Math.random() * 255 + 1);

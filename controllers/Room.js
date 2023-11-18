@@ -85,6 +85,9 @@ class Room {
         socket.join(room_id);
         socket.roomId=room_id;
         socket.name=player.username;
+        socket.to(room_id).emit('joinPublicRoom', user);
+        const players=room.players;
+        socket.emit('otherPublicPlayers',{players});
         if(room.capacity==4){
             console.log("yes");
             await new Game(io,socket).startGame();
