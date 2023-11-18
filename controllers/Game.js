@@ -50,6 +50,26 @@ class Game {
           return;
         }
     }
+    if(id=== room.drawer)
+    {
+      socket.emit("profanity", {
+        message: "You are the drawer, Can't Chat !",
+        id: socket.id,
+      });
+      return;
+    }
+    for(var i=0;i < room.tempBlock.length;i++ )
+    {
+       if(room.tempBlock[i]=== id)
+       {
+        socket.emit("correctGuess", {
+           message: "You have already guessed it",
+           id: socket.id,
+         });
+          return ;
+       }
+    }
+    
 
     var message = `${name}: data`;
     //  console.log(typeof(data));
@@ -116,6 +136,8 @@ class Game {
         message: `${name} has guessed the correct answer`,
         id: socket.id,
       });
+
+      room.tempBlock.push(id);
 
       // add Score
       var score2  = returnScore(room.startTime, room.limitTime);
@@ -216,11 +238,13 @@ class Game {
     let room = await Rooms.findById(roomID);
     if (!room)
      return;
+
     const time = room.limitTime;
     const player = players[i];
     const prevPlayer = players[(i - 1 + players.length) % players.length];
     const drawer = io.of("/").sockets.get(player);
-
+    room.drawer=  player ;
+    room.tempBlock={};
     // console.log("Just Checking"); 
     // console.log(player);
     // console.log(drawer);

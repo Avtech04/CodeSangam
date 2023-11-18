@@ -33,6 +33,7 @@ const roomSchema= new mongoose.Schema({
     players:[],
     blockedSockets:[], // consists of socketID of blocked sockets
     profanityCount:[], // key value pair DS to store blocked warnings
+    tempBlock:[],
     capacity:{
         type:Number
     },
