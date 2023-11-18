@@ -6,7 +6,6 @@ const cntx = canv.getContext('2d');
 const canv3 = document.getElementById('canvas3') ;
 const cntx3 = canv3.getContext('2d');
 const toolbox = document.getElementById('toolbox');
-const sidein = document.getElementById('sidepanelin');
 const sideout = document.getElementById('sidepanelout');
 var undo_arr = [];
 
@@ -96,14 +95,12 @@ function setup() {
 async function toggle_sidepanel() {
     if (toolbox.style.visibility=='hidden') {
       toolbox.style.visibility='visible';
-      sidein.style.visibility='hidden';
       for(var opac=0;opac<=1;opac+=0.1){
         toolbox.style.opacity=opac;
       }
     }
     else  {
       toolbox.style.visibility='hidden';
-      sidein.style.visibility='visible';
       for(var opac=1;opac>=0;opac-=0.1){
         toolbox.style.opacity=opac;
       }
@@ -208,13 +205,16 @@ async function draw(event) {
 
 var clear_check=1;
 function clear_page(cntx_name) {
+  undo_arr = [];
+  undo_arr_index=0;
+  button_state_checker();
   cntx_name.clearRect(0,0,canv.width,canv.height);
   cntx_name.fillStyle=document.getElementById("boardcolor").value;
   cntx_name.fillRect(0, 0, canv.width, canv.height);
   if(clear_check==1){
     socket.emit("clearCanvas");
   }
-  clear_check=0;
+  clear_check=1;
 }
 
 
@@ -340,9 +340,19 @@ socket.on('rectDo',async()=>{
 })
 socket.on('disableCanvas',async()=>{
     toolbox.style.visibility='hidden';
-      sidein.style.visibility='visible';
       for(var opac=1;opac>=0;opac-=0.1){
         toolbox.style.opacity=opac;
       }
+      resize();
       disable_setup();
 })
+socket.on('enableCanvas',async()=>{
+  resize();
+  toolbox.style.visibility='visible';
+      for(var opac=0;opac<=1;opac+=0.1){
+        toolbox.style.opacity=opac;
+      }
+  drawing_setup();
+ 
+})
+

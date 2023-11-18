@@ -136,7 +136,6 @@ socket.on('choosing', ({ name }) => {
   document.querySelector('#wordDiv').append(p);
   document.querySelector('#clock').textContent = 0;
   clearInterval(timerID);
-  clock.stop();
 });
 
 
@@ -166,7 +165,6 @@ socket.on('hideWord', ({ word} ) => {
 function chooseWord(word) 
 {
     clearTimeout(pickWordID);
-    // pad.setReadOnly(false);
     socket.emit('chooseWord', { word });
     const p = document.createElement('p');
     p.textContent = word;
@@ -200,7 +198,6 @@ socket.on('chooseWord', async ([word1, word2, word3]) =>
   document.querySelector('#tools').classList.remove('d-none');
   document.querySelector('#clock').textContent = 0;
   clearInterval(timerID);
-  clock.stop();
   pickWordID = setTimeout(() => chooseWord(word2), 15000);
 });
 
@@ -209,24 +206,12 @@ function startTimer(ms)
   console.log("TIME IS " + ms);
   let secs = ms / 1000;
   const id = setInterval((function updateClock() {
-      const wordP = document.querySelector('#wordDiv > p.lead.fw-bold.mb-0');
-      if (secs === 0) 
-      clearInterval(id);
-      // if (secs === 10)
-      //  clock.play();
-      document.querySelector('#clock').textContent = secs;
-      // if (hints[0] && wordP && secs === hints[0].displayTime && pad.readOnly) {
-      //     wordP.textContent = hints[0].hint;
-      //     hint.play();
-      //     animateCSS(wordP, 'tada', false);
-      //     hints.shift();
-      // }
-      secs--;
-      return updateClock;
-  }()), 1000);
+    if (secs === 0) clearInterval(id);
+    console.log(secs);
+    secs--;
+    return updateClock;
+}()), 1000);
   timerID = id;
-  timerStart.play();
-  document.querySelectorAll('.players .correct').forEach((player) => player.classList.remove('correct'));
 }
 
 
