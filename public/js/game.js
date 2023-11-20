@@ -367,12 +367,12 @@ socket.on('getPlayersO', (players)=>{
 
 socket.on('endGame', async ( stats ) => 
 {
-  alert("You have been kicked by the admin .");
+  // alert("You have been kicked by the admin .");
   document.querySelector('#gameZone').remove();
 
   stats.forEach((player) => 
   {
-   alert(player.name);
+   //alert(player.name);
    const row = document.createElement('div');
    const nameDiv = document.createElement('div');
    const scoreDiv = document.createElement('div');

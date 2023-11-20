@@ -1,4 +1,5 @@
 const Rooms = require("../models/room");
+const PlayerSchema = require('../models/player')
 var Filter = require("bad-words"),
   filter = new Filter();
 const leven = require("leven");
@@ -53,6 +54,21 @@ class Game {
     const stats = room2.players;
     console.log(stats);
     io.to(roomId).emit('endGame', stats );
+    // updating score
+   if(room2.type === 'Public')
+   {
+     for(var i=0; i < stats.length ; i++)
+      {
+       if(stats[i].userId == undefined)
+         continue;
+       let pla = await PlayerSchema .findOne({_id:stats[i].userId});
+       console.log(pla);
+       pla.rating += stats[i].score ;
+       pla= await pla.save();
+       }
+   }
+       
+
   }
 
   async giveTurnTo(players, i) {

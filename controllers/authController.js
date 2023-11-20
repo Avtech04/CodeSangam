@@ -20,7 +20,8 @@ exports.signup=async (req,res)=>{
         var user=await Player.findOne({email});
         console.log(user);
         if(!user){
-            user=await Player({
+            user=await Player
+            ({
                 username:first_name,
                 email,
                 password
@@ -41,11 +42,14 @@ exports.login=async (req,res)=>{
     var {email,password}=req.body;
     try{
         var user=await Player.findOne({email});
-        if(user&&(user.password==password)){
+        if(user&&(user.password==password))
+        {
             res.render('index',{user,roomID});
         }
 
-    }catch(err){
+    }
+    catch(err)
+    {
         res.status(400).json({
             message:error,
             status:'fail'
