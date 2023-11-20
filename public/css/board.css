@@ -54,7 +54,7 @@
     position: absolute;
     left: 18%;
     bottom: 0px;
-    height:60vh;
+    /* height:60vh; */
     /* max-width: 200px;
     min-width: 150px;
     max-height: 100%; */
@@ -75,6 +75,7 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
     background-color: #fffafa;
     font-family: Garamond, serif;
+    height: 450px;
   }
   
   #toolscontainer{
@@ -201,6 +202,7 @@
     cursor: crosshair;
     position: absolute;
     left: 30%;
+    top: 17vh;
     border-radius: 10px;
     /* margin-top:10px;
     margin-left: 10px;

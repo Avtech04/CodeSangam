@@ -128,6 +128,8 @@ function appendMessage(
  // alert(socket.id);
 }
 
+
+
 socket.on('choosing', ({ name }) => {
   const p = document.createElement('p');
   p.textContent = `${name} is choosing a word`;

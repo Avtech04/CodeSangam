@@ -6,6 +6,13 @@ const { get3Words, wait, returnScore } = require("./wordHelper");
 const GraphemeSplitter = require("grapheme-splitter");
 const { game } = require("./authController");
 const splitter = new GraphemeSplitter();
+const cloudinary=require("cloudinary").v2;
+cloudinary.config({ 
+  cloud_name: 'dtj2sixay', 
+  api_key: '976534766916839', 
+  api_secret: 'EriTFMp-vpP2J6WXl7c9qS_HLv0',
+  secure: true
+});
 
 
 

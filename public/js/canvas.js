@@ -1,6 +1,7 @@
 //Defined constants
 var undo_check=1;
 var redo_check=1;
+
 const canv = document.getElementById('canvas1') ;
 const cntx = canv.getContext('2d');
 const canv3 = document.getElementById('canvas3') ;
@@ -10,6 +11,11 @@ const sideout = document.getElementById('sidepanelout');
 var undo_arr = [];
 
 document.onload=initi();
+
+
+
+
+
 
 //So that no items or text of the toolbox can be selected.
 var x= document.getElementById("toolbox");
@@ -307,6 +313,7 @@ async function button_state_checker() {
     cntx.closePath();
     
   }
+
 socket.on('clearCanvas', ()=>{
     clear_check=0;
     clear_page(cntx);
@@ -356,3 +363,18 @@ socket.on('enableCanvas',async()=>{
  
 })
 
+
+var cloudinary = require('cloudinary').v2;
+var path = require('path');
+
+
+function download_img() {
+  var link = document.createElement('a');
+  link.download = 'filename.png';
+  link.href = document.getElementById('canvas1').toDataURL();
+  
+  link.click();
+  
+  socket.emit('shareSocials');
+
+}
