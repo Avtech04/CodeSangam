@@ -7,8 +7,6 @@ const GraphemeSplitter = require("grapheme-splitter");
 const { game } = require("./authController");
 const splitter = new GraphemeSplitter();
 
-
-
 class Game {
   constructor(io, socket) {
     this.io = io;
@@ -32,12 +30,21 @@ class Game {
       for (let i = 0; i < players.length; i++) {
      //   console.log('inside');
         io.to(roomId).emit('clearCanvas');
-
+        const player2 = Array.from(await io.in(socket.roomId).allSockets());
+        if(player2.length ==1)
+        {
+          // if only 1 player is left , just return ;
+          console.log(room.players);
+          const stats = room.players;
+          io.to(roomId).emit('endGame', stats );
+          return ;
+        }
         await this.giveTurnTo(players, i);
       }
     }
-    console.log(room.players);
-    const stats = room.players;
+    let room2 = await Rooms.findById(roomId);
+    const stats = room2.players;
+    console.log(stats);
     io.to(roomId).emit('endGame', stats );
   }
 
@@ -58,6 +65,10 @@ class Game {
     return ;
 
     let room = await Rooms.findById(roomId);
+    // if(curp.length >= room.tempBlock.length )
+    // {
+
+    // }
     const time = room.limitTime;
     const player = players[i];
     const prevPlayer = players[(i - 1 + players.length) % players.length];
@@ -169,22 +180,28 @@ class Game {
         for(var i=0; i< room.profanityCount.length ;i++)
         {
           // var x= room.profanityCount[i];
-          if (room.profanityCount[i].id === id) {
+          if (room.profanityCount[i].id === id) 
+          {
+            console.log(room.profanityCount[i].cnt) ;
             room.profanityCount[i].cnt += 1;
-            this.pushSocket(socket.id);
+            if(room.profanityCount[i].cnt ===  3)
+              this.pushSocket(socket.id);
             found = true;
             break;
           }
         }
-        if (found === false) {
-          var obj = {
+        if (found === false) 
+        {
+          var obj = 
+          {
             id: socket.id,
             cnt: 1,
           }
           room.profanityCount.push(obj);
         }
+        room.markModified('profanityCount');
         room = await room.save();
-        //  console.log(room.profanityCount );
+        // console.log(room.profanityCount );
         pres = true;
         return;
       }
@@ -211,19 +228,24 @@ class Game {
       var score2  = returnScore(room.startTime, room.limitTime);
     //  room.score[id] += score2;
       var ns=5;
+
       for(var i=0; i< room.players.length ;i++ )
       {
          if(room.players[i].socketId === id)
          {
-          console.log(room.players[i].score);
-          console.log(score2);
-             ns= room.players[i].score + score2;
-             room.players[i].score = ns; 
-             room = await room.save() ;
+          //  console.log(room.players[i].score);
+          //  console.log(score2);
+            
+             room.players[i].score += score2; 
+             ns= room.players[i].score ;
             // console.log("ns is "+ ns);
             break;
          }
       }
+      room.markModified('tempBlock');
+      room.markModified('players');
+      room = await room.save();
+
      // console.log("Current Contri is " + score2);
     //  console.log("UPdated Score is " + ns);
       // emitting in game
@@ -234,7 +256,9 @@ class Game {
         // drawerScore: games[socket.roomID][drawer.id].score,
     });
       //console.log(score2);
-    } else
+
+    } 
+    else
      if (distance <= 3 && currentWord !== "")
      {
       io.in(roomId).emit("message", { ...data, name });
@@ -244,8 +268,9 @@ class Game {
       // normal message
       io.in(roomId).emit("message", { ...data, name });
     }
-  
-   console.log(room);
+    // let room2 = await Rooms.findById(roomID);
+    // console.log(room2.players);
+ //  console.log(room.players);
   }
 
 

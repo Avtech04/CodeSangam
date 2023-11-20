@@ -33,7 +33,6 @@ function putPlayer(player) {
     div.appendChild(img);
     div.appendChild(p);
     document.querySelector('#playersDiv').appendChild(div);
-
 }
 
 function putPlayerPublic(player){

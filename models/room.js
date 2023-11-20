@@ -9,7 +9,7 @@ const roomSchema= new mongoose.Schema({
     rounds:{
         type:Number,
         required:true,
-        default:'2'
+        default:'2' ,
     },
     currentWord:{
       type:String,
@@ -29,8 +29,10 @@ const roomSchema= new mongoose.Schema({
     roomID:{
         type:String
     },
-    players:[],
-    blockedSockets:[], // consists of socketID of blocked sockets
+    players:{
+        type:Array 
+    },
+    blockedSockets:[] , // consists of socketID of blocked sockets
     profanityCount:[], // key value pair DS to store blocked warnings
     tempBlock:[],
     capacity:{
@@ -41,5 +43,6 @@ const roomSchema= new mongoose.Schema({
     },
 },
 {timestamps:true});
+
 
 module.exports=mongoose.model('Room',roomSchema);
