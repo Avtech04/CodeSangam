@@ -9,7 +9,7 @@
             <div class="col-10 col-md-8 text-center" id="wordDiv">codesangam</div>
         </div>
     </div>
-<div class="achievement" style="background-color: black;height:45px; width: 140px; position: absolute; left: 0;">
+<div class="achievement" style="background-color: black;height:45px; width: 260px; position: absolute;bottom: 2vh; right: 0;">
   <!-- facebook -->
   <a class="facebook" target="blank"><i class="fab fa-facebook"></i></a>
   
@@ -30,7 +30,13 @@
 
 </div>
 <div class="col-3 col-lg-2 h-100 players"></div>
-  <div id="toolbox">
+  <div id="toolbox" style="height: 450px;
+  visibility: visible;
+  opacity: 1;
+  user-select: none;
+  width: 10vw;
+  position: absolute;
+  top: 8vw;">
 
     <div id="toolproperties">
       <h5 style="font-size: 18px; font-family: 'Times New Roman', Times, serif;">Tool Properties</h5>
@@ -55,7 +61,8 @@
               style="bottom:335%;left:-100%;">Circle</span><img id="icon" src="circle.png" style="height: 15px;"></button>
               <button class="action" id="action9" onclick="tri()"><span class="tooltiptext"
                 style="bottom:335%;left:-100%;">Triangle</span><img id="icon" src="triangle.png" style="height: 15px;"></button>
-       
+                <button class="action" id="action4" onclick="download_img()" alt="Download as .jpg"><span class="tooltiptext" style="bottom:115%;left:-100%;">Dowload Image</span><img id="icon" src="board icons/Capture.svg"></button>
+          
           </div>
 
 

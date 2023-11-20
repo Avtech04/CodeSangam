@@ -1,0 +1,154 @@
+*, *::before, *::after {
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+body {
+  background-color: #111;
+  color: #fff;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  perspective: 800px;
+  overflow: hidden;
+  
+  *:not(:empty) {
+    transform-style: preserve-3d;
+  }
+}
+
+.scene {
+  position: relative;
+  // transform: rotateX(90deg) translateZ(-10em);
+  animation: scene 120s infinite linear;
+  
+  @keyframes scene {
+    from { transform: rotateX(90deg) translateZ(-12em) rotateZ(0deg); }
+    to { transform: rotateX(90deg) translateZ(-12em) rotateZ(360deg); }
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -50em;
+    background-color: #223;
+    background-image:
+      radial-gradient(closest-side, transparent, #111),
+      radial-gradient(circle at 0.4em 0.4em, transparent 0.1em, #aaf3 0.2em 0.3em, transparent 0.4em),
+      radial-gradient(circle at 1.2em 1.2em, transparent 0.1em, #aaf3 0.2em 0.3em, transparent 0.4em);
+    background-size: 100% 100%, 1.6em 1.6em, 1.6em 1.6em;
+  }
+}
+
+.launcher {
+  position: absolute;
+  
+  @for $l from 0 to 10 {
+    &:nth-child(#{$l + 1}) {
+      --duration: #{$l * 0.23 + 3.1}s;
+      --hue: #{$l * 36};
+      animation: f-position#{$l + 1} calc(var(--duration) * 10) var(--delay, 0s) step-end infinite;
+
+      @keyframes f-position#{$l + 1} {
+        @for $f from 0 to 10 {
+          #{$f * 10%} {
+            transform: translate(#{random(40) - 20}em, #{random(40) - 20}em);
+          }
+        }
+      }
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1.5em;
+    background-color: #000;
+    border-radius: 50%;
+    border: 1em solid hsl(var(--hue) 75% 75%);
+    box-shadow: 0 0 0.5em #0007;
+    animation: circle var(--duration) ease-out infinite;
+    
+    @keyframes circle {
+      0%, 100% { transform: scale(0); }
+      5%, 25% { transform: scale(1); }
+    }
+  }
+}
+
+.container {
+  position: absolute;
+  animation: container var(--duration) infinite ease-out;
+  
+  @keyframes container {
+    0%, 4% { transform: translateZ(-1em); }
+    18% { transform: translateZ(24em); }
+    100% { transform: translateZ(10em); }
+  }
+}
+
+.mainCube {
+  position: absolute;
+  inset: -0.5em;
+  animation: mainCube var(--duration) infinite ease-out;
+  
+  @keyframes mainCube {
+    0%, 4% { transform: rotate3d(0, 0, 0, 0); }
+    20%, 100% { transform: rotate3d(1, 2, 0, 360deg); }    
+  }
+    
+  > div {
+    position: absolute;
+    inset: 0;
+    background-color: hsl(var(--hue) 75% 75%);
+    box-shadow: 0 0 0.5em #000 inset;
+    animation: mainCubeOpacity var(--duration) infinite step-end;
+
+    @keyframes mainCubeOpacity {
+      0% { opacity: 1; }
+      20%, 100% { opacity: 0; }
+    }
+
+    &:nth-child(1) { transform: translateZ(0.5em); }
+    &:nth-child(2) { transform: rotateY(90deg) translateZ(0.5em); }
+    &:nth-child(3) { transform: rotateY(180deg) translateZ(0.5em); }
+    &:nth-child(4) { transform: rotateY(270deg) translateZ(0.5em); }
+    &:nth-child(5) { transform: rotateX(90deg) translateZ(0.5em); }
+    &:nth-child(6) { transform: rotateX(270deg) translateZ(0.5em); }
+  }
+}
+
+.fireworks {
+  position: absolute;
+  transform: translateZ(0em);
+  
+  > i {
+    position: absolute;
+    inset: -0.5em;
+    background-color: hsl(var(--hue) 75% var(--light, 75%));
+    animation: fireworks var(--duration) infinite step-end;
+    
+    @keyframes fireworks {
+      0% { transform: translate3d(0, 0, -28em); }
+      20% { transform: translate3d(0, 0, var(--init-tz)); animation-timing-function: cubic-bezier(0,0,0,1); }
+      100% { transform:
+        translate3d(var(--tx), var(--ty), var(--tz))
+        rotateX(var(--rx)) rotateY(var(--ry))
+        scale(0);
+      }
+    }
+    
+    @for $i from 0 to 33 {
+      &:nth-child(#{$i + 1}) {
+        --init-tz: #{8 - ($i / 2)}px;
+        --tx: #{random(50) - 25}em;
+        --ty: #{random(50) - 25}em;
+        --tz: #{random(30) - 6}em;        
+        --rx: #{random(720)}deg;
+        --ry: #{random(720)}deg;
+        --light: #{60 + random(25)}%;
+      }
+    }
+  }
+}
