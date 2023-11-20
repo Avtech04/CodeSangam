@@ -237,12 +237,8 @@ function draw1(data) {
 //rectangle drawing 
 var isRectOn = false;
 async function start_rect_drawing() {
-  console.log(isRectOn);
-  if (isRectOn === true) {
-    console.log("check stop")
-    stop_rect_drawing()
+  check_tools();
 
-  } else {
     document.getElementById("pagecontainer").style.cursor = 'crosshair';
     console.log("yes_rect");
     canv3.addEventListener("touchstart", start_rect);
@@ -261,7 +257,7 @@ async function start_rect_drawing() {
     document.getElementById('strokecolor').value = pstrokecolor;
     document.getElementById('strokewidth').value = pstrokewidth;
     isRectOn = true;
-  }
+  
 }
 
 async function stop_rect_drawing() {
@@ -343,6 +339,119 @@ const draw_rect_helper = (data) => {
   cntx3.stroke();
   cntx3.closePath();
 }
+
+var isCircleOn=false;
+//Trying circle drawing
+async function start_circle_drawing() {
+  check_tools();
+
+  document.getElementById("pagecontainer").style.cursor= 'crosshair';
+  canv3.addEventListener("touchstart", start_circle);
+  canv3.addEventListener("touchmove", draw_circle);
+  canv3.addEventListener("touchend", stop_circle);
+  canv3.addEventListener("mousedown", start_circle);
+  canv3.addEventListener("mousemove", draw_circle);
+  canv3.addEventListener("mouseup", stop_circle);
+  canv3.addEventListener("pointerdown", start_circle);
+  canv3.addEventListener("pointermove", draw_circle);
+  canv3.addEventListener("pointerup", stop_circle);
+  canv3.width = window.innerWidth*(0.45);
+  canv3.height = window.innerHeight*(0.80);
+  canv3.style.opacity=1;
+  canv3.style.visibility='visible';
+  document.getElementById('strokecolor').value = pstrokecolor;
+  document.getElementById('strokewidth').value = pstrokewidth;
+  isCircleOn=true;
+  
+}
+
+async function stop_circle_drawing() {
+  canv3.width = 0;
+  canv3.height = 0;
+  canv3.style.opacity=0;
+  canv3.style.backgroundColor="";
+  canv3.style.visibility='hidden';
+  canv3.removeEventListener("touchstart", start_circle);
+  canv3.removeEventListener("touchmove", draw_circle);
+  canv3.removeEventListener("touchend", stop_circle);
+  canv3.removeEventListener("mousedown", start_circle);
+  canv3.removeEventListener("mousemove", draw_circle);
+  canv3.removeEventListener("mouseup", stop_circle);
+  canv3.removeEventListener("pointerdown", start_circle);
+  canv3.removeEventListener("pointermove", draw_circle);
+  canv3.removeEventListener("pointerup", stop_circle);
+  pstrokewidth = document.getElementById('strokewidth').value;
+  pstrokecolor = document.getElementById('strokecolor').value;
+  isCircleOn=false;
+}
+
+async function start_circle(event) {
+  event.preventDefault();
+  locator(event);
+  controlPoint.x=loc.x; //used to store the initial point
+  controlPoint.y=loc.y;
+  stroke_properties(cntx3);
+  strok =true;
+}
+
+async function draw_circle(data) {
+  if (!strok){return;}
+  if(drawer_check==0){
+    loc=data.loc;
+    controlPoint=data.controlPoint;
+  }
+  cntx3.clearRect(0,0,canv3.width,canv3.height);
+  cntx3.beginPath();
+ // cntx3.moveTo(controlPoint.x,controlPoint.y);
+  if(drawer_check==1){
+    locator(data);
+  }
+  //document.getElementById('toolscontainer').innerHTML = "X:" + loc.x +"   Y:" + loc.y ; //for testing
+	var radius;
+	if((loc.x-controlPoint.x)<0){
+		radius = controlPoint.x - loc.x;
+	}else{
+		radius = loc.x-controlPoint.x;
+	}
+  cntx3.arc(controlPoint.x,controlPoint.y,radius,0*Math.PI,2*Math.PI);
+  cntx3.stroke();
+  if(drawer_check==1){
+  socket.emit('drawCircle', { loc, controlPoint });
+  }
+  drawer_check=1;
+}
+
+async function stop_circle() {
+  strok = false;  //turn off drawing, and immediately draw the current line to canvas1
+  stroke_properties(cntx);
+	var radius;
+	if((loc.x-controlPoint.x)<0){
+		radius = controlPoint.x - loc.x;
+	}else{
+		radius = loc.x-controlPoint.x;
+	}
+  cntx.beginPath();
+	cntx.arc(controlPoint.x,controlPoint.y,radius,0*Math.PI,2*Math.PI);
+  cntx.stroke();
+  cntx.closePath();
+  cntx3.clearRect(0,0,canv3.width,canv3.height);
+  update_page_image();
+  if(drawer_check==1){
+  socket.emit('stopCircle', { loc, controlPoint });
+  }
+  drawer_check=1;
+}
+//circle drawing complete
+
+const check_tools=()=>{
+  if(isRectOn){
+    stop_rect_drawing();
+  }
+  if(isCircleOn){
+    stop_circle_drawing();
+  }
+}
+
 
 
 //Undo Redo functionality:
@@ -436,12 +545,26 @@ socket.on('drawRect', (data) => {
 })
 
 socket.on('stopRect', (data) => {
+  check_tools();
   drawer_check = 0;
   loc = data.loc;
   controlPoint = data.controlPoint;
   stop_rect();
 })
 
+socket.on('drawCircle',(data)=>{
+  strok=true;
+  drawer_check=0;
+  draw_circle(data);
+})
+
+socket.on('stopCircle',(data)=>{
+  check_tools();
+  drawer_check=0;
+  loc=data.loc;
+  controlPoint=data.controlPoint;
+  stop_circle();
+})
 socket.on('undodo', async () => {
   undo_check = 0;
   await undo();
