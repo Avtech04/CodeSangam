@@ -55,6 +55,15 @@ class Game {
     console.log(stats);
     io.to(roomId).emit('endGame', stats );
     // updating score
+    for(var i=0; i < stats.length ; i++)
+    {
+     if(stats[i].userId == undefined)
+       continue;
+     let pla = await PlayerSchema .findOne({_id:stats[i].userId});
+     pla.lastMatches.push(roomId);
+     room.markModified('lastMatches');
+     pla= await pla.save();
+     }
    if(room2.type === 'Public')
    {
      for(var i=0; i < stats.length ; i++)
