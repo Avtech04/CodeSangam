@@ -55,11 +55,11 @@
           style="bottom:355%;left:0%;">Undo</span><img id="icon" src="Undo.svg"></button>
       <button class="action" id="action9" onclick="redo()"><span class="tooltiptext"
           style="bottom:335%;left:-100%;">Redo</span><img id="icon" src="Redo.svg"></button>
-          <button class="action" id="action9" onclick="rect()"><span class="tooltiptext"
+          <button class="action" id="action9" onclick="start_rect_drawing()"><span class="tooltiptext"
             style="bottom:335%;left:-100%;">Rect</span><img id="icon" src="rect.png" style="height: 15px;"></button>
             <button class="action" id="action9" onclick="cir()"><span class="tooltiptext"
               style="bottom:335%;left:-100%;">Circle</span><img id="icon" src="circle.png" style="height: 15px;"></button>
-              <button class="action" id="action9" onclick="tri()"><span class="tooltiptext"
+              <button class="action" id="action9" onclick="line()"><span class="tooltiptext"
                 style="bottom:335%;left:-100%;">Triangle</span><img id="icon" src="triangle.png" style="height: 15px;"></button>
                 <button class="action" id="action4" onclick="download_img()" alt="Download as .jpg"><span class="tooltiptext" style="bottom:115%;left:-100%;">Dowload Image</span><img id="icon" src="board icons/Capture.svg"></button>
           
@@ -81,7 +81,7 @@
       aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     </canvas>
 
-    <canvas id="canvas3" height="0" width="0">
+    <canvas id="canvas3">
       <p>Your Browser is not supported by this web app. We regret the inconveniance caused.</p>
       <p>Please try one of these supported browsers:</p>
       <p><a href="www.mozilla.org">Mozilla Firefox</a></p>

@@ -43,6 +43,8 @@ io.on("connection", (socket) => {
   );
   socket.on("joinRoom", async (data) => new Room(io, socket).joinRoom(data));
   socket.on("drawing", (data) => new Canvas(io, socket).broadcastDrawing(data));
+  socket.on('drawRect',(data)=>new Canvas(io,socket).drawRectangle(data));
+  socket.on('stopRect',(data)=>new Canvas(io,socket).stopRectangle(data));
   socket.on("stopdrawing", (data) => new Canvas(io, socket).stopDrawing());
   socket.on("clearCanvas", () => new Canvas(io, socket).clearCanvas());
   socket.on("joinPublic", async (player) =>

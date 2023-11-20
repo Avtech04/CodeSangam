@@ -6,8 +6,18 @@ class Canvas {
 
     broadcastDrawing(data) {
         const { socket } = this;
-        console.log(data);
         socket.broadcast.to(socket.roomId).emit('drawing', data);
+    }
+
+    drawRectangle(data){
+        const { socket } = this;
+        console.log(data);
+        socket.broadcast.to(socket.roomId).emit('drawRect', data);
+    }
+
+    stopRectangle(data){
+        const { socket } = this;
+        socket.broadcast.to(socket.roomId).emit('stopRect', data);
     }
 
     clearCanvas() {
@@ -25,10 +35,6 @@ class Canvas {
     redoDo(){
         const { socket } = this;
         socket.broadcast.to(socket.roomId).emit('redoDo');
-    }
-    rectDo(){
-        const { socket } = this;
-        socket.broadcast.to(socket.roomId).emit('rectDo');
     }
 }
 
