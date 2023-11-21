@@ -9,12 +9,7 @@ const cntx3 = canv3.getContext('2d');
 const toolbox = document.getElementById('toolbox');
 const sideout = document.getElementById('sidepanelout');
 var undo_arr = [];
-var pstrokewidth = 5;
-var pstrokecolor;
-var estrokewidth = 30;  //setting strokewidth to 30
-var estrokecolor = document.getElementById("boardcolor").value;
-var lstrokewidth = document.getElementById("strokewidth").value;
-var lstrokecolor = document.getElementById('strokecolor').value;
+
 
 
 
@@ -551,6 +546,45 @@ const check_tools=()=>{
   if(isLineOn){
     stop_line_drawing();
   }
+  if(isEraserOn){
+    stop_eraser();
+  }
+}
+
+var isEraserOn=false;
+var lstrokecolor;
+var lstrokewidth;
+function start_eraser() {
+  if(isEraserOn){
+    stop_eraser();
+    return;
+  }
+  lstrokewidth = document.getElementById("strokewidth").value;
+  lstrokecolor = document.getElementById('strokecolor').value;
+  document.getElementById("strokecolor").disabled = true;
+  document.getElementById("pagecontainer").style.cursor= "url('board icons/Eraser_cursor.png'),auto";
+  check_tools();
+  isEraserOn=true;
+  document.getElementById("strokewidth").value =30;
+  document.getElementById('strokecolor').value ="#ffffff";
+  document.getElementById('eraser').style.backgroundColor = "#9392FF";
+
+  if(drawer_check==1){
+    socket.emit('erase',{lstrokecolor,lstrokewidth});
+  }
+  drawer_check=1;
+}
+
+function stop_eraser() {
+  document.getElementById('eraser').style.backgroundColor = "white";
+  isEraserOn=false;
+  document.getElementById("strokewidth").value =lstrokewidth;
+  document.getElementById("strokecolor").disabled = false;
+  document.getElementById('strokecolor').value =lstrokecolor;
+  if(drawer_check==1){
+    socket.emit('stopEraser');
+  }
+  drawer_check=1;
 }
 
 
@@ -680,6 +714,18 @@ socket.on('stopLine',(data)=>{
   controlPoint=data.controlPoint;
   stop_line();
 })
+
+socket.on("eraser",(data)=>{
+  drawer_check=0;
+  lstrokecolor=data.lstrokecolor;
+  lstrokewidth=data.lstrokewidth;
+  start_eraser();
+})
+
+socket.on('stopEraser',()=>{
+  drawer_check=0;
+  stop_eraser();
+})
 socket.on('undodo', async () => {
   undo_check = 0;
   await undo();
@@ -696,6 +742,7 @@ socket.on('disableCanvas', async () => {
     toolbox.style.opacity = opac;
   }
   resize();
+  check_tools();
   disable_setup();
   stop_rect_drawing();
 })
@@ -703,6 +750,7 @@ socket.on('disableCanvas', async () => {
 socket.on('enableCanvas', async () => {
   resize();
   toolbox.style.visibility = 'visible';
+  check_tools();
   for (var opac = 0; opac <= 1; opac += 0.1) {
     toolbox.style.opacity = opac;
   }

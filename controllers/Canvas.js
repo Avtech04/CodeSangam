@@ -39,6 +39,16 @@ class Canvas {
         socket.broadcast.to(socket.roomId).emit('stopLine', data);
     }
 
+    eraser(data){
+        const { socket } = this;
+        socket.broadcast.to(socket.roomId).emit('eraser',data);
+    }
+
+    stopEraser(){
+        const { socket } = this;
+        socket.broadcast.to(socket.roomId).emit('stopEraser');
+    }
+
     clearCanvas() {
         const { socket } = this;
         socket.broadcast.to(socket.roomId).emit('clearCanvas');
@@ -47,6 +57,7 @@ class Canvas {
         const { socket } = this;
         socket.broadcast.to(socket.roomId).emit('stopdrawing');
     }
+
     undoDo(){
         const { socket } = this;
         socket.broadcast.to(socket.roomId).emit('undodo');

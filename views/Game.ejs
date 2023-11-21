@@ -38,10 +38,16 @@
   position: absolute;
   top: 8vw;">
 
+<div id="toolscontainer">
+  <h5 style="font-size: 18px;">Tools</h5>
+  <button class="tools" id="eraser" onclick="start_eraser()"><img id="icon" style="width:21px;height:21px" src="board icons/Eraser.png"></button>
+</div>
+
     <div id="toolproperties">
       <h5 style="font-size: 18px; font-family: 'Times New Roman', Times, serif;">Tool Properties</h5>
       <div id="properties" style="width:85%">Stroke Size<input id="strokewidth" value="5" type="range" min="0.5"
           max="50" placeholder="Example: 1"></input></div>
+
       <div id="properties" style="width:85%">Pen Color<input id="strokecolor" value="#000000" type="color"></div>
       <div id="properties2" style="width:0%">Board Color<input id="boardcolor" value="#ffffff" type="color"></div>
     </div>
