@@ -27,7 +27,7 @@ body {
   margin-top: 6vh;
   /* margin-left: 20vw; */
   position: absolute;
-  top: 0;
+  top: -10vh;
   right: 20vw;
   bottom: 0;
   /* left: 0; */
@@ -46,7 +46,7 @@ body {
 }
 
 .layer:after {
-  font: 120px/0.65 "Pacifico", "Kaushan Script", Futura, "Roboto", "Trebuchet MS", Helvetica, sans-serif;
+  font: 100px/0.65 "Pacifico", "Kaushan Script", Futura, "Roboto", "Trebuchet MS", Helvetica, sans-serif;
   content: "Moti\a    Hub!";
   white-space: pre;
   text-align: center;
@@ -177,11 +177,14 @@ body {
     border: 2px;
     cursor: pointer;
     box-shadow: 10px 10px lightblue;
+    width: 23vw;
 }
+.load{
 
+}
 .second{
     cursor: pointer;
-    width: 8vw;
+    width: 12vw;
     padding: 10px 20px;
     font-size: 20px;
     background-color: #814ff8e3;
@@ -189,6 +192,21 @@ body {
     border-radius: 12px;
     border: 2px;
     margin-right: 12px;
+
+}
+.second2{
+  position: absolute;
+    cursor: pointer;
+    width: 12vw;
+    padding: 10px 20px;
+    font-size: 20px;
+    background-color: #814ff8e3;
+    color: white;
+    border-radius: 12px;
+    border: 2px;
+    margin-right: 12px;
+    top: -94vh;
+    right: -18vw;
 
 }
 .name_accept{
@@ -316,6 +334,9 @@ body {
     <!-- <div class="button-btn"><a href="/signup"><button>Signup</button></a></div> -->
     <!-- <a href="/login"><button>Login</button></a>
     <a href="/signup"><button>Signup</button></a> -->
+
+    <div class="button-btn"><a href="/leaderboard"><button class="second2"> LeaderBoard </button></a></div>
+
 </div>
 </body>
 <script src="js/script.js"></script>

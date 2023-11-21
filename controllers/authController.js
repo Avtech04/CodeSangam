@@ -1,5 +1,6 @@
 const path=require('path');
 const Player=require('../models/player');
+const { log } = require('console');
 var filePath=path.join(__dirname, '..')
 var roomID;
 
@@ -14,6 +15,12 @@ exports.loginPage=(req,res)=>{
 exports.signupPage=(req,res)=>{
     res.sendFile(filePath+'/signup.html');
 }
+
+exports.leaderBoard=async (req,res)=>{
+    const data=(await Player.find({}).select('username rating').sort('-rating'));
+    res.render('leader',{data});
+}
+
 exports.signup=async (req,res)=>{
     var {first_name,email,password,confirm_password}=req.body;
     try{

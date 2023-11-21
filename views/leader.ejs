@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/ball.css">
+    <link rel="stylesheet" href="css/windmill.css">
+    <style>
+          @import url("//fonts.googleapis.com/css?family=Pacifico&text=Pure");
+@import url("//fonts.googleapis.com/css?family=Roboto:700&text=Css");
+@import url("//fonts.googleapis.com/css?family=Kaushan+Script&text=!");
+
+body {
+    
+  /* min-height: 450px; */
+  height: 100vh;
+  margin: 0;
+  background: radial-gradient(circle, #0077ea, #1f4f96, #1b2949, #000);
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+h2{
+    font: 40px/0.65 "Pacifico", "Kaushan Script", Futura, "Roboto", "Trebuchet MS", Helvetica, sans-serif;
+    position: absolute;
+    top: 10vh;
+    right: 25vw;
+    color: white;
+}
+
+
+.scene{
+    position: relative;
+    top: 25vh;
+    transform: rotateY(30deg);
+}
+
+.table{
+    display: flex;
+    flex-direction: row;
+}
+.usernaam{
+    background: #0f0e50a3;
+    color: white;
+    padding: auto;
+    text-align: center;
+    width: 12vw;
+    margin: 6px;
+    padding: 12px;
+    border-radius: 12px;
+}
+.userrating{
+    background:#3798bd;
+    color: white;
+    padding: auto;
+    text-align: center;
+    width: 12vw;
+    margin: 6px;
+    padding: 12px;
+    border-radius: 12px;
+}
+.table1{
+    font-family:"Pacifico", "Kaushan Script", Futura, "Roboto", "Trebuchet MS"; 
+    position: absolute;
+    top: 28vh;
+    right: 20vw;
+    flex-direction: column;
+  
+}
+
+.second{
+    padding: 12px;
+    background-color: #5c5e7a;
+    color: white;
+    border-radius: 12px;
+    border: 12px;
+    position: fixed;
+    bottom: -15vh;
+    width: 15vw;
+    left: 7vw;
+    cursor: pointer;
+}
+    </style>
+</head>
+<body>
+   
+
+
+      
+      <div class="scene">
+  
+        <div class="windmill">
+          <div class="fan">
+            <div class="blade">
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="sail"></div>
+            </div>
+            <div class="blade">
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="sail"></div>
+            </div>
+            <div class="blade">
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="sail"></div>
+            </div>
+            <div class="blade">
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="wood"></div>
+              <div class="sail"></div>
+            </div>
+          </div>
+          
+          <div class="side">
+            <div class="roof"></div>
+            <div class="wall"></div>
+          </div>
+          <div class="side">
+            <div class="roof"></div>
+            <div class="wall"></div>
+          </div>
+          <div class="side">
+            <div class="roof"></div>
+            <div class="wall"></div>
+          </div>
+          <div class="side">
+            <div class="roof"></div>
+            <div class="wall"></div>
+          </div>
+          <div class="side">
+            <div class="roof"></div>
+            <div class="wall"></div>
+          </div>
+          <div class="side">
+            <div class="roof"></div>
+            <div class="wall"></div>
+          </div>
+          <div class="side">
+            <div class="roof"></div>
+            <div class="wall"></div>
+          </div>
+          <div class="side">
+            <div class="roof"></div>
+            <div class="wall"></div>
+          </div>
+        </div>
+      </div>
+
+
+      <h2>LeaderBoard</h2>
+     <div class="table1" >
+      <% data.forEach(function(user){ %>
+        <div class="table">
+          <div class="usernaam"><%= user.username %></div>
+          <div class="userrating"><%= user.rating %></div>
+        </div>
+      <% })%>
+    </div>
+
+    <a href="/"><button class="second"> Go to Home Page </button></a>
+
+  
+</body>
+<script src="js/script.js"></script>
+<script>
+    const btn=document.getElementById('go');
+    btn.addEventListener('click',()=>{
+        location.href='/root';
+    })
+
+    
+</script>
+</html>

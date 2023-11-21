@@ -2,7 +2,7 @@ const request = require('request-promise');
 async function getRandom() {
   let options = { json: true };
   var words;
-  const url = 'https://random-word-api.herokuapp.com/word?number=3' ;
+  const url = 'https://random-word-api.vercel.app/api?words=3' ;
   await request(url, options, (error, res, body) => {
     if (error) {
       return console.log(error)

@@ -17,6 +17,11 @@ router
     .post(authController.signup)
 
 router
+    .route('/leaderboard')
+    .get(authController.leaderBoard)
+    .post(authController.leaderBoard)
+
+router
     .route('/game')
     .get(authController.game);
 router
