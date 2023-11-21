@@ -53,27 +53,31 @@ class Room {
         socket.emit('otherPlayers',{players});
     }
 
-    async joinPublic(player){
+    async joinPublic(player)
+    {
         const { io, socket } = this; 
-        let room =await Rooms.find({Type:'Public',capacity:{$lt:4}});
-        console.log(player);
-        console.log(room);
+        let room =await Rooms.find( { Type:'Public' , capacity:{$lt:2} } );
+        // console.log(player);
+        // console.log(room);
         var room_id;
         let user=
         {
             name:player.username,
             score:0,
             socketId:socket.id,
-            userId:player._id
+            userId: player._id 
         }
-        if(room.length==0){
+         
+
+        if(room.length==0)
+        {
             room= new Rooms();
             room.Type='Public';
             room.players.push(user);
             room.capacity=1;
             room= await room.save();
-            
-        }else{
+        }else
+        {
             console.log("yes");
             room=room[0];
             
@@ -81,16 +85,23 @@ class Room {
             room.capacity+=1;
             room= await room.save();
         }
+        console.log("WORKING") ;
+
         room_id=String(room._id);
+
         socket.join(room_id);
+
         socket.roomId=room_id;
+
         socket.name=player.username;
+
         socket.to(room_id).emit('joinPublicRoom', user);
+
         const players=room.players;
-        socket.emit('otherPublicPlayers',{players});
-        if(room.capacity==4){
-            console.log("yes");
-            await new Game(io,socket).startGame();
+       socket.emit('otherPublicPlayers',{players});
+
+        if(room.capacity==2){
+             await new Game(io, socket).startGame();
         }
     }
     async updateSettings(data)
@@ -104,10 +115,7 @@ class Room {
         socket.to(socket.roomId).emit('settingsUpdate', rest);
         // console.log("SETTINGS UPDATED");
     }
-   
 
-
-    
 }
 
 module.exports = Room;

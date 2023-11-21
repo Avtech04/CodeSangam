@@ -8,52 +8,7 @@ document.querySelectorAll("button").forEach((button) => {
 var x = socket.id;
 
 
-function createScoreCard(players) {
-  players.forEach((player) => {
-    const div = document.createElement("div");
-    const avatar = document.createElement("div");
-    const details = document.createElement("div");
-    const img = document.createElement("img");
-    const p1 = document.createElement("p");
-    const p2 = document.createElement("p");
-    const name = document.createTextNode(player.name);
-    const score = document.createTextNode("Score: 0");
-     const id = player.id;
-    // const roomID=  player.gameID ;
-    // const socket2= player.socket ;
-    img.src = player.avatar;
-    img.classList.add("img-fluid", "rounded-circle");
-    div.classList.add(
-      "row",
-      "justify-content-end",
-      "py-1",
-      "align-items-center"
-    );
-    avatar.classList.add("col-5", "col-xl-4");
-    details.classList.add("col-7", "col-xl-6", "text-center", "my-auto");
-    p1.classList.add("mb-0");
-    p2.classList.add("mb-0");
-    div.id = `skribblr-${player.id}`;
-    div.append(details, avatar);
-    div.append(id);
-   // div.append(roomID);
 
-    const newButton = document.createElement("button");
-    newButton.textContent = "Click me!";
-    document.body.appendChild(newButton);
-    newButton.addEventListener("click", () => {
-      
-       socket.emit('kick',id);
-       alert('DONE') ;
-
-    });
-    avatar.append(img);
-    details.append(p1, p2);
-    p1.append(name);
-    p2.append(score);
-    document.querySelector(".players").append(div);
-  });
-}
 
 function appendMessage(
   { name = "", message, id },
@@ -246,6 +201,7 @@ function createScoreCard(players)
       const p2 = document.createElement('p');
       const name = document.createTextNode(player.name);
       const score = document.createTextNode('Score: 0');
+      const foradmin = document.createTextNode('(admin)');
       const spa= document.createElement('div');
       const newButton = document.createElement("button");
       newButton.textContent = "Block!";
@@ -273,16 +229,22 @@ function createScoreCard(players)
       p2.classList.add('mb-0');
       div.id = player.socketId ;
       div.append(details, avatar);
+      if(player.isAdmin === false)  
      div.append(newButton);
       // div.append(spa);
+      if(player.isAdmin === false)  
       div.append(newButton2);
       avatar.append(img);
       details.append(p1, p2);
       p1.append(name);
+      
+      if(player.isAdmin === true) 
+         p1.append(foradmin);
+
       p2.append(score);
       document.querySelector('.players').append(div);
 
-  });
+    });
 }
 function createScoreCard2(players)
  {
@@ -395,3 +357,5 @@ socket.on('endGame', async ( stats ) =>
   document.querySelector('#gameEnded').classList.remove('d-none');
 
 });
+
+

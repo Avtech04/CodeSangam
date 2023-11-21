@@ -28,10 +28,15 @@ class Game {
     const rounds = room.rounds;
     const players = Array.from(await io.in(socket.roomId).allSockets());
     socket.to(socket.roomId).emit("startGame");
+
     for(let i=0;i<players.length;i++){
       await io.to(players[i]).emit('disableCanvas');
     }
+
+    this.getPlayers();
+
     socket.emit("startGame");
+    
     console.log(rounds);
     for (let j = 0; j < rounds -1 ; j++) {
      // console.log(j);
@@ -55,7 +60,16 @@ class Game {
     console.log(stats);
     io.to(roomId).emit('endGame', stats );
     // updating score
-   if(room2.Type === 'Public')
+    for(var i=0; i < stats.length ; i++)
+    {
+       if(stats[i].userId == undefined)
+         continue;
+      let pla = await PlayerSchema .findOne({_id:stats[i].userId});
+      pla.lastMatches.push(roomId);
+       pla.markModified('lastMatches');
+       pla= await pla.save();
+     }
+   if(room2.Type ==='Public' )
    {
      for(var i=0; i < stats.length ; i++)
       {
@@ -64,11 +78,10 @@ class Game {
        let pla = await PlayerSchema .findOne({_id:stats[i].userId});
        console.log(pla);
        pla.rating += stats[i].score ;
+       pla.markModified('rating') ;
        pla= await pla.save();
        }
    }
-       
-
   }
 
   async giveTurnTo(players, i) {
@@ -298,32 +311,23 @@ class Game {
 
 
   async getPlayers() {
-    // console.log("LUFFY ");
     const { io, socket } = this;
     const roomID = socket.roomId;
-    // const players = Array.from(await io.in(roomID).allSockets());
-    //    const acc= new Array();
-    //    for(var i=0; i< players.length;i++)
-    //    {
-    //      const pl= players[i];
-    //      const drawer = io.of("/").sockets.get(pl);
-    //      acc.push(drawer);
-    //     //  console.log(pl);
-    //     //  console.log(drawer);
-    //    }
-   
-    //    const PlayerData = new Array();
-    //    for(var i=0;i<acc.length; i++)
-    //    {
-    //       var obj= {
-    //          id : acc[i].id,
-    //          name: acc[i].name
-    //       }
-    //       PlayerData.push(obj);
-    //    }
-    // io.in(roomID ).emit('getPlayers',PlayerData ) ;
-
+   // console.log("INSDE GET PLAYERS ");
     let room = await Rooms.findById(roomID);
+    if(room.Type === 'Public')
+    {
+      console.log("I am here in public ") ;
+      const players=room.players;
+      console.log(players);
+       for(let i = 0; i < players.length; i++)
+       {
+           const drawer = io.of("/").sockets.get(players[i].socketId);
+          drawer.emit('getPlayersO', players);
+        }
+       return ;
+    }
+
     const players = room.players;
     for(var i=0;i< players.length;i++)
     {

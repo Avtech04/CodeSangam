@@ -35,7 +35,8 @@ function putPlayer(player) {
     document.querySelector('#playersDiv').appendChild(div);
 }
 
-function putPlayerPublic(player){
+function putPlayerPublic(player)
+{
     const div = document.createElement('div');
     const img = document.createElement('img');
     const p = document.createElement('p');
@@ -101,11 +102,15 @@ else
     socket.emit('joinPublic',user);
 }
 
-document.querySelector('#startGame').addEventListener('click', async () => {
+document.querySelector('#startGame').addEventListener('click', 
+async () => 
+{
     showCanvas();
     socket.emit('startGame');
-    socket.emit('getPlayers');
+   // socket.emit('getPlayers');
 });
+
+
 
 function showCanvas() {
     console.log('got change');
@@ -134,17 +139,26 @@ socket.on('newPrivateRoom', (data) => {
     putPlayer(data.user);
 });
 
+socket.on('publicCanvas',()=>{
+    // showCanvas();
+    // socket.emit('startGame');
+    // socket.emit('getPlayers');
+
+})
 socket.on("joinRoom", (data) => {
     console.log("yes");
     putPlayer(data);
 });
-socket.on('joinPublicRoom',(data)=>{
-    putPlayerPublic(data);
+
+
+socket.on('joinPublicRoom',(data)=>
+{
+    putPlayerPublic(data) ;
 })
 
 socket.on('otherPlayers', (data) => data.players.forEach((player) => putPlayer(player)));
 socket.on('otherPublicPlayers',(data)=> {data.players.forEach((player) => putPlayerPublic(player))});
 
-let color =  background-color;
+let color =  background-color ;
 const rand = () => Math.floor(Math.random() * 255 + 1);
 setTimeout(() => color.cssText = `--paint-color: rgb(${rand()}, ${rand()}, ${rand()})`, 5000);
