@@ -237,10 +237,12 @@ function draw1(data) {
 //rectangle drawing 
 var isRectOn = false;
 async function start_rect_drawing() {
-  check_tools();
-
+    if(isRectOn){
+      check_tools();
+      return;
+    }
+    check_tools();
     document.getElementById("pagecontainer").style.cursor = 'crosshair';
-    console.log("yes_rect");
     canv3.addEventListener("touchstart", start_rect);
     canv3.addEventListener("touchmove", draw_rect);
     canv3.addEventListener("touchend", stop_rect);
@@ -343,8 +345,13 @@ const draw_rect_helper = (data) => {
 var isCircleOn=false;
 //Trying circle drawing
 async function start_circle_drawing() {
-  check_tools();
 
+  if(isCircleOn){
+    check_tools();
+    return;
+  }
+
+  check_tools();
   document.getElementById("pagecontainer").style.cursor= 'crosshair';
   canv3.addEventListener("touchstart", start_circle);
   canv3.addEventListener("touchmove", draw_circle);
@@ -441,8 +448,99 @@ async function stop_circle() {
   }
   drawer_check=1;
 }
-//circle drawing complete
 
+var isLineOn=false;
+async function line() {
+  if(isLineOn){
+    check_tools();
+    return;
+  }
+  check_tools();
+  document.getElementById("pagecontainer").style.cursor= 'crosshair';
+  canv3.addEventListener("touchstart", start_line);
+  canv3.addEventListener("touchmove", draw_line);
+  canv3.addEventListener("touchend", stop_line);
+  canv3.addEventListener("mousedown", start_line);
+  canv3.addEventListener("mousemove", draw_line);
+  canv3.addEventListener("mouseup", stop_line);
+  canv3.addEventListener("pointerdown", start_line);
+  canv3.addEventListener("pointermove", draw_line);
+  canv3.addEventListener("pointerup", stop_line);
+  canv3.width = window.innerWidth*(0.45);
+  canv3.height = window.innerHeight*(0.80);
+  canv3.style.opacity=1;
+  canv3.style.visibility='visible';
+  document.getElementById('strokecolor').value = pstrokecolor;
+  document.getElementById('strokewidth').value = pstrokewidth;
+  isLineOn=true;
+}
+
+async function stop_line_drawing() {
+  canv3.width = 0;
+  canv3.height = 0;
+  canv3.style.opacity=0;
+  canv3.style.backgroundColor="";
+  canv3.style.visibility='hidden';
+  canv3.removeEventListener("touchstart", start_line);
+  canv3.removeEventListener("touchmove", draw_line);
+  canv3.removeEventListener("touchend", stop_line);
+  canv3.removeEventListener("mousedown", start_line);
+  canv3.removeEventListener("mousemove", draw_line);
+  canv3.removeEventListener("mouseup", stop_line);
+  canv3.removeEventListener("pointerdown", start_line);
+  canv3.removeEventListener("pointermove", draw_line);
+  canv3.removeEventListener("pointerup", stop_line);
+  pstrokewidth = document.getElementById('strokewidth').value;
+  pstrokecolor = document.getElementById('strokecolor').value;
+  isLineOn=false;
+}
+
+async function start_line(event) {
+  event.preventDefault();
+  locator(event);
+  controlPoint.x=loc.x; //used to store the initial point
+  controlPoint.y=loc.y;
+  stroke_properties(cntx3);
+  strok =true;
+}
+
+async function draw_line(data) {
+  if (!strok){return;}
+  if(drawer_check==0){
+    loc=data.loc;
+    controlPoint=data.controlPoint;
+  }
+  cntx3.clearRect(0,0,canv3.width,canv3.height);
+  cntx3.beginPath();
+  cntx3.moveTo(controlPoint.x,controlPoint.y);
+  if(drawer_check==1){
+    locator(data);
+  }
+  cntx3.lineTo(loc.x, loc.y);
+  cntx3.stroke();
+  cntx3.closePath();
+  if(drawer_check==1){
+    socket.emit('drawLine',{loc,controlPoint});
+  }
+  drawer_check=1;
+}
+
+async function stop_line() {
+  strok = false;  //turn off drawing, and immediately draw the current line to canvas1
+  stroke_properties(cntx);
+  cntx.beginPath();
+  cntx.moveTo(controlPoint.x,controlPoint.y);
+  cntx.lineTo(loc.x, loc.y);
+  cntx.stroke();
+  cntx.closePath();
+  cntx3.clearRect(0,0,canv3.width,canv3.height);
+  update_page_image();
+  if(drawer_check==1){
+    socket.emit('stopLine',{loc,controlPoint});
+  }
+  drawer_check=1;
+}
+//line drawing complete
 const check_tools=()=>{
   if(isRectOn){
     stop_rect_drawing();
@@ -450,7 +548,11 @@ const check_tools=()=>{
   if(isCircleOn){
     stop_circle_drawing();
   }
+  if(isLineOn){
+    stop_line_drawing();
+  }
 }
+
 
 
 
@@ -564,6 +666,19 @@ socket.on('stopCircle',(data)=>{
   loc=data.loc;
   controlPoint=data.controlPoint;
   stop_circle();
+})
+socket.on('drawLine',(data)=>{
+  strok=true;
+  drawer_check=0;
+  draw_line(data);
+})
+
+socket.on('stopLine',(data)=>{
+  check_tools();
+  drawer_check=0;
+  loc=data.loc;
+  controlPoint=data.controlPoint;
+  stop_line();
 })
 socket.on('undodo', async () => {
   undo_check = 0;

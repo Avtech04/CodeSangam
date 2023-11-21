@@ -11,7 +11,6 @@ class Canvas {
 
     drawRectangle(data){
         const { socket } = this;
-        console.log(data);
         socket.broadcast.to(socket.roomId).emit('drawRect', data);
     }
 
@@ -22,13 +21,22 @@ class Canvas {
 
     drawCircle(data){
         const { socket } = this;
-        console.log(data);
         socket.broadcast.to(socket.roomId).emit('drawCircle', data);
     }
 
     stopCircle(data){
         const { socket } = this;
         socket.broadcast.to(socket.roomId).emit('stopCircle', data);
+    }
+
+    drawLine(data){
+        const { socket } = this;
+        socket.broadcast.to(socket.roomId).emit('drawLine', data);
+    }
+
+    stopLine(data){
+        const { socket } = this;
+        socket.broadcast.to(socket.roomId).emit('stopLine', data);
     }
 
     clearCanvas() {
