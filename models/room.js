@@ -18,7 +18,7 @@ const roomSchema= new mongoose.Schema({
     limitTime:{
         type:Number,
         required:true,
-        default: 40000, // 40 seconds 
+        default: 10000, 
     },
     admin:{
         type:String

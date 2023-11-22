@@ -3,7 +3,7 @@ const PlayerSchema = require('../models/player')
 var Filter = require("bad-words"),
   filter = new Filter();
 const leven = require("leven");
-const { get3Words, wait, returnScore } = require("./wordHelper");
+const { get3Words, wait, returnScore, returnScoreDrawer } = require("./wordHelper");
 const GraphemeSplitter = require("grapheme-splitter");
 const { game } = require("./authController");
 const splitter = new GraphemeSplitter();
@@ -16,9 +16,13 @@ cloudinary.config({
 });
 
 class Game {
+
+  
+
   constructor(io, socket) {
     this.io = io;
     this.socket = socket;
+    this.ct=0;
   }
 
   async startGame() {
@@ -42,6 +46,7 @@ class Game {
      // console.log(j);
       for (let i = 0; i < players.length; i++) {
      //   console.log('inside');
+        this.ct=0;
         io.to(roomId).emit('clearCanvas');
         const player2 = Array.from(await io.in(socket.roomId).allSockets());
         if(player2.length ==1)
@@ -53,7 +58,32 @@ class Game {
           return ;
         }
         await this.giveTurnTo(players, i);
+        
+
+
+        room = await Rooms.findById(roomId);
+        // console.log("Player.len", players);
+        // console.log('temp ', room.tempBlock);
+        var ns1=returnScoreDrawer(players.length-1,room.tempBlock.length-1);
+        for(var k=0; k< room.players.length ;k++ )
+      {
+         if(room.players[k].socketId === players[i])
+         {
+             room.players[k].score += ns1; 
+             ns1= room.players[k].score ;
+            break;
+         }
       }
+      room.markModified('tempBlock');
+      room.markModified('players');
+        io.in(roomId).emit('updateScore', {
+          playerID: players[i],
+          score: ns1
+      });
+
+      }
+
+    
     }
     let room2 = await Rooms.findById(roomId);
     const stats = room2.players;
@@ -119,9 +149,11 @@ class Game {
       const word = await this.chosenWord(player);
       io.to(player).emit('enableCanvas');
       room.currentWord = word;
-      await room.save();
+      
       const startTime = Date.now() / 1000;
       io.to(roomId).emit('startTimer', time);
+      room.startTime = startTime;
+      await room.save();
       if (await wait(startTime, drawer, time)) 
       drawer.to(roomId).broadcast.emit('lastWord', word);
     } catch (error) {
@@ -156,7 +188,7 @@ class Game {
     const roomID = socket.roomId ;
     const id = socket.id;
     let room = await Rooms.findById(roomID);
-
+    
     for (var i = 0; i < room.blockedSockets.length; i++) {
       var x = room.blockedSockets[i];
       if (x === id) {
@@ -245,6 +277,7 @@ class Game {
     // console.log(distance);
     if (distance === 0) {
       console.log("GUESSED");
+      (this.ct)=(this.ct)+1;
       // socket.emit('message', { ...data, name: socket.player.name });
       socket.emit("correctGuess", {
         message: "You guessed it right",
@@ -258,6 +291,7 @@ class Game {
       room.tempBlock.push(id);
       socket.emit('displayWord',{word:guess});
       // add Score
+      console.log(returnScore(room.startTime, room.limitTime));
       var score2  = returnScore(room.startTime, room.limitTime);
     //  room.score[id] += score2;
       var ns=5;
@@ -271,7 +305,6 @@ class Game {
             
              room.players[i].score += score2; 
              ns= room.players[i].score ;
-            // console.log("ns is "+ ns);
             break;
          }
       }

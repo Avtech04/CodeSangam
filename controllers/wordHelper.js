@@ -37,14 +37,30 @@ function wait(startTime, drawer, ms) {
   });
 }
 
-function returnScore (start, total)
+function returnScore (start, roundtime)
 {
     // var x= Date.now() / 1000;
     // var used= x- start;
     // var perused= (used / total) * 100;
     // var remaining = 100 -perused;
     // return 1000 * remaining /100 ;
-    return 100;
+    // return 100;
+
+
+    const now = Date.now() / 1000;
+    console.log("Currenttime:",now);
+    const elapsedTime = Number(now - start);
+    console.log("elapsedTime:",elapsedTime);
+    
+    const roundTime=roundtime/1000;
+    console.log("Roundtime:", roundTime);
+    return Number( Math.floor(((roundTime - elapsedTime) / roundTime) * 100));
+}
+
+function returnScoreDrawer (total,guessed)
+{
+  console.log(guessed);
+    return Number( Math.floor((guessed / total) * 100));
 }
 
 
@@ -52,5 +68,6 @@ module.exports = {
     get3Words,
     wait,
     getRandom,
-    returnScore
+    returnScore,
+    returnScoreDrawer
 };
