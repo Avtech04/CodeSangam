@@ -13,7 +13,7 @@ const Game = require("./controllers/Game");
 const DisconnectHelper = require("./controllers/DisconnectHelper");
 const Canvas = require("./controllers/Canvas");
 global.round = new EventEmitter();
-global.blockedSockets = new Array();
+
 //database connection
 const connecttomongo = () => {
   mongoose.connect("mongodb://127.0.0.1:27017/codesangam", {

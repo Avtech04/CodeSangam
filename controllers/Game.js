@@ -101,10 +101,7 @@ class Game {
     return ;
 
     let room = await Rooms.findById(roomId);
-    // if(curp.length >= room.tempBlock.length )
-    // {
-
-    // }
+    
     const time = room.limitTime;
     const player = players[i];
     const prevPlayer = players[(i - 1 + players.length) % players.length];
@@ -156,7 +153,7 @@ class Game {
     const { io, socket } = this;
     const roomId = socket.roomId;
     const name = socket.name;
-    const roomID = socket.roomId;
+    const roomID = socket.roomId ;
     const id = socket.id;
     let room = await Rooms.findById(roomID);
 
@@ -179,6 +176,7 @@ class Game {
       });
       return;
     }
+
     for(var i=0;i < room.tempBlock.length;i++ )
     {
        if(room.tempBlock[i]=== id)
@@ -237,7 +235,6 @@ class Game {
         }
         room.markModified('profanityCount');
         room = await room.save();
-        // console.log(room.profanityCount );
         pres = true;
         return;
       }
@@ -259,7 +256,7 @@ class Game {
       });
 
       room.tempBlock.push(id);
-
+      socket.emit('displayWord',{word:guess});
       // add Score
       var score2  = returnScore(room.startTime, room.limitTime);
     //  room.score[id] += score2;
@@ -292,14 +289,22 @@ class Game {
         // drawerScore: games[socket.roomID][drawer.id].score,
     });
       //console.log(score2);
-
+      const curp = Array.from(await io.in(roomId).allSockets());
+        
+        // console.log(room.profanityCount );
+   
+        if( room.tempBlock.length >= curp.length -1   )
+        {
+          // console.log("EXECUTED THE ROOM EMIT CALL");
+         io.in(roomId).emit("startTimer", 0);
+         round.emit('everybodyGuessed',{ roomID: roomID })
+        }
     } 
     else
      if (distance <= 3 && currentWord !== "")
      {
       io.in(roomId).emit("message", { ...data, name });
       socket.emit("closeGuess", { message: "That was very close!" });
-      
     } 
     else
      {
@@ -312,7 +317,8 @@ class Game {
   }
 
 
-  async getPlayers() {
+  async getPlayers()
+   {
     const { io, socket } = this;
     const roomID = socket.roomId;
    // console.log("INSDE GET PLAYERS ");

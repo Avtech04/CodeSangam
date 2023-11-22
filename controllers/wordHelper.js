@@ -16,18 +16,23 @@ async function getRandom() {
   return words
 }
 async function get3Words(roomID) {
-  // var arr = await getRandom();
-  // console.log(arr);
-  // return arr;
-  var arr= new Array() ;
-  arr.push("arpit");
-  arr.push("ayush");
-  arr.push("ankit");
+  var arr = await getRandom();
+  console.log(arr);
   return arr;
+  // var arr= new Array() ;
+  // arr.push("arpit");
+  // arr.push("ayush");
+  // arr.push("ankit");
+  // return arr;
 }
 function wait(startTime, drawer, ms) {
-
-  return new Promise((resolve, reject) => {
+  
+  return new Promise((resolve, reject) => 
+  {
+    round.on('everybodyGuessed', ({ roomID: callerRoomID }) => 
+    {
+      resolve();
+    });
     setTimeout(() => resolve(true), ms);
   });
 }

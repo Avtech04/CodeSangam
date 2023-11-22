@@ -6,13 +6,14 @@ class DisconnectHelper
         this.socket = socket;
     }
 
-    async onDisconnect() {
+    async onDisconnect() 
+    {
         const { io, socket } = this;
-        socket.emit('removeID' , socket.id );
         const roomID = socket.roomId;
 
         let room = await Rooms.findById(roomID);
         const curSocket = socket.id;
+        socket.emit('removeID' , socket.id );
         io.to(roomID).emit('updateScoreBoard', curSocket );
 
         if(!room)
@@ -26,6 +27,15 @@ class DisconnectHelper
         room.players= players;
         room.markModified('players');
         room= await room.save();
+        const player2 = Array.from(await io.in(roomID).allSockets());
+        if(player2.length ==1)
+        {
+          // if only 1 player is left , just return ;
+          console.log(room.players);
+          const stats = room.players;
+          io.to(roomID).emit('endGame', stats );
+          return ;
+        }
     }
 }
 

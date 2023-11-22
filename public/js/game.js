@@ -7,9 +7,6 @@ document.querySelectorAll("button").forEach((button) => {
 });
 var x = socket.id;
 
-
-
-
 function appendMessage(
   { name = "", message, id },
   {
@@ -27,10 +24,6 @@ function appendMessage(
   const chat = document.createTextNode(`${message}`);
   const messages = document.querySelector(".messages");
 
-  //var x = socket.id;
- // blockedSockets.push(x);
-//  alert(blockedSockets.length);
- // console.log(blockedSockets.length);
 
   if (name !== "") {
     const span = document.createElement("span");
@@ -57,30 +50,9 @@ function appendMessage(
 
   p.append(chat);
 
-  const newButton = document.createElement("button");
-  newButton.textContent = "Block!";
-
-  const newButton2 = document.createElement("button");
-  newButton2.textContent = "Kick!";
-
-  // document.body.appendChild(newButton);
-
-  // p.append(newButton);
-  // p.append(newButton2);
   messages.appendChild(p);
   messages.scrollTop = messages.scrollHeight;
-  if(cnt===0)
-  {
 
-  }
-  if (message === "You guessed it right!") 
-       correct.play();
-  // newButton.addEventListener("click", () => {
-  //   isBlocked = true;
-  //   alert("USER IS BLOCKED");
-  //   // // console.log( socket.id + " is blocked");
-  // });
- // alert(socket.id);
 }
 
 
@@ -118,7 +90,19 @@ socket.on('hideWord', ({ word} ) => {
   document.querySelector('#wordDiv').append(p);
 //  console.log( "+ +" );
 });
+socket.on('displayWord', ({ word} ) => {
 
+  const p = document.createElement('p');
+  p.textContent = word;
+
+  // console.log("HIDDEN WORD IS");
+  // console.log(word);
+
+  p.classList.add('lead', 'fw-bold', 'mb-0');
+  document.querySelector('#wordDiv').innerHTML = '';
+  document.querySelector('#wordDiv').append(p);
+//  console.log( "+ +" );
+});
 function chooseWord(word) 
 {
     clearTimeout(pickWordID);
@@ -160,10 +144,13 @@ socket.on('chooseWord', async ([word1, word2, word3]) =>
 
 function startTimer(ms) 
 {
-  console.log("TIME IS " + ms);
+  //console.log("TIME IS " + ms);
   let secs = ms / 1000;
+  if(timerID)
+   clearTimeout(timerID);
   const id = setInterval((function updateClock() {
-    if (secs === 0) clearInterval(id);
+    if (secs === 0)
+     clearInterval(id);
     document.getElementById("clock").innerHTML =secs;
     console.log(secs);
     secs--;

@@ -115,11 +115,11 @@ function removeID(socketIDD)
   var ele  = document.getElementById(socketIDD);
   var parentContainer = ele.parentNode;
   parentContainer.removeChild(ele);
-  alert(" REMOVED FROM LOBBBY  ");
+//   alert(" REMOVED FROM LOBBBY  ");
 }
 socket.on('removeID',(socketIDD) => 
  {
-        removeID(socketIDD);
+    removeID(socketIDD);
  });
  
 function showCanvas() {
