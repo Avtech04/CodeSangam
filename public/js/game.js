@@ -242,7 +242,7 @@ function createScoreCard(players)
          p1.append(foradmin);
 
       p2.append(score);
-      document.querySelector('.players').append(div);
+      document.querySelector('.players').appendChild(div);
 
     });
 }
@@ -262,6 +262,7 @@ function createScoreCard2(players)
       const p2 = document.createElement('p');
       const name = document.createTextNode(player.name);
       const score = document.createTextNode('Score: 0');
+      const foradmin = document.createTextNode('(admin)');
       const spa= document.createElement('div');
       // const newButton = document.createElement("button");
       // newButton.textContent = "Block!";
@@ -292,15 +293,27 @@ function createScoreCard2(players)
     //  div.append(newButton);
       // div.append(spa);
       // div.append(newButton2);
+      if(player.isAdmin === true) 
+      p1.append(foradmin);
       avatar.append(img);
       details.append(p1, p2);
+     
       p1.append(name);
       p2.append(score);
-      document.querySelector('.players').append(div);
+      document.querySelector('.players').appendChild(div);
 
   });
 }
-
+function removeCurBoard(players)
+{
+  var ele  = document.getElementById(players);
+  var parentContainer = ele.parentNode;
+  parentContainer.removeChild(ele);
+  alert("DONE");
+}
+socket.on('updateScoreBoard',(player)=>{
+  removeCurBoard(player);
+})
 
 socket.on('getPlayers', (players) =>
 { 

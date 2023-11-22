@@ -323,7 +323,7 @@ class Game {
        for(let i = 0; i < players.length; i++)
        {
            const drawer = io.of("/").sockets.get(players[i].socketId);
-          drawer.emit('getPlayersO', players);
+           drawer.emit('getPlayersO', players);
         }
        return ;
     }
@@ -353,10 +353,30 @@ class Game {
     let room = await Rooms.findById(roomID);
     var stats= room.players;
     player.emit("endGame", stats );
+    this.kickEffect(player);
    // console.log("kick is working");
     player.leave(socket.roomId);
     const players1 = Array.from(await io.in(socket.roomID).allSockets());
-    console.log(players1);
+    //console.log(players1);
+    //this.getPlayers();
+}
+async kickEffect(pSocket)
+{
+  //remove it from DB ;
+  // and from the score Board
+  const{io,socket}=this;
+  const roomID = socket.roomId;
+
+  let room = await Rooms.findById(roomID);
+  const curSocket = pSocket.id;
+  const players = room.players; 
+  //remove item with socketID = curSocket
+  const itemToBeRemoved = {socketId: curSocket };
+  io.to(roomID).emit('updateScoreBoard', curSocket );
+  players.splice(players.findIndex(a => a.socketId === itemToBeRemoved.socketId) , 1);
+  room.players= players;
+  room.markModified('players');
+  room= await room.save();
 }
 
 }
