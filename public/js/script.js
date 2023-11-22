@@ -21,7 +21,7 @@ function putPlayer(player) {
     const img = document.createElement('img');
     const p = document.createElement('p');
     const text = document.createTextNode(player.name);
-    div.id = `${player.userId}`;
+    div.id = `${player.socketId}`;
     p.appendChild(text);
     p.classList.add('text-center');
 
@@ -41,7 +41,7 @@ function putPlayerPublic(player)
     const img = document.createElement('img');
     const p = document.createElement('p');
     const text = document.createTextNode(player.name);
-    div.id = `${player.userId}`;
+    div.id = `${player.socketId}`;
     p.appendChild(text);
     p.classList.add('text-center');
 
@@ -110,8 +110,18 @@ async () =>
    // socket.emit('getPlayers');
 });
 
-
-
+function removeID(socketIDD)
+{
+  var ele  = document.getElementById(socketIDD);
+  var parentContainer = ele.parentNode;
+  parentContainer.removeChild(ele);
+  alert(" REMOVED FROM LOBBBY  ");
+}
+socket.on('removeID',(socketIDD) => 
+ {
+        removeID(socketIDD);
+ });
+ 
 function showCanvas() {
     console.log('got change');
     document.querySelector('#private-room').remove();
@@ -129,7 +139,6 @@ copyBtn.addEventListener('click', (e) => {
         console.log('Browser Not compatible')
     }
 });
-
 
 
 //Sockets
@@ -156,8 +165,13 @@ socket.on('joinPublicRoom',(data)=>
     putPlayerPublic(data) ;
 })
 
-socket.on('otherPlayers', (data) => data.players.forEach((player) => putPlayer(player)));
-socket.on('otherPublicPlayers',(data)=> {data.players.forEach((player) => putPlayerPublic(player))});
+socket.on('otherPlayers', (data) =>
+ data.players.forEach((player) => 
+ putPlayer(player)
+ ));
+socket.on('otherPublicPlayers',(data)=> 
+{data.players.forEach((player) => putPlayerPublic(player))}
+);
 
 let color =  background-color ;
 const rand = () => Math.floor(Math.random() * 255 + 1);

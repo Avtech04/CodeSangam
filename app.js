@@ -10,6 +10,7 @@ const { EventEmitter } = require("events");
 const routes = require("./routes/authroutes");
 const Room = require("./controllers/Room");
 const Game = require("./controllers/Game");
+const DisconnectHelper = require("./controllers/DisconnectHelper");
 const Canvas = require("./controllers/Canvas");
 global.round = new EventEmitter();
 global.blockedSockets = new Array();
@@ -36,7 +37,8 @@ cloudinary.config({
 });
 
 // sockets connection
-io.on("connection", (socket) => {
+io.on("connection", (socket) => 
+{
   console.log(`connected user ${socket.id}`);
   socket.on("create-private-room", async (player) =>
     new Room(io, socket).createPrivateRoom(player)
@@ -70,7 +72,8 @@ io.on("connection", (socket) => {
   socket.on("chatBlock", async (id) => {
     await new Game(io, socket).pushSocket(id);
   });
-  socket.on("disconnect", () => {
+  socket.on("disconnect", async () => {
+    await new DisconnectHelper(io, socket).onDisconnect();
     console.log(`disconnected ${socket.id}`);
   });
   // socket.on('chooseWord', (word) =>{
@@ -82,6 +85,7 @@ io.on("connection", (socket) => {
   socket.on("KickPlayer", async (data) => {
     await new Game(io, socket).kickPlayers(data);
   });
+
   socket.on("shareSocials", async () => {
     const filePath = path.join(__dirname + "/../../../Downloads/filename.png");
     console.log(filePath);

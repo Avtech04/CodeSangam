@@ -218,7 +218,7 @@ class Game {
           // var x= room.profanityCount[i];
           if (room.profanityCount[i].id === id) 
           {
-            console.log(room.profanityCount[i].cnt) ;
+           // console.log(room.profanityCount[i].cnt) ;
             room.profanityCount[i].cnt += 1;
             if(room.profanityCount[i].cnt ===  3)
               this.pushSocket(socket.id);
@@ -299,7 +299,9 @@ class Game {
      {
       io.in(roomId).emit("message", { ...data, name });
       socket.emit("closeGuess", { message: "That was very close!" });
-    } else
+      
+    } 
+    else
      {
       // normal message
       io.in(roomId).emit("message", { ...data, name });
