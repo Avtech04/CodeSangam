@@ -182,7 +182,7 @@ async function draw(event) {
   loc_prev = loc;
 
   cntx.moveTo(loc.x, loc.y);
-
+  console.log(loc);
   //locator(event);
   controlPoint.x = loc.x;
   controlPoint.y = loc.y;
@@ -194,11 +194,12 @@ async function draw(event) {
   locator(event);
 
   cntx.quadraticCurveTo(controlPoint.x, controlPoint.y, loc.x, loc.y);
-
+  console.log(controlPoint);
+  console.log(loc);
   cntx.stroke();
   cntx.closePath();
 
-  socket.emit('drawing', { loc_prev, controlPoint, sw, strokColor });
+  socket.emit('drawing', { loc_prev, loc,controlPoint, sw, strokColor });
 }
 
 var clear_check = 1;
@@ -209,6 +210,7 @@ function clear_page(cntx_name) {
   cntx_name.clearRect(0, 0, canv.width, canv.height);
   cntx_name.fillStyle = document.getElementById("boardcolor").value;
   cntx_name.fillRect(0, 0, canv.width, canv.height);
+  update_page_image()
   if (clear_check == 1) {
     socket.emit("clearCanvas");
   }
@@ -216,13 +218,14 @@ function clear_page(cntx_name) {
 }
 
 
-function draw1(data) {
-  loc = data.loc_prev;
+async function draw1(data) {
+  console.log(data);
+  loc = data.loc;
   controlPoint = data.controlPoint;
   if (!strok) { return; }
   cntx.beginPath();
-  cntx.moveTo(loc.x, loc.y);
-  console.log("yes");
+  cntx.moveTo(data.loc_prev.x, data.loc_prev.y);
+  //console.log("yes");
   cntx.quadraticCurveTo(controlPoint.x, controlPoint.y, loc.x, loc.y);
   cntx.stroke();
   cntx.closePath();
@@ -657,13 +660,138 @@ async function button_state_checker() {
 
 
 
-socket.on('drawing', (data) => {
+//var bucket_fill
+var bucket_check=false;
+var rc;
+function hexToRgb(hexCode) {
+  // Remove the '#' character if it exists
+  
+  hexCode = hexCode.replace(/^#/, '');
+
+  // Parse the hex code to RGB
+  let bigint = parseInt(hexCode, 16);
+  let red = (bigint >> 16) & 255;
+  let green = (bigint >> 8) & 255;
+  let blue = bigint & 255;
+
+  return [red, green, blue,255];
+}
+
+function bucket_fun(){
+  if(bucket_check==true){
+    drawing_setup();
+    bucket_check=false;
+    return;
+  }
+  check_tools();
+  disable_setup();
+  start_bucket_fill();
+  bucket_check=true;
+}
+function start_bucket_fill(){
+  canv.addEventListener('click',bucket);
+}
+
+function bucket(event){
+  locator(event);
+  rc=hexToRgb(document.getElementById('strokecolor').value.toString());
+  floodFill(loc.x,loc.y,rc);
+  socket.emit('bucketFill',{loc,rc});
+}
+
+function floodFill(x, y, fillColor) {
+  console.log("innnnn");
+  var targetColor = getPixel(loc.x, loc.y, cntx.getImageData(0, 0, canv.width, canv.height));
+  // check we are actually filling a different color
+  console.log("target color: ", targetColor);
+  if (!colorsMatch(targetColor, fillColor)) {
+     fillPixel(x, y, targetColor, fillColor,cntx.getImageData(0, 0, canv.width, canv.height));
+     fillCol(cntx.getImageData(0, 0, canv.width, canv.height));
+  }
+}
+
+function setPixel(x, y, color, imageData) {
+  const offset = (y *  imageData.width + x) * 4;
+   imageData.data[offset + 0] = color[0];
+   imageData.data[offset + 1] = color[1];
+   imageData.data[offset + 2] = color[2];
+   imageData.data[offset + 3] = color[3];
+}
+
+
+function colorsMatch(a, b) {
+  return a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
+}
+
+var fillStack=[];
+function fillPixel(x, y, targetColor, fillColor,imageData) {
+  const currentColor =  getPixel(x, y,imageData);
+  if ( colorsMatch(currentColor, targetColor)) {
+     setPixel(x, y, fillColor,imageData);
+     fillStack.push([x + 1, y, targetColor, fillColor]);
+     fillStack.push([x - 1, y, targetColor, fillColor]);
+     fillStack.push([x, y + 1, targetColor, fillColor]);
+     fillStack.push([x, y - 1, targetColor, fillColor]);
+  }
+}
+
+function fillCol(imageData) {
+  if ( fillStack.length) {
+    let range =  fillStack.length;
+
+    for (let i = 0; i < range; i++) {
+       fillPixel(
+         fillStack[i][0],
+         fillStack[i][1],
+         fillStack[i][2],
+         fillStack[i][3],
+         imageData
+      );
+    }
+
+     fillStack.splice(0, range);
+
+     fillCol(imageData);
+  } else {
+    
+     cntx.putImageData( imageData, 0, 0);
+     update_page_image();
+     fillStack = [];
+  }
+}
+
+function getPixel(x, y,imageData) {
+  if (
+    x < 0 ||
+    y < 0 ||
+    x >=imageData.width ||
+    y >= imageData.height
+  ) {
+    return [-1, -1, -1, -1]; // impossible color
+  } else {
+    const offset = (y * imageData.width + x) * 4;
+
+    return [
+      imageData.data[offset + 0],
+      imageData.data[offset + 1],
+      imageData.data[offset + 2],
+      imageData.data[offset + 3],
+    ];
+  }
+}
+
+socket.on('bucketFill',(data)=>{
+  console.log("bucketFill");
+  loc=data.loc;
+  floodFill(data.loc.x,data.loc.y,data.rc);
+})
+socket.on('drawing', async (data) => {
   console.log(data);
   strok = true;
   document.getElementById('strokewidth').value = data.sw;
   document.getElementById('strokecolor').value = data.strokColor;
   stroke_properties(cntx);
-  draw1(data);
+  await draw1(data);
 })
 
 socket.on('stopdrawing', async () => {

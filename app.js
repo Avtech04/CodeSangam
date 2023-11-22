@@ -44,13 +44,14 @@ io.on("connection", (socket) =>
     new Room(io, socket).createPrivateRoom(player)
   );
   socket.on("joinRoom", async (data) => new Room(io, socket).joinRoom(data));
-  socket.on("drawing", (data) => new Canvas(io, socket).broadcastDrawing(data));
+  socket.on("drawing", async (data) => new Canvas(io, socket).broadcastDrawing(data));
   socket.on('drawRect',(data)=>new Canvas(io,socket).drawRectangle(data));
   socket.on('stopRect',(data)=>new Canvas(io,socket).stopRectangle(data));
   socket.on('drawCircle',(data)=>new Canvas(io,socket).drawCircle(data));
   socket.on('stopCircle',(data)=>new Canvas(io,socket).stopCircle(data));
   socket.on('drawLine',(data)=>new Canvas(io,socket).drawLine(data));
   socket.on('stopLine',(data)=>new Canvas(io,socket).stopLine(data));
+  socket.on('bucketFill',(data)=> new Canvas(io,socket).bucketFill(data));
   socket.on('eraser',(data)=>new Canvas(io,socket).eraser(data));
   socket.on('stopEraser',()=>new Canvas(io,socket).stopEraser());
   socket.on("stopdrawing", (data) => new Canvas(io, socket).stopDrawing());
@@ -76,9 +77,6 @@ io.on("connection", (socket) =>
     await new DisconnectHelper(io, socket).onDisconnect();
     console.log(`disconnected ${socket.id}`);
   });
-  // socket.on('chooseWord', (word) =>{
-  //     new Game(io, socket).startGame();
-  // })
   socket.on("settingsUpdate", (data) =>
     new Room(io, socket).updateSettings(data)
   );

@@ -4,9 +4,9 @@ class Canvas {
         this.socket = socket;
     }
 
-    broadcastDrawing(data) {
+    async broadcastDrawing(data) {
         const { socket } = this;
-        socket.broadcast.to(socket.roomId).emit('drawing', data);
+         await socket.broadcast.to(socket.roomId).emit('drawing', data);
     }
 
     drawRectangle(data){
@@ -38,7 +38,11 @@ class Canvas {
         const { socket } = this;
         socket.broadcast.to(socket.roomId).emit('stopLine', data);
     }
-
+    bucketFill(data){
+        const { socket } = this;
+        console.log(data);
+        socket.broadcast.to(socket.roomId).emit('bucketFill',data);
+    }
     eraser(data){
         const { socket } = this;
         socket.broadcast.to(socket.roomId).emit('eraser',data);
