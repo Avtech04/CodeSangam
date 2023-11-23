@@ -2,6 +2,13 @@ const socket = io('');
 const createPrivateRoom = document.getElementById('privateRoom');
 const userName = document.getElementById('randomPlay');
 const copyBtn = document.querySelector('#copy');
+
+
+
+
+
+
+
 user = JSON.parse(user);
 
 function updateSettings(e) 
@@ -25,7 +32,7 @@ function putPlayer(player) {
     p.appendChild(text);
     p.classList.add('text-center');
 
-    img.src = 'https://avatars.dicebear.com/api/avataaars/.svg';
+    img.src = 'https://robohash.org/stefan-one';
     img.alt = player.name;
     img.classList.add('img-fluid', 'rounded-circle');
     div.classList.add('col-4', 'col-sm-3', 'col-md-4', 'col-lg-3');
@@ -45,7 +52,7 @@ function putPlayerPublic(player)
     p.appendChild(text);
     p.classList.add('text-center');
 
-    img.src = 'https://avatars.dicebear.com/api/avataaars/.svg';
+    img.src = 'https://robohash.org/stefan-one';
     img.alt = player.name;
     img.classList.add('img-fluid', 'rounded-circle');
     div.classList.add('col-4', 'col-sm-3', 'col-md-4', 'col-lg-3');
@@ -97,7 +104,7 @@ if (user._id)
 } 
 else
  {
-    console.log('yes');
+    //console.log('yes');
     document.querySelector('#waiting').classList.remove('d-none');
     socket.emit('joinPublic',user);
 }

@@ -1,0 +1,405 @@
+* {
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  html, body {
+    background-color: #e7f2ff;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .new_container {
+    width: 100%;
+    height: 100%;
+    height: 550px;
+    min-height: 550px;
+    max-height: 550px;
+  }
+  
+  .new_main {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    animation: move 3s infinite;
+  }
+  .new_main .circle {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 8px solid #412c4c;
+    background-color: white;
+    top: 28px;
+    left: -15px;
+    border-radius: 100%;
+    overflow: hidden;
+  }
+  .new_main .circle:before {
+    content: "";
+    display: block;
+    border-radius: 100%;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    left: 0px;
+    top: 7px;
+    background-color: #bbb4cc;
+  }
+  .new_main .block {
+    width: 200px;
+    height: 97px;
+    background-color: #412c4c;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+  }
+  .new_main .block .inner_block {
+    width: 90%;
+    height: 84%;
+    background-color: #ff3888;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  .new_main .block .inner_block .big_new_paint {
+    animation: bignew_paintmove 3s infinite;
+    transform: rotate(-45deg);
+    width: 300%;
+    height: 600%;
+    background-color: transparent;
+    border: 6px solid red;
+    position: absolute;
+    overflow: hidden;
+    left: -110%;
+    top: -100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    z-index: 2;
+  }
+  .new_main .block .inner_block .big_new_paint .inner_line {
+    width: 65px;
+    height: 7px;
+    background-color: #412c4c;
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+  }
+  .new_main .block .inner_block .big_new_paint .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    background-color: #412c4c;
+    margin-right: 20px;
+    margin-top: 20px;
+  }
+  .new_main .block .inner_block .big_new_paint .inner_line2 {
+    width: 50px;
+    height: 7px;
+    background-color: #412c4c;
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-top: 24px;
+  }
+  .new_main .block .inner_block .big_new_paint .inner_line3 {
+    width: 30px;
+    height: 7px;
+    background-color: #412c4c;
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-top: 17px;
+  }
+  .new_main .block .inner_block .bgc {
+    width: 100%;
+    height: 80%;
+    border-radius: 15px;
+    background-color: rgba(255, 86, 147, 0.8);
+  }
+  .new_main .block .inner_block .bgc .inner {
+    width: 80px;
+    height: 30px;
+    border-radius: 12px;
+    background-color: rgba(255, 144, 172, 0.8);
+    position: absolute;
+    top: 10px;
+    left: 8px;
+  }
+  
+  .line .line1 {
+    width: 80px;
+    height: 85px;
+    position: absolute;
+    top: -60px;
+    right: -30px;
+    background-color: transparent;
+    border: 10px solid #412c4c;
+    border-radius: 0px 22px 50px 0px;
+  }
+  .line .line1:before {
+    content: "";
+    width: 20px;
+    height: 30px;
+    position: absolute;
+    background-color: #e7f2ff;
+    bottom: 0px;
+    left: -12px;
+  }
+  .line .line2 {
+    width: 60px;
+    height: 40px;
+    position: absolute;
+    top: 15px;
+    right: 45px;
+    background-color: transparent;
+    border: 10px solid #412c4c;
+    border-radius: 25px 0px 0px 0px;
+  }
+  .line .line2:before {
+    content: "";
+    width: 54px;
+    height: 13px;
+    position: absolute;
+    background-color: #e7f2ff;
+    bottom: -12px;
+    left: 0px;
+  }
+  .line .line2:after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    background-color: #e7f2ff;
+    bottom: 0px;
+    right: -15px;
+  }
+  
+  .handle {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .handle .handle_top {
+    width: 70px;
+    height: 120px;
+    background-color: #00c0ff;
+    border-radius: 20px 20px 0px 0px;
+    border-top: 20px solid #412c4c;
+    border-left: 11px solid #412c4c;
+    border-right: 11px solid #412c4c;
+    transform: perspective(5px) rotateX(1deg);
+    transform-origin: bottom;
+    z-index: 2;
+  }
+  .handle .handle_bottom {
+    width: 70px;
+    height: 72px;
+    border-radius: 100%;
+    border: 11px solid #412c4c;
+    margin-top: -30px;
+    background-color: #0393fd;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .handle .handle_top .top {
+    width: 100%;
+    height: 27px;
+    border-bottom: 8px solid #412c4c;
+    background-color: #bbb4cc;
+  }
+  .handle .handle_top .top:before {
+    width: 11px;
+    height: 0px;
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 6px;
+    border-left: 3px solid white;
+    border-right: 3px solid white;
+    border-top: 18px solid white;
+    transform: perspective(5px) rotateX(1deg);
+    transform-origin: bottom;
+  }
+  .handle .handle_top .bottom .left {
+    width: 18px;
+    height: 60px;
+    position: absolute;
+    background-color: #00e2ff;
+    top: 5px;
+    left: 4px;
+    border-radius: 20px;
+    border-top: 0px;
+    border-right: 10px solid #00e2ff;
+    transform: perspective(5px) rotateX(1deg);
+    transform-origin: bottom;
+  }
+  .handle .handle_top .bottom .right {
+    width: 7px;
+    height: 40px;
+    position: absolute;
+    top: 20px;
+    right: 5px;
+    border-radius: 20px;
+    transform: rotate(-3deg);
+    background-color: #412c4c;
+  }
+  .handle .handle_top .bottom .right:after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    bottom: -14px;
+    border-radius: 100%;
+    background-color: #412c4c;
+  }
+  .handle .handle_bottom .inner {
+    width: 111%;
+    height: 90%;
+    position: absolute;
+    background-color: #00c0ff;
+    border-radius: 100%;
+    top: -7px;
+    left: -3px;
+  }
+  
+  .new_paint {
+    animation: disappear 3s infinite;
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+    width: 125px;
+    height: 150px;
+    display: flex;
+  }
+  .new_paint .block {
+    background-color: #ff3888;
+    border-radius: 20px;
+  }
+  .new_paint .block1 {
+    width: 37px;
+    margin-top: 2px;
+    animation: block1_down 3s infinite;
+  }
+  .new_paint .block2 {
+    width: 20px;
+    margin-top: 20px;
+    margin-left: -1px;
+    animation: block2_down 3s infinite;
+  }
+  .new_paint .block2:before {
+    width: 93%;
+    height: 25px;
+    border-radius: 100%;
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 1px;
+    background-color: #e7f2ff;
+  }
+  .new_paint .block3 {
+    width: 22px;
+    margin-left: -1px;
+    animation: block3_down 3s infinite;
+  }
+  .new_paint .block4 {
+    width: 15px;
+    margin-top: 20px;
+    margin-left: -1px;
+    animation: block4_down 3s infinite;
+  }
+  .new_paint .block4:before {
+    width: 93%;
+    height: 25px;
+    border-radius: 100%;
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 1px;
+    background-color: #e7f2ff;
+  }
+  .new_paint .block5 {
+    margin-top: 5px;
+    width: 34px;
+    margin-left: -1px;
+    animation: block5_down 3s infinite;
+  }
+  
+  @keyframes move {
+    0% {
+      top: 40%;
+    }
+    50% {
+      top: 70%;
+    }
+    100% {
+      top: 40%;
+    }
+  }
+  @keyframes bignew_paintmove {
+    0% {
+      top: -100%;
+    }
+    50% {
+      top: -200%;
+    }
+    100% {
+      top: -100%;
+    }
+  }
+  @keyframes disappear {
+    0% {
+      height: 0px;
+    }
+    50% {
+      height: 220px;
+    }
+    100% {
+      height: 0px;
+    }
+  }
+  @keyframes block1_down {
+    0% {
+      margin-top: 2px;
+    }
+    100% {
+      margin-top: 55px;
+    }
+  }
+  @keyframes block2_down {
+    0% {
+      margin-top: 20px;
+    }
+    100% {
+      margin-top: 90px;
+    }
+  }
+  @keyframes block3_down {
+    0% {
+      margin-top: 0px;
+    }
+    100% {
+      margin-top: 70px;
+    }
+  }
+  @keyframes block4_down {
+    0% {
+      margin-top: 20px;
+    }
+    100% {
+      margin-top: 75px;
+    }
+  }
+  @keyframes block5_down {
+    0% {
+      margin-top: 5px;
+    }
+    100% {
+      margin-top: 40px;
+    }
+  }/*# sourceMappingURL=style.css.map */

@@ -55,7 +55,18 @@ function appendMessage(
 
 }
 
+function rocket_script(){
+  
+  var tl = new TimelineMax({repeat: -1, repeatDelay: 0});
 
+  tl.from('.cloud', 0.1, {alpha: 0}) // Decreased duration from 1 to 0.5
+    .to('.rocket-wrapper', 1, { y: -400, ease:Expo.easeIn }) // Decreased duration from 3 to 1.5
+    .to('.cloud', 1.5, { attr:{ cy: 185}, ease:Expo.easeIn }, "-=1.5") // Decreased duration from 3 to 1.5
+    .set('.cloud', {clearProps:"all"})
+    .set('.rocket-wrapper', { y: 450 })
+    .to('.rocket-wrapper', 2, { y:0, ease:Elastic.easeOut.config(0.5, 0.4) }) // Decreased duration from 4 to 2
+    .to('.trail-wrapper', 1.25, { scaleX:0.5, scaleY:0, alpha:0, ease:Expo.easeOut }, "-=1.0") // Decreased duration from 2.5 to 1.25
+}  
 
 socket.on('choosing', ({ name }) => {
   const p = document.createElement('p');
@@ -71,8 +82,16 @@ socket.on('choosing', ({ name }) => {
 socket.on("message", appendMessage);
 socket.on("closeGuess", (data) => appendMessage(data, { closeGuess: true }));
 socket.on("profanity", (data) => appendMessage(data, { profanity: true }));
-socket.on("correctGuess", (data) =>
+socket.on("correctGuess", async (data) =>{
   appendMessage(data, { correctGuess: true })
+  if(data.guess){
+      const rocket=document.getElementById('rocket');
+      rocket.setAttribute("style","visibility:visible");
+      rocket_script();
+      setTimeout(()=>{rocket.setAttribute("style","visibility:hidden");},3000);
+
+  }
+}
 );
 socket.on('lastWord', ( word ) => appendMessage({ message: `The word was ${word}` }, { lastWord: true }));
 
@@ -181,9 +200,10 @@ function createScoreCard(players)
     //console.log(player);
    // alert(player);
       const div = document.createElement('div');
-      const avatar = document.createElement('div');
+      // const avatar = document.createElement('div');
       const details = document.createElement('div');
-      const img = document.createElement('img');
+      const buttons = document.createElement('div');
+      // const img = document.createElement('img');
       const p1 = document.createElement('p');
       const p2 = document.createElement('p');
       const name = document.createTextNode(player.name);
@@ -192,14 +212,14 @@ function createScoreCard(players)
       const spa= document.createElement('div');
       const newButton = document.createElement("button");
       newButton.textContent = "Block!";
-
+      newButton.className="kick-block";
        newButton.addEventListener("click", () => 
        {
           socket.emit('chatBlock',player.socketId);
       });
       const newButton2 = document.createElement("button");
       newButton2.textContent = "Kick!";
-
+      newButton2.className="kick-block";
        newButton2.addEventListener("click", () => 
        {
         //  socket.emit('chatBlock',player.id);
@@ -208,20 +228,21 @@ function createScoreCard(players)
 
       
       // img.src = player.avatar;
-      img.classList.add('img-fluid', 'rounded-circle');
-      div.classList.add('row', 'justify-content-end', 'py-1', 'align-items-center');
-      avatar.classList.add('col-5', 'col-xl-4');
+      // img.classList.add('img-fluid', 'rounded-circle');
+  
+      // avatar.classList.add('col-5', 'col-xl-4');
       details.classList.add('col-7', 'col-xl-6', 'text-center', 'my-auto');
-      p1.classList.add('mb-0');
-      p2.classList.add('mb-0');
+      p1.classList.add('mb-0','mainn');
+      p2.classList.add('mb-0','mainn');
       div.id = player.socketId ;
-      div.append(details, avatar);
+      div.classList.add('temp-class');
+      div.append(details);
       if(player.isAdmin === false)  
      div.append(newButton);
       // div.append(spa);
       if(player.isAdmin === false)  
       div.append(newButton2);
-      avatar.append(img);
+      // avatar.append(img);
       details.append(p1, p2);
       p1.append(name);
       
@@ -346,15 +367,24 @@ socket.on('endGame', async ( stats ) =>
    row.classList.add('row', 'mx-0', 'align-items-center');
    nameDiv.classList.add('col-7', 'text-center');
    scoreDiv.classList.add('col-3', 'text-center');
-   name.classList.add('display-6', 'fw-normal', 'mb-0');
-   score.classList.add('display-6', 'fw-normal', 'mb-0');
+   name.classList.add('display-6', 'fw-normal', 'mb-0','coloor');
+   score.classList.add('display-6', 'fw-normal', 'mb-0','coloor');
    nameDiv.append(name);
    scoreDiv.append(score);
    row.append(nameDiv, scoreDiv);
    document.querySelector('#statsDiv').append(row, document.createElement('hr'));
   });
-  
+  // Create a link element
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = 'css/firework.css'; // Replace with your CSS file path
+
+  // Append the link element to the head of the document
+  document.head.appendChild(link);
+
   document.querySelector('#gameEnded').classList.remove('d-none');
+
 
 });
 

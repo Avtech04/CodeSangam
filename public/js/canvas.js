@@ -89,7 +89,7 @@ function disable_setup() {
 }
 
 function setup() {
-  toolbox.style.height = (window.innerHeight - 44) + 'px';
+  toolbox.style.height = (window.innerHeight*0.80);
 
   board_color();
   toggle_sidepanel();

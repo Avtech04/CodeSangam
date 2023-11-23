@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: #111;
+
   color: #fff;
   min-height: 100vh;
   display: grid;
@@ -18,8 +18,12 @@ body *:not(:empty) {
 }
 
 .scene {
-  position: relative;
+  /* position: relative; */
+  position: absolute;
+  top: 52%;
+  left: 33vw;
   animation: scene 120s infinite linear;
+
 }
 @keyframes scene {
   from {

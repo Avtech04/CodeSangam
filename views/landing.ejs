@@ -1,6 +1,14 @@
 <section id="landing">
-    <input type="text" class="input" placeholder="<%=user.username %>">
-    <button id="randomPlay"> Play with random players </button>
+    
+    <input type="text" class="input" style="
+    outline: none;
+    width: 100%;
+    margin-left: 0px;
+" placeholder="<%=user.username %>">
+    <button id="randomPlay" style="background-color: #0d6efd;
+    color: white;
+    padding: 8px;
+    border: 2px;"> Play with random players </button>
     
     <% if(!roomID) { %>
         <button class="btn btn-primary mt-3" id="privateRoom">Create Private Room</button>

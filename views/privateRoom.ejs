@@ -1,12 +1,15 @@
 <section id="private-room" class="d-none">
     <div class="row justify-content-between mx-0">
-        <div class="col-md-6 order-2 order-md-0 bg-white rounded h-100 p-3">
+        <div class="col-md-6 order-2 order-md-0 bg-white rounded h-100 p-3" style="
+        width: 40vw;
+        margin: 6vh;
+    ">
             <h1 class="text-center">Settings</h1>
             <div class="input-group mb-3">
                 <label class="input-group-text" for="rounds">Rounds</label>
                 <select class="form-select" id="rounds">
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
@@ -40,10 +43,14 @@
     </div>
     <div class="mt-5">
         <h1 class="text-white text-center">Invite your friends!</h1>
-        <div class="input-group mb-3">
+        <div class="input-group mb-3" style="width: 90%;
+        margin-left: 6vw;">
             <input type="text" id="gameLink" class="form-control text-center fw-bold bg-white"
                 value="http://localhost:3000/" readonly>
-            <button class="btn btn-warning" type="button" id="copy">Copy Link</button>
+            <button class="btn btn-warning" style="height: 38px;
+            position: absolute;
+            top: 12px;
+            right: 0px;" type="button" id="copy">Copy Link</button>
         </div>
     </div>
 </section>

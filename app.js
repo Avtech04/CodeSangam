@@ -77,8 +77,12 @@ io.on("connection", (socket) =>
     await new DisconnectHelper(io, socket).onDisconnect();
     console.log(`disconnected ${socket.id}`);
   });
-  socket.on("settingsUpdate", (data) =>
-    new Room(io, socket).updateSettings(data)
+  socket.on("settingsUpdate", (data) =>{
+    console.log(data);
+    new Room(io, socket).updateSettings(data);
+
+  }
+    
   );
   socket.on("KickPlayer", async (data) => {
     await new Game(io, socket).kickPlayers(data);
