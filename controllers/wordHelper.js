@@ -1,4 +1,7 @@
 const request = require('request-promise');
+
+// function to get random words using api
+
 async function getRandom() {
   let options = { json: true };
   var words;
@@ -15,6 +18,10 @@ async function getRandom() {
   });
   return words
 }
+
+
+// function to push the random word in the array
+
 async function get3Words(roomID) {
   var arr = await getRandom();
   console.log(arr);
@@ -25,6 +32,11 @@ async function get3Words(roomID) {
   // arr.push("ankit");
   // return arr;
 }
+
+
+
+// function to know about timer if all remaining guessed
+
 function wait(startTime, drawer, ms) {
   
   return new Promise((resolve, reject) => 
@@ -37,32 +49,37 @@ function wait(startTime, drawer, ms) {
   });
 }
 
+
+// function to return score for all remaining players
+
 function returnScore (start, roundtime)
 {
-    // var x= Date.now() / 1000;
-    // var used= x- start;
-    // var perused= (used / total) * 100;
-    // var remaining = 100 -perused;
-    // return 1000 * remaining /100 ;
+   
     // return 100;
 
 
     const now = Date.now() / 1000;
-    console.log("Currenttime:",now);
+    // console.log("Currenttime:",now);
     const elapsedTime = Number(now - start);
-    console.log("elapsedTime:",elapsedTime);
+    // console.log("elapsedTime:",elapsedTime);
     
     const roundTime=roundtime/1000;
-    console.log("Roundtime:", roundTime);
+    // console.log("Roundtime:", roundTime);
     return Number( Math.floor(((roundTime - elapsedTime) / roundTime) * 100));
 }
 
+
+// function to return score for drawer
+
 function returnScoreDrawer (total,guessed)
 {
-  console.log(guessed);
+  // console.log(guessed);
     return Number( Math.floor((guessed / total) * 100));
 }
 
+
+
+// exporting the modules
 
 module.exports = {
     get3Words,

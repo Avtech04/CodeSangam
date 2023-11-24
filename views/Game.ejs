@@ -43,6 +43,8 @@ padding-left: 10px;">Share Your Drawing</h3>
   <a class="telegram" target="blank"><i class="fab fa-telegram" style="font-size: 30px;color: white;"></i></a>
 
 </div>
+
+
 <div class="col-3 col-lg-2 h-100 players" style="    background:rgb(8, 34, 46);
 color: white;
 position: absolute;
@@ -58,8 +60,8 @@ margin: auto;z-index: 0.8;">
 
 <div id="toolscontainer">
 <h5 style="font-size: 18px;">Tools</h5>
-<button class="tools" id="eraser" onclick="start_eraser()"><img id="icon" style="width:21px;height:21px" src="js/eraser.jpeg"></button>
-<button class="tools" id="bucketFill" onclick="bucket_fun()"><img id="icon" style="width:21px;height:21px" src="js/bucket.jpeg"></button>
+<button class="tools" id="eraser" onclick="start_eraser()"><img id="icon" style="width:21px;height:21px" src="eraser.jpeg"></button>
+<button class="tools" id="bucketFill" onclick="bucket_fun()"><img id="icon" style="width:21px;height:21px" src="bucket.jpeg"></button>
 </div>
 
 <div id="toolproperties">
@@ -74,21 +76,21 @@ margin: auto;z-index: 0.8;">
   <div id="actions">
     <h5 style="font-size: 18px;">Actions</h5>
     <button class="action" id="action1" onclick="clear_page(cntx)"><span class="tooltiptext"
-        style="bottom:115%;left: 0%;">Clear Page</span><img id="icon" src="Clear.svg"></button>
+        style="bottom:115%;left: 0%;">Clear Page</span><img id="icon" src="clear.jpeg" style="width: 24px;"></button>
 
     <button class="action" id="action8" onclick="undo()"><span class="tooltiptext"
-        style="bottom:355%;left:0%;">Undo</span><img id="icon" style="background-color: white;
-        padding: 3px;" src="Undo.svg"></button>
+        style="bottom:355%;left:0%;">Undo</span><img id="icon" style="
+        padding: 3px;width: 29px;" src="undo.png"></button>
     <button class="action" id="action9" onclick="redo()"><span class="tooltiptext"
-        style="bottom:335%;left:-100%;">Redo</span><img id="icon" style="background-color: white;
-        padding: 3px;" src="Redo.svg"></button>
+        style="bottom:335%;left:-100%;">Redo</span><img id="icon" style="
+        padding: 3px;width: 29px;" src="redo.jpg"></button>
         <button class="action" id="action9" onclick="start_rect_drawing()"><span class="tooltiptext"
-          style="bottom:335%;left:-100%;">Rect</span><img id="icon" src="rect.png" style="height: 15px;"></button>
+          style="bottom:335%;left:-100%;">Rect</span><img id="icon" src="rect.jpeg" style="width: 24px;"></button>
           <button class="action" id="action9" onclick="start_circle_drawing()"><span class="tooltiptext"
-            style="bottom:335%;left:-100%;">Circle</span><img id="icon" src="circle.png" style="height: 15px;"></button>
+            style="bottom:335%;left:-100%;">Circle</span><img id="icon" src="circle.jpeg" style="width: 24px;"></button>
             <button class="action" id="action9" onclick="line()"><span class="tooltiptext"
-              style="bottom:335%;left:-100%;">Triangle</span><img id="icon" src="triangle.png" style="height: 15px;"></button>
-              <button class="action" id="action4" onclick="download_img()" alt="Download as .jpg"><span class="tooltiptext" style="bottom:115%;left:-100%;">Download Image</span><img id="icon" style="width: 24px;" src="js/download.png"></button>
+              style="bottom:335%;left:-100%;">Line</span><img id="icon" src="line.png" style="width: 24px;"></button>
+              <button class="action" id="action4" onclick="download_img()" alt="Download as .jpg"><span class="tooltiptext" style="bottom:115%;left:-100%;">Download Image</span><img id="icon" style="width: 24px;" src="download.png"></button>
         
         </div>
 

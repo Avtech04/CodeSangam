@@ -4,11 +4,13 @@ class Canvas {
         this.socket = socket;
     }
 
+    // function to broadcast the drawing
     async broadcastDrawing(data) {
         const { socket } = this;
          await socket.broadcast.to(socket.roomId).emit('drawing', data);
     }
 
+   
     drawRectangle(data){
         const { socket } = this;
         socket.broadcast.to(socket.roomId).emit('drawRect', data);

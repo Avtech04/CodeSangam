@@ -1,10 +1,17 @@
 const Rooms=require('../models/room');
 const Game=require('./Game');
+
+
+// Making Room Class
+
+
 class Room {
     constructor(io, socket) {
         this.io = io;
         this.socket = socket;
     }
+
+    // function to create privateRoom
 
     async createPrivateRoom(player) 
     {
@@ -30,6 +37,9 @@ class Room {
         socket.emit('newPrivateRoom', { gameID: roo ,user});
     }
 
+
+    //function to join room
+
     async joinRoom(data)
      {
         const { io, socket } = this; 
@@ -53,6 +63,8 @@ class Room {
         socket.emit('otherPlayers',{players});
     }
 
+
+    // function for public room
     async joinPublic(player)
     {
         const { io, socket } = this; 
@@ -104,6 +116,10 @@ class Room {
              await new Game(io, socket).startGame();
         }
     }
+
+
+
+    // function for updating the setting
     async updateSettings(data)
     {
         const { socket } = this;

@@ -1,6 +1,12 @@
-var link=`https://www.google.com`;
+
+// parameters needed for social sharing
+
+var link=`https://www.google.com`; 
 const msg = encodeURIComponent('Hey, I found this article');
 const title = encodeURIComponent('Article or Post Title Here');
+
+
+// selecting the tags/icons one by one
 
 const fb = document.querySelector('.facebook');
 
@@ -14,9 +20,13 @@ const whatsapp = document.querySelector('.whatsapp');
 
 const telegram = document.querySelector('.telegram');
 
+
+
+// providing the links to be shared on socials
+
 socket.on('shareSocials',(data)=>{
     link=data;
-    console.log(data);
+    // console.log(data);
     fb.href = `https://www.facebook.com/share.php?u=${link}`;
     linkedIn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${link}`;
     telegram.href = `https://telegram.me/share/url?url=${link}&text=${msg}`;
