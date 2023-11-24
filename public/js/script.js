@@ -18,7 +18,7 @@ function updateSettings(e)
     socket.emit('settingsUpdate',
      {
         rounds: document.querySelector('#rounds').value,
-        time: document.querySelector('#time').value,
+        time: document.querySelector('#time').value , 
     });
 }
 

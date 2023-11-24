@@ -112,7 +112,7 @@ class Room {
         const players=room.players;
        socket.emit('otherPublicPlayers',{players});
 
-        if(room.capacity==2){
+        if(room.capacity==4){
              await new Game(io, socket).startGame();
         }
     }
@@ -125,11 +125,13 @@ class Room {
         const { socket } = this;
         const { customWords, ...rest } = data;
         let room=await Rooms.findById(socket.roomId);
+
         room.limitTime= Number(data.time) * 1000;
         room.rounds= Number(data.rounds);
         room=await room.save();
         socket.to(socket.roomId).emit('settingsUpdate', rest);
         // console.log("SETTINGS UPDATED");
+        // console.log(room);
     }
 
 }
