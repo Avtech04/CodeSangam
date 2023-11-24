@@ -18,7 +18,7 @@ function updateSettings(e)
     socket.emit('settingsUpdate',
      {
         rounds: document.querySelector('#rounds').value,
-        time: document.querySelector('#time').value , 
+        time: document.querySelector('#time').value,
     });
 }
 
@@ -198,4 +198,3 @@ socket.on('otherPlayers', (data) =>
 socket.on('otherPublicPlayers',(data)=> 
 {data.players.forEach((player) => putPlayerPublic(player))}
 );
-

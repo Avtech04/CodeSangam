@@ -24,7 +24,6 @@ cloudinary.config({
 
 // Defining the class Game
 
-
 class Game {
   constructor(io, socket, ct = 0) {
     this.io = io;
@@ -34,9 +33,6 @@ class Game {
 
   // function for starting the game
 
-  // function for starting the game
-
-  // async function for start Game
   async startGame() {
     const { io, socket } = this;
     const roomId = socket.roomId;
@@ -52,17 +48,16 @@ class Game {
     this.getPlayers();
 
     socket.emit("startGame");
-    
-   // console.log(rounds);
+
+    console.log(rounds);
     for (let j = 0; j < rounds; j++) {
-     // console.log(j);
+      // console.log(j);
       for (let i = 0; i < players.length; i++) {
         //   console.log('inside');
         io.to(roomId).emit("clearCanvas");
         const player2 = Array.from(await io.in(socket.roomId).allSockets());
-        if(player2.length ==1)
-        {
-          // // if only 1 player is left , just return ;
+        if (player2.length == 1) {
+          // if only 1 player is left , just return ;
           console.log(room.players);
           const stats = room.players;
           io.to(roomId).emit("endGame", stats);
@@ -75,8 +70,8 @@ class Game {
     }
     let room2 = await Rooms.findById(roomId);
     const stats = room2.players;
-   // console.log(stats);
-    io.to(roomId).emit('endGame', stats );
+    console.log(stats);
+    io.to(roomId).emit("endGame", stats);
     // updating score
     for (var i = 0; i < stats.length; i++) {
       if (stats[i].userId == undefined) continue;
@@ -132,14 +127,11 @@ class Game {
         pres = true;
       }
     }
-    
-    if(pres === false)
-    return ;
+    if (pres === false) return;
 
     let room = await Rooms.findById(roomId);
-   // console.log(room);
+
     const time = room.limitTime;
-   // console.log("TIME IS "  + time);
     const player = players[i];
     const prevPlayer = players[(i - 1 + players.length) % players.length];
     const drawer = io.of("/").sockets.get(player);
@@ -167,9 +159,7 @@ class Game {
     }
   }
 
-  // function that returns the choosen word
-  chosenWord(socketId) 
-  {
+  chosenWord(socketId) {
     const { io } = this;
     return new Promise((resolve, reject) => {
       function rejection(err) {
@@ -190,10 +180,7 @@ class Game {
 
   // function to push the socket
 
-
-  // if chat blocked store in an array
-  async pushSocket(id) 
-  {
+  async pushSocket(id) {
     const { io, socket } = this;
     const roomId = socket.roomId;
     let room = await Rooms.findById(roomId);
@@ -201,9 +188,8 @@ class Game {
     room = await room.save();
   }
 
-  // function to send the message in the chat box
-  async message(data) 
-  {
+  // function to detect the chats
+  async message(data) {
     const { io, socket } = this;
     const roomId = socket.roomId;
     const name = socket.name;
@@ -325,10 +311,12 @@ class Game {
       // console.log("Current Contri is " + score2);
       //  console.log("UPdated Score is " + ns);
       // emitting in game
-      io.in(roomID).emit('updateLeaderboard', {
+      io.in(roomID).emit("updateScore", {
         playerID: socket.id,
         score: ns,
-    });
+        // drawerID: drawer.id,
+        // drawerScore: games[socket.roomID][drawer.id].score,
+      });
       //console.log(score2);
       const curp = Array.from(await io.in(roomId).allSockets());
 
@@ -346,16 +334,14 @@ class Game {
     } else {
       // normal message
       io.in(roomId).emit("message", { ...data, name });
-    } 
+    }
     // let room2 = await Rooms.findById(roomID);
     // console.log(room2.players);
     //  console.log(room.players);
-    }
+  }
 
-
-  // function to update the leaderboard 
-  async getPlayers()
-   {
+  // function to get the players
+  async getPlayers() {
     const { io, socket } = this;
     const roomID = socket.roomId;
     // console.log("INSDE GET PLAYERS ");
@@ -390,12 +376,12 @@ class Game {
     const player = io.of("/").sockets.get(data);
     const roomID = socket.roomId;
     let room = await Rooms.findById(roomID);
-    var stats= room.players;
-    player.emit("kickedThePlayer", stats );
+    var stats = room.players;
+    player.emit("endGame", stats);
     this.kickEffect(player);
     // console.log("kick is working");
     player.leave(socket.roomId);
-   // const players1 = Array.from(await io.in(socket.roomID).allSockets());
+    const players1 = Array.from(await io.in(socket.roomID).allSockets());
     //console.log(players1);
     //this.getPlayers();
   }
