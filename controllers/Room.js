@@ -68,7 +68,7 @@ class Room {
     async joinPublic(player)
     {
         const { io, socket } = this; 
-        let room =await Rooms.find( { Type:'Public' , capacity:{$lt:2} } );
+        let room =await Rooms.find( { Type:'Public' , capacity:{$lt:4} } );
         // console.log(player);
         // console.log(room);
         var room_id;
@@ -112,7 +112,7 @@ class Room {
         const players=room.players;
        socket.emit('otherPublicPlayers',{players});
 
-        if(room.capacity==2){
+        if(room.capacity==4){
              await new Game(io, socket).startGame();
         }
     }

@@ -89,7 +89,7 @@ io.on("connection", (socket) =>
   });
 
   socket.on("shareSocials", async () => {
-    const filePath = path.join(__dirname + "/../../../Downloads/filename.png");
+    const filePath = path.join(__dirname + "/canvas_images/filename.png");
     console.log(filePath);
     cloudinary.uploader
       .upload(filePath)

@@ -321,8 +321,9 @@ class Game {
       const curp = Array.from(await io.in(roomId).allSockets());
 
       // console.log(room.profanityCount );
-
-      if (room.tempBlock.length >= curp.length - 1) {
+      // console.log(room.tempBlock.length);
+      // console.log(curp.length);
+      if (room.tempBlock.length >= curp.length) {
         // ct=1;
         // await this.Drawer_update(room.drawer);
         io.in(roomId).emit("startTimer", 0);

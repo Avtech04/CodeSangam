@@ -294,8 +294,9 @@ function createScoreCard2(players)
       div.classList.add('row', 'justify-content-end', 'py-1', 'align-items-center');
       avatar.classList.add('col-5', 'col-xl-4');
       details.classList.add('col-7', 'col-xl-6', 'text-center', 'my-auto');
-      p1.classList.add('mb-0');
-      p2.classList.add('mb-0');
+      p1.classList.add('mb-0','mainn');
+      p2.classList.add('mb-0','mainn');
+      div.classList.add('temp-class');
       div.id = player.socketId ;
       div.append(details, avatar);
     //  div.append(newButton);
