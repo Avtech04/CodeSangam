@@ -70,27 +70,27 @@ margin: auto;z-index: 0.8;">
         max="50" placeholder="Example: 1"></input></div>
 
     <div id="properties" style="width:85%">Pen Color<input id="strokecolor" value="#000000" type="color"></div>
-    <div id="properties2" style="width:0%">Board Color<input id="boardcolor" value="#ffffff" type="color"></div>
   </div>
 
   <div id="actions">
     <h5 style="font-size: 18px;">Actions</h5>
-    <button class="action" id="action1" onclick="clear_page(cntx)"><span class="tooltiptext"
+   
+    <button class="action" id="clearPage" onclick="clear_page(ctx1)"><span class="tooltiptext"
         style="bottom:115%;left: 0%;">Clear Page</span><img id="icon" src="clear.jpeg" style="width: 24px;"></button>
 
-    <button class="action" id="action8" onclick="undo()"><span class="tooltiptext"
+    <button class="action" id="undo" onclick="undo()"><span class="tooltiptext"
         style="bottom:355%;left:0%;">Undo</span><img id="icon" style="
         padding: 3px;width: 29px;" src="undo.png"></button>
-    <button class="action" id="action9" onclick="redo()"><span class="tooltiptext"
+    <button class="action" id="redo" onclick="redo()"><span class="tooltiptext"
         style="bottom:335%;left:-100%;">Redo</span><img id="icon" style="
         padding: 3px;width: 29px;" src="redo.jpg"></button>
-        <button class="action" id="action9" onclick="start_rect_drawing()"><span class="tooltiptext"
+        <button class="action"  onclick="start_rect_drawing()"><span class="tooltiptext"
           style="bottom:335%;left:-100%;">Rect</span><img id="icon" src="rect.jpeg" style="width: 24px;"></button>
-          <button class="action" id="action9" onclick="start_circle_drawing()"><span class="tooltiptext"
+          <button class="action"  onclick="start_circle_drawing()"><span class="tooltiptext"
             style="bottom:335%;left:-100%;">Circle</span><img id="icon" src="circle.jpeg" style="width: 24px;"></button>
-            <button class="action" id="action9" onclick="line()"><span class="tooltiptext"
+            <button class="action"  onclick="line()"><span class="tooltiptext"
               style="bottom:335%;left:-100%;">Line</span><img id="icon" src="line.png" style="width: 24px;"></button>
-              <button class="action" id="action4" onclick="download_img()" alt="Download as .jpg"><span class="tooltiptext" style="bottom:115%;left:-100%;">Download Image</span><img id="icon" style="width: 24px;" src="download.png"></button>
+              <button class="action"  onclick="download_img()" alt="Download as .jpg"><span class="tooltiptext" style="bottom:115%;left:-100%;">Download Image</span><img id="icon" style="width: 24px;" src="download.png"></button>
         
         </div>
 
@@ -149,24 +149,9 @@ margin: auto;z-index: 0.8;">
   
 
   <div id="pagecontainer">
-    <canvas id="canvas1">
-      <p>Your Browser is not supported by this web app. We regret the inconveniance caused.</p>
-      <p>Please try one of these supported browsers:</p>
-      <p><a href="www.mozilla.org">Mozilla Firefox</a></p>
-      <p><a href="www.google.com/chrome">Google Chrome</a></p>
-      <p><a href="#"></a></p>
-    </canvas>
-    <canvas id="canvas2" height="0" width="0">
-      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    </canvas>
-
-    <canvas id="canvas3">
-      <p>Your Browser is not supported by this web app. We regret the inconveniance caused.</p>
-      <p>Please try one of these supported browsers:</p>
-      <p><a href="www.mozilla.org">Mozilla Firefox</a></p>
-      <p><a href="www.google.com/chrome">Google Chrome</a></p>
-      <p><a href="#"></a></p>
-    </canvas>
+    
+    <canvas id="canvas1"></canvas>
+    <canvas id="canvas2"></canvas>
 
     <div id="image_input_menu">
       <label style="width:48%;float:left">Width:<input type="number" class="input_image_dimensions"

@@ -150,15 +150,7 @@
     color: white;
   }
   
-  #action2:hover{
-    background-color: #d5202c;
-    color: white;
-  }
   
-  #action3:hover{
-    background-color: #d5202c;
-    color: white;
-  }
   
   #properties{
     margin: 1% 1% 1% 1%;
@@ -210,14 +202,6 @@
    
   }
    
-  #canvas2{
-    border-radius: 10px;
-    margin-top: 10px;
-    margin-left: 10px;
-    z-index: 1;
-    opacity:  1;
-    position: absolute;
-  }
   
   #image_input_menu{
     border-radius: 10px;
@@ -275,7 +259,7 @@
       vertical-align: middle;
   }
   
-  #canvas3{
+  #canvas2{
    
     cursor: crosshair;
     position: absolute;

@@ -19,9 +19,9 @@ const playerSchema= new mongoose.Schema({
         required:true,
         default:0
     },
-    socketId:{
-        type:String,
-    },
+    // socketId:{
+    //     type:String,
+    // },
     lastMatches:[],
 },
 {timestamps:true});

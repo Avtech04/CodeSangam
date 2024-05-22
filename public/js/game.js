@@ -345,8 +345,7 @@ socket.on('getPlayersO', (players)=>{
 }) => {
   document.querySelector(`#${playerID}> div p:last-child`).textContent 
   = `Score: ${score}`;
-  // document.querySelector(`#skribblr-${drawerID}>div p:last-child`).textContent = `Score: ${drawerScore}`;
-});
+  });
 
 
 socket.on('endGame', async ( stats ) => 
@@ -388,5 +387,3 @@ socket.on('endGame', async ( stats ) =>
 
 
 });
-
-
