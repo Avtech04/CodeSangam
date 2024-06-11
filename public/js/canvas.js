@@ -100,9 +100,13 @@ async function stroke_properties(ctx) {
 
 async function start_draw(event) {
   event.preventDefault();
-  locator(event);
   stroke_properties(ctx1);
   stroke = true;
+  var x = event.pageX - canvas1.offsetLeft;
+  var y = event.pageY - canvas1.offsetTop;
+  ctx1.beginPath();
+  ctx1.moveTo(x,y);
+  socket.emit('drawing', {x,y,state:"start",strokeWidth, strokeColor});
 }
 
 async function auxillary_stop_draw() {
@@ -115,51 +119,30 @@ async function stop_draw(event) {
   stroke = false;
 }
 
+//function for free hand drawing
 
-
-var loc_prev;
-async function draw(event) {
-  if (!stroke) { return; }
-  //begining new path 
-  ctx1.beginPath();
-
-  //storing for sockets
-  loc_prev = currentPoint;
-
-  ctx1.moveTo(currentPoint.x, currentPoint.y);
-  //console.log(currentPoint);
-
-  controlPoint.x = currentPoint.x;
-  controlPoint.y = currentPoint.y;
-  //new piece
-  locator(event);
-  controlPoint.x = (controlPoint.x + currentPoint.x) / 2;
-  controlPoint.y = (controlPoint.y + currentPoint.y) / 2;
-
-  locator(event);
-
-  ctx1.quadraticCurveTo(controlPoint.x, controlPoint.y, currentPoint.x, currentPoint.y);
-  // console.log(controlPoint);
-  // console.log(currentPoint);
-  ctx1.stroke();
-  ctx1.closePath();
-
-  socket.emit('drawing', { loc_prev, currentPoint, controlPoint, strokeWidth, strokeColor });
+async function draw(event){
+  if(!stroke)return;
+  
+    var x = event.pageX - canvas1.offsetLeft;
+    var y = event.pageY - canvas1.offsetTop;
+ 
+    ctx1.lineTo(x, y);
+    ctx1.stroke();
+    socket.emit('drawing', { x,y,state:"drawing",strokeWidth, strokeColor});
+ 
 }
 
 // draw function for other than drawer 
-async function draw1(data) {
-  //console.log(data);
-  currentPoint = data.currentPoint;
-  controlPoint = data.controlPoint;
-  if (!stroke) { return; }
-  ctx1.beginPath();
-  ctx1.moveTo(data.loc_prev.x, data.loc_prev.y);
-  //console.log("yes");
-  ctx1.quadraticCurveTo(controlPoint.x, controlPoint.y, currentPoint.x, currentPoint.y);
-  ctx1.stroke();
-  ctx1.closePath();
+async function draw1(data){
+  if(data.state=="start"){
+    ctx1.beginPath();
+    ctx1.moveTo(data.x,data.y);
 
+  }else{
+    ctx1.lineTo(data.x, data.y);
+    ctx1.stroke();
+  }
 }
 
 //clear page logic 
